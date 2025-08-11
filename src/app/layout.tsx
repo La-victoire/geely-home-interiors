@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Footer from "@/components/Landing-Page/Footer";
+import Navbar from "@/components/Landing-Page/Navbar";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "Geely Home Interiors and Accessories",
-  description: "A place to find comfort and luxury for your home",
+  description: "Transform your business space with our curated collection of luxury furniture, lighting, and accessories. Premium interior decoration solutions for discerning clients.",
   icons: {
     icon: '/favicon.svg'
   }
@@ -22,8 +24,9 @@ export default function RootLayout({
         className={`antialiased`}
       >
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+       <LayoutWrapper>
         {children}
-        <Footer />
+       </LayoutWrapper>
       </ThemeProvider>
       </body>
     </html>

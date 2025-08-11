@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from './Navbar'
 import { Button } from '../ui/button'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap';
@@ -38,7 +37,6 @@ const Hero = () => {
   return (
     <section>
     <div id='video-frame' className="relative z-10 h-dvh w-screen overflow-hidden bg-[#dfdff2]">
-      <Navbar />
       <video
         muted
         autoPlay

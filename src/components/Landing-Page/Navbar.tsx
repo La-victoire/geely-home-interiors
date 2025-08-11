@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '../ui/button'
 import { Heart, Menu, Moon, ShoppingCart, Sun, User2, X } from 'lucide-react'
@@ -41,7 +43,8 @@ const Navbar = () => {
 
 
   return (
-    <nav className='flex w-full px-5 not-sm:gap-6 md:px-10 item-row absolute z-50 h-[10dvh] justify-between items-center'>
+    <nav className='flex w-full px-2 lg:px-5 not-sm:gap-6 md:px-10 item-row fixed z-50 h-[10dvh] justify-between items-center'>
+     <div className=" z-20 abs-center bg-black/10 pointer-events-none blur-xs h-full w-full"/>
       <p className='headFont text-md md:text-xl'>
         <span className='text-white/50'>Geely</span> Home Interiors
       </p>

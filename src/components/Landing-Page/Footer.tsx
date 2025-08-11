@@ -43,8 +43,8 @@ const Footer = () => {
               <div key={index} className=''>
                 <p>{title}</p>
                 <div className='flex gap-3 pt-5 px-3 item-col'>
-                  {content.map((item) => (
-                    <Link href={`/${item.toLowerCase()}`}>
+                  {content.map((item,index) => (
+                    <Link key={index} href={`/${item.toLowerCase()}`}>
                       {item}
                     </Link>
                   ))}

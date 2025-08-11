@@ -25,10 +25,8 @@ const CTA = () => {
         })
         .from(ctaText.chars, {
           opacity: 0,
-          y: 30,
-          scale: 0.5,
+          scale: 0.8,
           stagger: 0.05,
-          delay: 1,
           duration: 0.3,
           ease: "power1.inOut",
         })
@@ -37,7 +35,7 @@ const CTA = () => {
 
   return (
     <>
-    <section id="cta-container" className='px-10'>
+    <section id="cta-container" className='lg:px-10 px-3'>
     <div id='cta-Card' className='flex my-20 rounded-2xl md:h-[80dvh] md:item-row bg-accent item-col'>
       <img
       className='md:w-1/2 h-full object-cover not-sm:rounded-t-2xl md:rounded-l-2xl'
