@@ -10,7 +10,7 @@ export default function RootLoading() {
         />
         <div className='abs-center flex flex-col items-center text-center'>
           <Star fill='true' className="h-20 w-20 animate-bounce text-black" aria-label="Loading" />
-          <p className="mt-7 text-white text-3xl headFont">Designing your experience...</p>
+          <p className="mt-7 text-black text-3xl headFont">Designing your experience...</p>
         </div>
     </main>
   )

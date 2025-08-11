@@ -31,6 +31,7 @@ const AnimatedBody = () => {
       const firstAnimation = gsap.to(textItemsRef.current, {
         opacity: 1,
         scale: isMobile ? 0.6 : 1,
+        width: isMobile && 400,
         duration: 1.2,
         stagger: 0.15,
         x: (i) => {
