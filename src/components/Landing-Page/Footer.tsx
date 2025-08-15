@@ -6,6 +6,7 @@ import { Footer_Links } from '../constants';
 import Link from 'next/link';
 import { Input } from '../ui/input';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Footer = () => {
    const isMobile = useMediaQuery({maxWidth: 767 });
@@ -28,9 +29,21 @@ const Footer = () => {
                 {title}
                 </AccordionTrigger>
                 <AccordionContent className='flex gap-8 item-col p-5'>
-                  {content.map((text,index) => 
-                    <Link key={index} href={`/${text}`}>{text}</Link>
-                  )}
+                  {title === "Categories"
+                  ? 
+                  content.map((item,index) => (
+                    <Link key={index} 
+                     href={`/shop/products?page=1&category=${item.toString()}`}>
+                      {item}
+                    </Link>
+                  ))
+                  :
+                  content.map((item,index) => (
+                    <Link key={index} 
+                     href={`/${item}` }>
+                      {item}
+                    </Link>
+                  ))}
                 </AccordionContent>
               </AccordionItem>
             )
@@ -43,8 +56,18 @@ const Footer = () => {
               <div key={index} className=''>
                 <p>{title}</p>
                 <div className='flex gap-3 pt-5 px-3 item-col'>
-                  {content.map((item,index) => (
-                    <Link key={index} href={`/${item.toLowerCase()}`}>
+                  {title === "Categories"
+                  ? 
+                  content.map((item,index) => (
+                    <Link key={index} 
+                     href={`/shop/products?page=1&category=${item.toString()}`}>
+                      {item}
+                    </Link>
+                  ))
+                  :
+                  content.map((item,index) => (
+                    <Link key={index} 
+                     href={`/${item}` }>
                       {item}
                     </Link>
                   ))}

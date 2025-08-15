@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import React from 'react'
 
 const slowDataFetch = async () => {
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 9000));
 
   return {
     message: "This page took 2s seconds to load!",

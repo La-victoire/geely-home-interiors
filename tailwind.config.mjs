@@ -6,7 +6,17 @@ export default {
     "./lib/**/*.{ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      clipPath: {
+        'irregular-frame': 'url(#irregular-frame)'
+      }
+    }
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.clip-irregular': { 'clip-path': 'url(#irregular-frame)' }
+      })
+    }
+  ],
 };

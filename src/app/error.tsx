@@ -16,7 +16,7 @@ export default function GlobalError({
   }, [error])
 
   return (
-    <main data-error className="min-h-dvh bg-white dark:bg-stone-950">
+    <main className="min-h-dvh bg-white dark:bg-stone-950">
       <div className="text-center">
         <img
           src="/images/cream-couche.jpg"
@@ -24,7 +24,7 @@ export default function GlobalError({
           className="object-cover relative h-screen w-screen bg-stone-50 dark:bg-stone-900"
         />
         <div className='abs-center'>
-          <h1 className="text-3xl font-bold headFont text-stone-900 dark:text-stone-100">Something went wrong</h1>
+          <h1 data-error className="text-3xl font-bold headFont text-stone-900 dark:text-stone-100">Something went wrong</h1>
           <p className="mt-3">
             Our design team is rearranging things. Please try again.
           </p>

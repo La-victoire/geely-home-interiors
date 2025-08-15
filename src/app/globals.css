@@ -173,3 +173,14 @@
   @utility abs-center {
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
+.clip-irregular-frame {
+  clip-path: polygon(100% 0, 100% 0, 100% 13%, 100% 100%, 0 100%,0 68%, 22% 68%, 22% 48%, 0 48%, 0 0);
+}
+.my-image {
+  -webkit-mask-image: url('/images/irregular_mask.png');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+  mask-image: url('/images/irregular_mask.png');
+  mask-repeat: no-repeat;
+  mask-size: cover;
+}

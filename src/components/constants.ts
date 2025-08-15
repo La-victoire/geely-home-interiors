@@ -100,7 +100,7 @@ export const VALUE_PROPS = [
     {
       title : "Categories",
       content : [
-        "Living-Room","Bedroom","Dinning-Room","Office","Lighting","Accessories"
+        "Living Room","Bedroom","Dinning Room","Office","Lighting","Accessories"
       ]
     }
    ];
@@ -158,9 +158,9 @@ export const VALUE_PROPS = [
     category: "Living Room",
     categoryId: "1",
     images: [
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
+      "/images/living-room.jpg",
+      "/images/white-bedroom.jpg",
+      "/images/white-bg.jpg",
     ],
     sku: "SOFA-VEL-MOD-001",
     rating: 4.8,
