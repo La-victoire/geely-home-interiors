@@ -49,6 +49,9 @@ const CTA = () => {
       </div>
     </div>
     </section>
+    <div className='bg-accent mb-3 text-xl text-center w-dvw z-20'>
+      <p>Note: This Website is still under construction</p>
+    </div>
     </>
   )
 }

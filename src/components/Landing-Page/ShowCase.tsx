@@ -80,9 +80,6 @@ const ShowCase = () => {
             >
               {IsReduced == index ? description : (description.slice(0, 50) + " ...See More") }
             </p>
-            <Button className='bg-white cursor-pointer hover:mt-2 duration-200 text-black w-full rounded-full'>
-              View Category
-            </Button>
           </div>
         </Card>
         ))}

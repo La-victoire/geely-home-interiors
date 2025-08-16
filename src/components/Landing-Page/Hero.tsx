@@ -3,6 +3,7 @@ import { Button } from '../ui/button'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap';
 import { SplitText } from 'gsap/all';
+import Link from 'next/link';
 
 const Hero = () => {
     useGSAP(()=> {
@@ -50,9 +51,9 @@ const Hero = () => {
         <h2 id="text" className='headFont text-[#020618] text-3xl md:text-5xl text-center flex flex-wrap p-15'>
           Transform Your Space into Your Sanctuary
         </h2>
-        <div className="flex flex-center items-center">
+        <Link href={`shop/products`} className="flex flex-center items-center">
           <Button variant="outline" className="md:scale-125 border-0 shadow-2xl dark:bg-foreground bg-foreground text-accent">Explore Collections</Button>
-        </div>
+        </Link>
         </div>
     </div>
     <div className="abs-center w-full flex-center flex item-col z-0 ">

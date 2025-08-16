@@ -8,7 +8,7 @@ const page = async ({ params }: { params: Promise<{ id: string}>}) => {
   const product = products.filter((item) => item.id === id)
   return (
     <>
-    <section className='py-10 px-8'>
+    <section className='py-10 px-4 md:px-8'>
      {product.map((item,index)=> (
       <ProductHero 
        key={index}

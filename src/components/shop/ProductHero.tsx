@@ -16,9 +16,9 @@ const ProductHero = ({item,index}) => {
                 <div className='flex item-col h-full gap-5'>
                   <p className='text-5xl headFont py-10'>{item.name}</p>
                   <div>
-                    <div className='flex mb-5 gap-2'>
+                    <div className='flex mb-5 flex-center overflow-hidden gap-2'>
                       {item.images.map((image:string)=> (
-                        <img src={image} alt="mini-image" className='w-[130px] h-[100px] rounded-2xl' />
+                        <img src={image} alt="mini-image" className='w-[110px] h-[100px] rounded-2xl' />
                       ))}
                     </div>
                     <div className='flex gap-5 items-end'>
@@ -47,7 +47,7 @@ const ProductHero = ({item,index}) => {
                 </div>
                 </div>   
               </div>
-              <div className="rounded-2xl h-[90dvh] overflow-hidden">
+              <div className="rounded-xl h-[90dvh] overflow-hidden">
                 <img src={item.images[0]} alt="Styled Chair" className="w-full h-full object-cover" />
               </div>
           </div>
