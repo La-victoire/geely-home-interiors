@@ -15,6 +15,7 @@ export type product = {
     category: string;
     categoryId: string;
     images: string[];
+    stock:number;
     sku?: string;
     rating?: number;
     reviewsCount?: number;

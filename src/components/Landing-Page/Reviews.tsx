@@ -29,15 +29,15 @@ const Reviews = () => {
         tl.from("#headtext", {
           opacity: 0,
           scale: 0.4,
-          duration: 2,
+          duration: 4,
           ease: "expo.Out",
         })
         .from(profSplit.chars, {
           opacity: 0,
           scale: 0.5,
-          stagger: 0.05,
+          stagger: 0.1,
           delay: 1,
-          duration: 1,
+          duration: 4,
           ease: "power1.inOut",
         })
         .from("#reviews", {

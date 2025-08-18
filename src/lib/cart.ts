@@ -2,7 +2,10 @@ import { products } from "@/components/constants";
 
 export const cart = {
   getCart() {
-    return JSON.parse(sessionStorage.getItem('cart')) || [];
+    if (typeof window !== "undefined") {
+      const data = sessionStorage.getItem('cart')
+      return JSON.parse(data) || [];
+    }
   },
   addToCart(productId:string, productQuantity:number) {
     const cardData = this.getCart();
@@ -24,7 +27,7 @@ export const cart = {
   },
   updateCartQuantity(productId:string, quantity:number) {
     const cartData = this.getCart();
-    const product = products.find((p) => p.id === productId);
+    const product = cartData.find((p) => p.id === productId);
     if (product) {
       product.quantity = quantity;
       sessionStorage.setItem('cart', JSON.stringify(cartData));

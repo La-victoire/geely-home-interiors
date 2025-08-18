@@ -12,6 +12,11 @@ const Hero = () => {
       borderRadius: '0 0 40% 10%',
     })
 
+    const splitText = SplitText.create('#text', {
+      type:"chars"
+    })
+    
+
     const tl = gsap.timeline({
       scrollTrigger:{
         trigger: '#video-frame',
@@ -20,19 +25,19 @@ const Hero = () => {
         scrub: true
     }})
 
+    gsap.from(splitText.chars, {
+          opacity: 0,
+          scale: 0.9,
+          stagger: 0.02,
+          duration: 0.3,
+          ease: "power1.inOut",
+        })
+
     tl.from('#video-frame', {
       clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
       borderRadius: '0 0 0 0',
       ease: 'power1.inOut',
     })
-
-    gsap.from("#text", {
-      opacity: 0,
-      y: 300,
-      scale: 0,
-      duration: 0.8,
-      ease: "power1.inOut",
-  })
 
 })
   return (
@@ -48,7 +53,7 @@ const Hero = () => {
 
         <div className="abs-center w-full flex-center gap-10 flex item-col z-20 ">
         <div className=" z-20 abs-center bg-black/30 pointer-events-none blur-3xl rounded-full h-[70dvh] w-1/3"/>
-        <h2 id="text" className='headFont text-[#020618] text-3xl md:text-5xl text-center flex flex-wrap p-15'>
+        <h2 id="text" className='headFont text-[#020618] text-3xl md:text-5xl text-center p-15'>
           Transform Your Space into Your Sanctuary
         </h2>
         <Link href={`shop/products`} className="flex flex-center items-center">

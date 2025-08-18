@@ -135,11 +135,11 @@ export const VALUE_PROPS = [
     },
     {
       name : "Wishlist",
-      link : "/wishlist"
+      link : "/shop/wishlist"
     },
     {
       name : "Cart",
-      link : "/cart"
+      link : "/shop/cart"
     },
     {
       name : "Contact",
