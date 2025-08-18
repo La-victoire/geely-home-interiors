@@ -153,6 +153,7 @@ export const VALUE_PROPS = [
     name: "Modern Velvet Sofa",
     description:
       "Luxurious velvet sofa with a modern design, perfect for any contemporary living room. Features high-density foam cushions and sturdy wooden frame.",
+    stock: 20,
     price: 1299.99,
     currency: "USD",
     category: "Living Room",
@@ -174,6 +175,7 @@ export const VALUE_PROPS = [
     name: "Minimalist Coffee Table",
     description:
       "Sleek and minimalist coffee table made from high-quality tempered glass and polished stainless steel. Adds a touch of elegance to your living area.",
+    stock: 20,
     price: 349.5,
     currency: "USD",
     category: "Living Room",
@@ -194,6 +196,7 @@ export const VALUE_PROPS = [
     name: "King Size Platform Bed",
     description:
       "Sturdy and stylish king-size platform bed with a tufted headboard. Provides excellent support and a luxurious feel for your bedroom.",
+    stock: 20,
     price: 899.0,
     currency: "USD",
     category: "Bedroom",
@@ -214,6 +217,7 @@ export const VALUE_PROPS = [
     name: "Industrial Desk Lamp",
     description:
       "Adjustable desk lamp with an industrial design, perfect for home offices or study areas. Features a durable metal construction and a warm light.",
+    stock: 20,
     price: 75.0,
     currency: "USD",
     category: "Lighting",
@@ -239,6 +243,7 @@ export const VALUE_PROPS = [
     name: "Abstract Wall Art",
     description:
       "Large abstract canvas art piece, hand-painted with vibrant colors. Adds a contemporary focal point to any room.",
+    stock: 20,
     price: 250.0,
     currency: "USD",
     category: "Accessories",
@@ -259,6 +264,7 @@ export const VALUE_PROPS = [
     name: "Ergonomic Office Chair",
     description:
       "High-back ergonomic office chair with adjustable lumbar support, armrests, and headrest. Designed for maximum comfort during long working hours.",
+    stock: 20,
     price: 450.0,
     currency: "USD",
     category: "Office",
@@ -279,6 +285,7 @@ export const VALUE_PROPS = [
     name: "Extendable Dining Table",
     description:
       "Modern extendable dining table made from solid oak, perfect for hosting large gatherings. Seats 6-10 people comfortably.",
+    stock: 20,
     price: 999.99,
     currency: "USD",
     category: "Dining Room",
@@ -299,6 +306,7 @@ export const VALUE_PROPS = [
     name: "Velvet Dining Chairs (Set of 4)",
     description:
       "Set of four elegant velvet dining chairs with sturdy metal legs. Adds a touch of luxury to your dining space.",
+    stock: 20,
     price: 599.0,
     currency: "USD",
     category: "Dining Room",
@@ -319,6 +327,7 @@ export const VALUE_PROPS = [
     name: "Geometric Area Rug",
     description:
       "Soft and durable area rug with a modern geometric pattern. Perfect for adding warmth and style to your living room or bedroom.",
+    stock: 20,
     price: 180.0,
     currency: "USD",
     category: "Living Room",
@@ -339,6 +348,7 @@ export const VALUE_PROPS = [
     name: "Smart LED Floor Lamp",
     description:
       "Voice-controlled smart LED floor lamp with adjustable brightness and color temperature. Integrates with smart home systems.",
+    stock: 20,
     price: 150.0,
     currency: "USD",
     category: "Lighting",
@@ -364,6 +374,7 @@ export const VALUE_PROPS = [
     name: "Mid-Century Modern Armchair",
     description:
       "Stylish armchair with a solid wood frame and comfortable fabric upholstery, inspired by mid-century design. Perfect for a reading nook.",
+    stock: 20,
     price: 499.0,
     currency: "USD",
     category: "Living Room",
@@ -384,6 +395,7 @@ export const VALUE_PROPS = [
     name: "Scandi-Style Bookshelf",
     description:
       "Open-concept bookshelf with clean lines and natural wood finish, embodying Scandinavian design principles. Ideal for displaying books and decor.",
+    stock: 20,
     price: 280.0,
     currency: "USD",
     category: "Living Room",
@@ -404,6 +416,7 @@ export const VALUE_PROPS = [
     name: "Plush Queen Size Mattress",
     description:
       "Premium queen size mattress with memory foam layers for ultimate comfort and support. Reduces motion transfer for undisturbed sleep.",
+    stock: 20,
     price: 799.0,
     currency: "USD",
     category: "Bedroom",
@@ -424,6 +437,7 @@ export const VALUE_PROPS = [
     name: "Bedside Table with Drawer",
     description:
       "Compact bedside table with a single drawer and open shelf, perfect for keeping essentials close at hand. Made from durable MDF with a smooth finish.",
+    stock: 20,
     price: 120.0,
     currency: "USD",
     category: "Bedroom",
@@ -444,6 +458,7 @@ export const VALUE_PROPS = [
     name: "Crystal Chandelier",
     description:
       "Elegant crystal chandelier with multiple tiers, casting a dazzling light. Perfect for dining rooms or grand entryways.",
+    stock: 20,
     price: 650.0,
     currency: "USD",
     category: "Lighting",
@@ -464,6 +479,7 @@ export const VALUE_PROPS = [
     name: "Abstract Geometric Sculpture",
     description:
       "Modern tabletop sculpture with interlocking geometric shapes, made from polished metal. Adds a contemporary touch to any surface.",
+    stock: 20,
     price: 95.0,
     currency: "USD",
     category: "Accessories",
@@ -484,6 +500,7 @@ export const VALUE_PROPS = [
     name: "Executive Leather Desk",
     description:
       "Large executive desk with a genuine leather inlay and multiple drawers for ample storage. Ideal for a sophisticated home office.",
+    stock: 20,
     price: 1500.0,
     currency: "USD",
     category: "Office",
@@ -504,6 +521,7 @@ export const VALUE_PROPS = [
     name: "Modern Dining Chairs (Set of 2)",
     description:
       "Set of two contemporary dining chairs with comfortable upholstered seats and sleek metal legs. Perfect for modern dining spaces.",
+    stock: 20,
     price: 299.0,
     currency: "USD",
     category: "Dining Room",
@@ -524,6 +542,7 @@ export const VALUE_PROPS = [
     name: "Large Faux Fur Throw Blanket",
     description:
       "Luxuriously soft faux fur throw blanket, perfect for adding warmth and texture to your sofa or bed. Generously sized for ultimate comfort.",
+    stock: 20,
     price: 85.0,
     currency: "USD",
     category: "Living Room",
@@ -544,6 +563,7 @@ export const VALUE_PROPS = [
     name: "Vintage Style Wall Clock",
     description:
       "Large wall clock with a distressed finish and Roman numerals, adding a touch of vintage charm to any room.",
+    stock: 20,
     price: 110.0,
     currency: "USD",
     category: "Accessories",
@@ -564,6 +584,7 @@ export const VALUE_PROPS = [
     name: "Modular Sectional Sofa",
     description:
       "Highly customizable modular sectional sofa, allowing you to arrange it to fit any living space. Features deep seats and plush cushions.",
+    stock: 20,
     price: 2499.0,
     currency: "USD",
     category: "Living Room",
@@ -584,6 +605,7 @@ export const VALUE_PROPS = [
     name: "Round Marble Coffee Table",
     description:
       "Elegant round coffee table with a genuine marble top and a sturdy metal base. A luxurious centerpiece for your living room.",
+    stock: 20,
     price: 580.0,
     currency: "USD",
     category: "Living Room",
@@ -604,6 +626,7 @@ export const VALUE_PROPS = [
     name: "Queen Size Storage Bed",
     description:
       "Functional queen size bed with integrated under-bed storage drawers, perfect for maximizing space in smaller bedrooms.",
+    stock: 20,
     price: 1100.0,
     currency: "USD",
     category: "Bedroom",
@@ -624,6 +647,7 @@ export const VALUE_PROPS = [
     name: "Dresser with 6 Drawers",
     description:
       "Spacious dresser with six smooth-gliding drawers, offering ample storage for clothing and linens. Modern design with clean lines.",
+    stock: 20,
     price: 550.0,
     currency: "USD",
     category: "Bedroom",
@@ -644,6 +668,7 @@ export const VALUE_PROPS = [
     name: "Modern Pendant Light",
     description:
       "Sleek single pendant light with a minimalist design, perfect for kitchen islands or dining areas. Provides focused illumination.",
+    stock: 20,
     price: 120.0,
     currency: "USD",
     category: "Lighting",
@@ -664,6 +689,7 @@ export const VALUE_PROPS = [
     name: "Decorative Ceramic Vase",
     description:
       "Hand-crafted ceramic vase with a unique textured finish, ideal for displaying fresh flowers or as a standalone decorative piece.",
+    stock: 20,
     price: 45.0,
     currency: "USD",
     category: "Accessories",
@@ -684,6 +710,7 @@ export const VALUE_PROPS = [
     name: "L-Shaped Executive Desk",
     description:
       "Spacious L-shaped executive desk with ample workspace and integrated storage, perfect for a productive home office setup.",
+    stock: 20,
     price: 850.0,
     currency: "USD",
     category: "Office",
@@ -704,6 +731,7 @@ export const VALUE_PROPS = [
     name: "Round Dining Table (4 Seater)",
     description:
       "Compact round dining table, ideal for small spaces, seating up to 4 people comfortably. Features a sturdy wooden top and metal legs.",
+    stock: 20,
     price: 420.0,
     currency: "USD",
     category: "Dining Room",
@@ -724,6 +752,7 @@ export const VALUE_PROPS = [
     name: "Velvet Ottoman with Storage",
     description:
       "Stylish velvet ottoman that doubles as extra seating and hidden storage. Perfect for living rooms or bedrooms.",
+    stock: 20,
     price: 180.0,
     currency: "USD",
     category: "Living Room",
@@ -744,6 +773,7 @@ export const VALUE_PROPS = [
     name: "Set of 3 Floating Wall Shelves",
     description:
       "Modern floating wall shelves, perfect for displaying decor, books, or plants. Easy to install and adds a contemporary touch.",
+    stock: 20,
     price: 65.0,
     currency: "USD",
     category: "Accessories",
@@ -764,6 +794,7 @@ export const VALUE_PROPS = [
     name: "Reclining Leather Sofa",
     description:
       "Luxurious reclining sofa upholstered in genuine leather, offering ultimate comfort and relaxation. Features power recline and adjustable headrests.",
+    stock: 20,
     price: 2800.0,
     currency: "USD",
     category: "Living Room",
@@ -784,6 +815,7 @@ export const VALUE_PROPS = [
     name: "Glass Top Console Table",
     description:
       "Sleek console table with a tempered glass top and a minimalist metal frame. Perfect for entryways or behind a sofa.",
+    stock: 20,
     price: 220.0,
     currency: "USD",
     category: "Living Room",
@@ -804,6 +836,7 @@ export const VALUE_PROPS = [
     name: "Adjustable Standing Desk",
     description:
       "Ergonomic standing desk with electric height adjustment, promoting a healthier work posture. Features a spacious desktop and quiet motor.",
+    stock: 20,
     price: 600.0,
     currency: "USD",
     category: "Office",
@@ -824,6 +857,7 @@ export const VALUE_PROPS = [
     name: "Bookshelf with Doors",
     description:
       "Versatile bookshelf with open shelves and a lower cabinet with doors, offering both display and concealed storage.",
+    stock: 20,
     price: 350.0,
     currency: "USD",
     category: "Office",
@@ -844,6 +878,7 @@ export const VALUE_PROPS = [
     name: "Modern Wall Sconce",
     description:
       "Sleek wall sconce with an integrated LED light, providing ambient illumination. Perfect for hallways, bedrooms, or living rooms.",
+    stock: 20,
     price: 90.0,
     currency: "USD",
     category: "Lighting",
@@ -864,6 +899,7 @@ export const VALUE_PROPS = [
     name: "Decorative Throw Pillow (Set of 2)",
     description:
       "Set of two soft decorative throw pillows with a unique geometric pattern, perfect for adding comfort and style to your sofa or bed.",
+    stock: 20,
     price: 55.0,
     currency: "USD",
     category: "Accessories",
@@ -884,6 +920,7 @@ export const VALUE_PROPS = [
     name: "Rustic Farmhouse Dining Table",
     description:
       "Solid wood dining table with a distressed finish, bringing a rustic farmhouse charm to your dining area. Seats 6-8 people.",
+    stock: 20,
     price: 850.0,
     currency: "USD",
     category: "Dining Room",
@@ -904,6 +941,7 @@ export const VALUE_PROPS = [
     name: "Upholstered Dining Bench",
     description:
       "Comfortable upholstered dining bench, perfect for pairing with a dining table or as extra seating in an entryway. Seats 2-3 people.",
+    stock: 20,
     price: 320.0,
     currency: "USD",
     category: "Dining Room",
@@ -924,6 +962,7 @@ export const VALUE_PROPS = [
     name: "Large Decorative Mirror",
     description:
       "Oversized decorative wall mirror with an ornate frame, perfect for adding depth and light to any room.",
+    stock: 20,
     price: 280.0,
     currency: "USD",
     category: "Accessories",
@@ -944,6 +983,7 @@ export const VALUE_PROPS = [
     name: "Smart Home Hub",
     description:
       "Central smart home hub that connects and controls all your smart devices, from lighting to thermostats. Voice control enabled.",
+    stock: 20,
     price: 199.0,
     currency: "USD",
     category: "Accessories",
@@ -964,6 +1004,7 @@ export const VALUE_PROPS = [
     name: "Velvet Accent Chair",
     description:
       "Elegant velvet accent chair with a unique design, perfect for adding a pop of color and luxury to any room.",
+    stock: 20,
     price: 380.0,
     currency: "USD",
     category: "Living Room",
@@ -984,6 +1025,7 @@ export const VALUE_PROPS = [
     name: "Industrial Style TV Stand",
     description:
       "Robust TV stand with a blend of wood and metal, offering an industrial aesthetic. Features open shelving and a cabinet for media storage.",
+    stock: 20,
     price: 390.0,
     currency: "USD",
     category: "Living Room",
@@ -1004,6 +1046,7 @@ export const VALUE_PROPS = [
     name: "Memory Foam Pillow (Set of 2)",
     description:
       "Contour memory foam pillows designed for optimal neck and head support, ensuring a restful night's sleep. Hypoallergenic cover.",
+    stock: 20,
     price: 90.0,
     currency: "USD",
     category: "Bedroom",
@@ -1024,6 +1067,7 @@ export const VALUE_PROPS = [
     name: "Wardrobe with Sliding Doors",
     description:
       "Spacious wardrobe with smooth-gliding sliding doors, perfect for organizing clothes and accessories in any bedroom.",
+    stock: 20,
     price: 750.0,
     currency: "USD",
     category: "Bedroom",
@@ -1044,6 +1088,7 @@ export const VALUE_PROPS = [
     name: "Smart Ceiling Fan with Light",
     description:
       "Modern ceiling fan with integrated LED light and smart control features. Perfect for cooling and illuminating large rooms.",
+    stock: 20,
     price: 280.0,
     currency: "USD",
     category: "Lighting",
@@ -1064,6 +1109,7 @@ export const VALUE_PROPS = [
     name: "Set of 4 Coasters",
     description:
       "Stylish set of four absorbent coasters, protecting your surfaces from spills and condensation. Features a modern design.",
+    stock: 20,
     price: 25.0,
     currency: "USD",
     category: "Accessories",
@@ -1084,6 +1130,7 @@ export const VALUE_PROPS = [
     name: "Compact Home Office Desk",
     description:
       "Space-saving home office desk with a minimalist design, perfect for small apartments or dedicated work nooks. Features a single drawer.",
+    stock: 20,
     price: 180.0,
     currency: "USD",
     category: "Office",
@@ -1104,6 +1151,7 @@ export const VALUE_PROPS = [
     name: "Bar Stools (Set of 2)",
     description:
       "Set of two modern bar stools with comfortable upholstered seats and sturdy metal legs. Perfect for kitchen islands or home bars.",
+    stock: 20,
     price: 250.0,
     currency: "USD",
     category: "Dining Room",
@@ -1124,6 +1172,7 @@ export const VALUE_PROPS = [
     name: "Outdoor Patio Sofa",
     description:
       "Weather-resistant outdoor patio sofa with comfortable cushions, perfect for relaxing in your garden or on your balcony.",
+    stock: 20,
     price: 700.0,
     currency: "USD",
     category: "Living Room",
@@ -1144,6 +1193,7 @@ export const VALUE_PROPS = [
     name: "Decorative Floor Lamp",
     description:
       "Tall decorative floor lamp with a unique design and soft ambient light, perfect for adding character to any corner of a room.",
+    stock: 20,
     price: 160.0,
     currency: "USD",
     category: "Lighting",

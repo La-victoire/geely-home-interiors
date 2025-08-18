@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import Footer from "@/components/Landing-Page/Footer";
 import Navbar from "@/components/Landing-Page/Navbar";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Geely Home Interiors and Accessories",
@@ -26,6 +27,7 @@ export default function RootLayout({
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
        <LayoutWrapper>
         {children}
+        <Toaster position='bottom-right' richColors closeButton />
        </LayoutWrapper>
       </ThemeProvider>
       </body>

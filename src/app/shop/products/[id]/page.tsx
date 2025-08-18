@@ -1,5 +1,7 @@
 import { products } from '@/components/constants';
 import ProductHero from '@/components/shop/ProductHero';
+import ProductInfo from '@/components/shop/ProductInfo';
+import ProductReview from '@/components/shop/ProductReview';
 import React from 'react'
 
 const page = async ({ params }: { params: Promise<{ id: string}>}) => {
@@ -8,15 +10,20 @@ const page = async ({ params }: { params: Promise<{ id: string}>}) => {
   const product = products.filter((item) => item.id === id)
   return (
     <>
-    <section className='py-10 px-4 md:px-8'>
      {product.map((item,index)=> (
-      <ProductHero 
-       key={index}
-       item={item}
-       index={index}
-      />
+      <section key={index} className='py-20 flex item-col  px-4 md:px-8'>
+        <ProductHero 
+        item={item}
+        index={index}
+        />
+        <ProductInfo 
+        item={item}
+        />
+        <ProductReview 
+        item={item}
+        />
+      </section>
      ))}
-    </section>
     </>
   )
 }

@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { cart } from '@/lib/cart';
 import { Star } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
+import { toast } from 'sonner';
 
 export type product = {
     id: string;
@@ -25,6 +27,16 @@ interface products {
 }
 
 const CollectionCard:React.FC<products>  = ({product}) => {
+
+  const handleCart = (id:string) => {
+    cart.addToCart(product.id, 1);
+     toast.success(
+      <p className='text-xl'>
+        Product Added To Cart 🎯
+    </p>
+    )
+  };
+
   return (
     <Card className='lg:w-[30dvw] border-r-8 hover:border-r-2 duration-200 relative gap-0 p-0 h-[70dvh]'>
       <img 
@@ -44,7 +56,7 @@ const CollectionCard:React.FC<products>  = ({product}) => {
           <Link href={`products/${product.id}`}>
             <Button>View Details</Button>
           </Link>
-          <Button className='bg-[#ed9e59]'>Add to Cart</Button>
+          <Button onClick={()=> handleCart()} className='bg-[#ed9e59]'>Add to Cart</Button>
         </div>
       </div>
     </Card>
