@@ -1,4 +1,5 @@
 import { products } from "@/components/constants";
+import { toast } from "sonner";
 
 export const cart = {
   getCart() {
@@ -12,6 +13,9 @@ export const cart = {
     const product = products.find((p) => p.id === productId);
     if (product) {
       const existingProduct = cardData.find((p) => p.id === productId);
+      toast.success(
+        "Product Added to Cart"
+      )
       if (existingProduct) {
         existingProduct.quantity += productQuantity;
       } else {

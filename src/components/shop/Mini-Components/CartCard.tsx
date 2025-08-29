@@ -8,7 +8,7 @@ import { Heart, X } from 'lucide-react'
 import { wishList } from '@/lib/wishList'
 import Link from 'next/link'
 
-const CartCard = ({product, index, onChildData, onChildQuantity, onChildId}:{product:product,index:number,onChildData:any,onChildQuantity:any,onChildId:any}) => {
+const CartCard = ({product, index, onChildData, onChildQuantity, onChildRemoval,onChildId}:{product:product,index:number,onChildData:any,onChildQuantity:any,onChildRemoval:any,onChildId:any}) => {
     const [quantity, setQuantity] = useState<number>(product.quantity)
     
     const quantityReduce = () => (
@@ -43,7 +43,7 @@ const CartCard = ({product, index, onChildData, onChildQuantity, onChildId}:{pro
                     <Button onClick={()=> quantityIncrease(product.stock)} variant="ghost">+</Button>
                   </div>
                     <div className='flex gap-4'>
-                      <Button onClick={()=> (cart.removeFromCart(product.id), onChildData(true))} className='bg-[#ed9e59] text-white'>
+                      <Button onClick={()=> (onChildRemoval(product.id))} className='bg-[#ed9e59] text-white'>
                         <X />
                       </Button>
                       <Button onClick={() => (wishList.addToWishList(product.id))}>

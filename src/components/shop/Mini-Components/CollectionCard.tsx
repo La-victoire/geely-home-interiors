@@ -17,6 +17,7 @@ export type product = {
     images: string[];
     stock:number;
     sku?: string;
+    quantity?:number;
     rating?: number;
     reviewsCount?: number;
     features: string[];
@@ -29,7 +30,7 @@ interface products {
 
 const CollectionCard:React.FC<products>  = ({product}) => {
 
-  const handleCart = (id:string) => {
+  const handleCart = () => {
     cart.addToCart(product.id, 1);
      toast.success(
       <p className='text-xl'>

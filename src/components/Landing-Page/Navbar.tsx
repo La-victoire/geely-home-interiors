@@ -17,8 +17,8 @@ import { wishList } from '@/lib/wishList';
 const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [cartQuantity, setCartQuantity] = useState<number>();
-  const [wishListQuantity, setWishListQuantity] = useState<number>();
+  const [cartQuantity, setCartQuantity] = useState<number>(0);
+  const [wishListQuantity, setWishListQuantity] = useState<number>(0);
   const { theme, setTheme } = useTheme();
 
   const handleOpenSidebar = () => {
@@ -30,9 +30,9 @@ const Navbar = () => {
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     const cartAmt = cart.getCart().length;
-    setCartQuantity(cartAmt);
+    setCartQuantity(cartAmt || 0);
     const wishlistAmt = wishList.getWishList().length;
-    setWishListQuantity(wishlistAmt);
+    setWishListQuantity(wishlistAmt || 0);
   }, []);
 
   useGSAP(()=> {

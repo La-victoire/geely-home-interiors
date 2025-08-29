@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { product } from './Mini-Components/CollectionCard'
 import { Button } from '../ui/button'
 import CartCard from './Mini-Components/CartCard'
@@ -10,7 +10,11 @@ const CartProducts = () => {
   const [childData, setChildData] = useState(false);
   const [childQuantity, setChildQuantity] = useState<number>();
   const [childId, setChildId] = useState<string>("");
-  const [cartProducts, setCartProducts] = useState(cart.getCart());
+  const [cartProducts, setCartProducts] = useState([]);
+  
+  useEffect(()=> {
+    setCartProducts(cart.getCart())
+  },[]);
   
   const handleChildData = (data:boolean) => {
     setChildData(data);
@@ -21,12 +25,17 @@ const CartProducts = () => {
   const handleChildId = (data:any) =>  {
     setChildId(data);
   }
-  const handleCartUpdate = (id, newQty) => {
-    setCartProducts(prev => 
+  const handleCartUpdate = (id:string, newQty:number) => {
+    setCartProducts((prev) => 
       prev.map(item => item.id === id ? {...item, quantity: newQty} : item)
     );
     cart.updateCartQuantity(childId, childQuantity)
   };
+  const handleCartRemoval = (id:string) => {
+    setCartProducts((prev) => 
+    prev.filter((item) => item.id !== id) )
+    cart.removeFromCart(id)
+  }
 
   return (
     <main className='flex gap-10 md:item-row item-col'>
@@ -40,6 +49,7 @@ const CartProducts = () => {
               onChildData={handleCartUpdate}
               onChildQuantity={handleChildQuantity}
               onChildId={handleChildId}
+              onChildRemoval={handleCartRemoval}
               index={index}
               />
             
@@ -52,7 +62,7 @@ const CartProducts = () => {
         )} 
       </section>  
       {
-        cartProducts.length > 0 && (
+        cartProducts?.length > 0 && (
         <div className='flex flex-1/3 h-[50dvh]'>
           <CartTotal />
         </div>
