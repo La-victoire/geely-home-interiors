@@ -12,14 +12,15 @@ import gsap from 'gsap';
 import { Badge } from '../ui/badge';
 import { cart } from '@/lib/cart';
 import { wishList } from '@/lib/wishList';
+import { useCart } from '../contexts/CartContext';
 
 
 const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [cartQuantity, setCartQuantity] = useState<number>(0);
   const [wishListQuantity, setWishListQuantity] = useState<number>(0);
   const { theme, setTheme } = useTheme();
+  const {cartCount, wishListCount} = useCart();
 
   const handleOpenSidebar = () => {
     setIsActive(true);
@@ -29,8 +30,6 @@ const Navbar = () => {
   }
   useEffect(() => setMounted(true), []);
   useEffect(() => {
-    const cartAmt = cart.getCart().length;
-    setCartQuantity(cartAmt || 0);
     const wishlistAmt = wishList.getWishList().length;
     setWishListQuantity(wishlistAmt || 0);
   }, []);
@@ -69,16 +68,16 @@ const Navbar = () => {
       <div className='md:flex hidden gap-3'>
         <Link href={`/shop/cart`}>
           <Button className='text-foreground rounded-4xl bg-background hover:text-accent'>
-            {cartQuantity > 0 && (
-              <Badge variant="destructive" className='rounded-full'>{cartQuantity}</Badge>
+            {cartCount > 0 && (
+              <Badge variant="destructive" className='rounded-full'>{cartCount}</Badge>
             )}
             <ShoppingCart />
           </Button>
         </Link>
         <Link href={`/shop/wishlist`}>
           <Button className='text-foreground rounded-4xl bg-background hover:text-accent'>
-            {wishListQuantity > 0 && (
-              <Badge variant="destructive" className='rounded-full'>{wishListQuantity}</Badge>
+            {wishListCount > 0 && (
+              <Badge variant="destructive" className='rounded-full'>{wishListCount}</Badge>
             )}
             <Heart />
           </Button>

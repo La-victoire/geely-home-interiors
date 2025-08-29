@@ -25,7 +25,7 @@ const WishListProducts = () => {
                 <div className='flex items-center'>
                       <div className='flex items-center item-col'>
                         <div className='flex'>
-                          <Button variant="default" onClick={() => (cart.addToCart(product.id, 1))} className='text-white'>
+                          <Button variant="default" onClick={() => (cart.addToCart(product.id, 1))} className=''>
                             <ShoppingCart />
                           </Button>
                         </div>

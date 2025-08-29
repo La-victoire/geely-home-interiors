@@ -6,20 +6,22 @@ import { useMediaQuery } from 'react-responsive'
 import { cart } from '@/lib/cart'
 import { toast } from 'sonner'
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
+import { useCart } from '../contexts/CartContext'
 
 const ProductHero = ({item,index}) => {
   const [quantity, setQuantity] = useState(1)
   const [isVisble, setIsVisible] = useState(item.images[0])
-
+  const {setCartCount, setWishListCount} = useCart()
   const isMobile = useMediaQuery({maxWidth: 767 });
 
   const handleCart = () => {
-    cart.addToCart(item.id, quantity);
-    toast.success(
-     <p className='text-xl'>
-        Product Added To Cart 🎯
-    </p>
-    )
+     const data = cart.getCart().find((p) => p.id === item.id)
+        if (!data) {
+          cart.addToCart(item.id, quantity);
+          setCartCount((prev:number) => prev + 1)
+        } {
+          cart.addToCart(item.id, quantity);
+        }
     setQuantity(1)
   };
 
@@ -37,6 +39,7 @@ const ProductHero = ({item,index}) => {
               Product already in watchlist
             </p>
           )
+          setWishListCount((prev:number) => prev + 1)
         } else {
           toast.success(
           <p className='text-xl'>

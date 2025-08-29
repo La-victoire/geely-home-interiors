@@ -1,3 +1,4 @@
+import { useCart } from '@/components/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cart } from '@/lib/cart';
@@ -29,14 +30,16 @@ interface products {
 }
 
 const CollectionCard:React.FC<products>  = ({product}) => {
+  const {setCartCount} = useCart();
 
   const handleCart = () => {
-    cart.addToCart(product.id, 1);
-     toast.success(
-      <p className='text-xl'>
-        Product Added To Cart 🎯
-    </p>
-    )
+    const data = cart.getCart().find((p) => p.id === product.id)
+    if (!data) {
+      cart.addToCart(product.id, 1);
+      setCartCount((prev:number) => prev + 1)
+    } {
+      cart.addToCart(product.id, 1);
+    }
   };
 
   return (
@@ -58,7 +61,7 @@ const CollectionCard:React.FC<products>  = ({product}) => {
           <Link href={`products/${product.id}`}>
             <Button>View Details</Button>
           </Link>
-          <Button onClick={()=> handleCart()} className='bg-[#ed9e59]'>Add to Cart</Button>
+          <Button onClick={()=> handleCart()} className='bg-[#ed9e59] hover:bg-amber-300 text-white'>Add to Cart</Button>
         </div>
       </div>
     </Card>

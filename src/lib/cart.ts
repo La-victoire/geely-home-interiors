@@ -3,26 +3,34 @@ import { toast } from "sonner";
 
 export const cart = {
   getCart() {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined")  {
       const data = sessionStorage.getItem('cart')
-      return JSON.parse(data) || [];
+      try {
+        return data ? JSON.parse(data) : [];
+      } catch {
+        return [];
+      }
     }
   },
   addToCart(productId:string, productQuantity:number) {
-    const cardData = this.getCart();
+    const cartData = this.getCart();
     const product = products.find((p) => p.id === productId);
     if (product) {
-      const existingProduct = cardData.find((p) => p.id === productId);
+      const existingProduct = cartData?.find((p) => p.id === productId);
+      let updatedCart;
+      if (existingProduct) {
+        updatedCart = cartData?.map((p) => p.id === productId ? 
+        {...p, quantity: p.quantity + productQuantity} : p);
+      } else {
+        updatedCart = [...cartData, {...product, quantity: productQuantity}];
+      }
       toast.success(
         "Product Added to Cart"
       )
-      if (existingProduct) {
-        existingProduct.quantity += productQuantity;
-      } else {
-        cardData.push({ ...product, quantity: productQuantity});
-      }
-      sessionStorage.setItem('cart', JSON.stringify(cardData));
+      sessionStorage.setItem('cart', JSON.stringify(updatedCart));
+      return updatedCart;
     }
+    return cartData;
   },
   removeFromCart(productId:string) {
     const cartData = this.getCart();

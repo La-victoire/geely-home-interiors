@@ -5,6 +5,7 @@ import Footer from "@/components/Landing-Page/Footer";
 import Navbar from "@/components/Landing-Page/Navbar";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { Toaster } from "sonner";
+import { CartProvider } from "@/components/contexts/CartContext";
 
 export const metadata: Metadata = {
   title: "Geely Home Interiors and Accessories",
@@ -25,10 +26,12 @@ export default function RootLayout({
         className={`antialiased`}
       >
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <CartProvider>
        <LayoutWrapper>
-        {children}
+          {children}
         <Toaster position='bottom-right' richColors closeButton />
        </LayoutWrapper>
+      </CartProvider>
       </ThemeProvider>
       </body>
     </html>
