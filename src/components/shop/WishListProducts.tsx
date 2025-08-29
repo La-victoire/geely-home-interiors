@@ -12,7 +12,7 @@ const WishListProducts = () => {
   const products = wishList.getWishList()
   return (
     <div className='border rounded flex item-col gap-5 p-5'>
-      {products.map((product:product, index:number)=> (
+      {products?.map((product:product, index:number)=> (
         <Card key={index} className='flex w-full border-0 border-b rounded-none bg-transparent p-5 flex-row '>
             <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={product?.images[0]} alt={product.id} />
             <div className='flex justify-between w-full'>

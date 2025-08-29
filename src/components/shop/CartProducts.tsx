@@ -32,8 +32,8 @@ const CartProducts = () => {
     <main className='flex gap-10 md:item-row item-col'>
       <section className='border rounded flex item-col flex-2/3 gap-5 p-5'>
         { 
-        cartProducts.length > 0 ? 
-          cartProducts.map((product:product,index:number)=> (
+        cartProducts?.length > 0 ? 
+          cartProducts?.map((product:product,index:number)=> (
             <div key={index}>
               <CartCard 
               product={product}
