@@ -80,7 +80,7 @@ const Reviews = () => {
       <div className='h-dvh mt-15'>
         <img
         className='absolute object-cover h-full w-screen' 
-        src="/images/Bedroom.jpg"
+        src="/images/big-parlour.jpg"
         alt="" 
         />
         <div className='h-full w-full dark:flex hidden bg-black/40 pointer-events-none absolute z-0 ' />

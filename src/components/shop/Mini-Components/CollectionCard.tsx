@@ -37,7 +37,7 @@ const CollectionCard:React.FC<products>  = ({product}) => {
     if (!data) {
       cart.addToCart(product.id, 1);
       setCartCount((prev:number) => prev + 1)
-    } {
+    } else {
       cart.addToCart(product.id, 1);
     }
   };

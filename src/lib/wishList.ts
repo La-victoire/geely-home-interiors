@@ -12,18 +12,11 @@ import { toast } from "sonner";
       const wishListData = this.getWishList();
       const product = products.find((p) => p.id === productId);
       if (product) {
-        const existingProduct = wishListData.find((p) => p.id === productId);
-        if (existingProduct) {
-          toast.message(
-            "Product already in watchlist"
-          )
-        } else {
-          toast.success(
-            "Added To Wishlist 🎯"
-          )
-          wishListData.push(product);
-        }
+        wishListData.push(product);
         sessionStorage.setItem('wishList', JSON.stringify(wishListData));
+        toast.success(
+          "Added To Wishlist 🎯"
+        )
       }
     },
     removeFromWishList(productId:string) {

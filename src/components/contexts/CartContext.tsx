@@ -19,7 +19,7 @@ export function CartProvider({ children}: {children:React.ReactNode}) {
     )
     setCartCount(JSON.parse(cart)?.length)
 
-    setWishListCount(wishlist)
+    setWishListCount(wishlist?.length)
   }, [])
 
   return (

@@ -18,7 +18,6 @@ import { useCart } from '../contexts/CartContext';
 const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [wishListQuantity, setWishListQuantity] = useState<number>(0);
   const { theme, setTheme } = useTheme();
   const {cartCount, wishListCount} = useCart();
 
@@ -29,10 +28,6 @@ const Navbar = () => {
     setIsActive(false)
   }
   useEffect(() => setMounted(true), []);
-  useEffect(() => {
-    const wishlistAmt = wishList.getWishList().length;
-    setWishListQuantity(wishlistAmt || 0);
-  }, []);
 
   useGSAP(()=> {
     isActive ? (
@@ -55,7 +50,7 @@ const Navbar = () => {
 
   return (
     <nav className='flex w-dvw px-2 lg:px-5 not-sm:gap-6 md:px-10 item-row fixed z-50 h-[10dvh] justify-between items-center'>
-     <div className=" z-20 abs-center bg-black/10 pointer-events-none blur-xs h-full w-full"/>
+     <div className=" z-20 abs-center bg-black/30 pointer-events-none blur-xs h-full w-full"/>
       <p className='headFont text-md md:text-xl'>
         <span className='text-accent'>Geely</span> Home Interiors
       </p>
@@ -119,11 +114,14 @@ const Navbar = () => {
         </Link>
 
         <div>
-          <Button onClick={handleOpenSidebar} className='text-foreground rounded-full bg-background hover:text-accent'>
+          <Button onClick={handleOpenSidebar} className='text-foreground relative rounded-full bg-background hover:text-accent'>
             <Menu />
+            {(cartCount) > 0 && (
+              <div className='rounded-full bg-red-500 absolute top-1 right-2 h-1 w-1 '/>
+            )}
           </Button>
           {isActive && (
-            <Card id='sidebar' className='absolute bg-black/30 px-10 py-2 w-dvw left-0.5 top-0.5 z-50 h-dvh'>
+            <Card id='sidebar' className='absolute bg-black/70 px-10 py-2 w-dvw -left-0 top-0.5 z-50 h-dvh'>
               <div className='w-full flex justify-end'>
                 <Button className='rounded-full p-0' onClick={handleCloseSidebar}>
                   <X />
@@ -131,7 +129,16 @@ const Navbar = () => {
               </div>
             {sideMenu.map(({name,link},index)=> (
               <div key={index} className='flex'>
-                <Link className='hover:text-background hover:mb-2 duration-300 border-b' href={`${link}`}>{name}</Link>
+                <Link className='hover:text-background text-white flex hover:mb-2 duration-300 border-b' href={`${link}`}>
+                {name}
+                </Link>
+                {cartCount > 0 && index === 3 && (
+                  <Badge variant="destructive" className='ml-3 rounded-full'>{cartCount}</Badge>
+                )}
+
+                {wishListCount > 0 && index === 2 && (
+                  <Badge variant="destructive" className='ml-3 rounded-full'>{wishListCount}</Badge>
+                )}
               </div>
             ))}
             </Card>

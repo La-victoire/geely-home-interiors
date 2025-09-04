@@ -14,7 +14,7 @@ const LayoutWrapper = (
   const [isSpecialPage, setIsSpecialPage] = useState(false)
 
   useEffect(() => {
-    const hasMarkers = document.querySelector('[data-not-found]') || document.querySelector('[data-loading]') || document.querySelector('[data-error]');
+    const hasMarkers = document.querySelector('[data-not-found]') || document.querySelector('[data-loading]') || document.querySelector('[data-error]') || document.querySelector('[data-authentication]');
 
     setIsSpecialPage(!!hasMarkers)
   }, [children])

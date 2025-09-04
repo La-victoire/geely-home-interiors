@@ -7,6 +7,7 @@ import { cart } from '@/lib/cart'
 import { toast } from 'sonner'
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
 import { useCart } from '../contexts/CartContext'
+import { wishList } from '@/lib/wishList'
 
 const ProductHero = ({item,index}) => {
   const [quantity, setQuantity] = useState(1)
@@ -25,38 +26,17 @@ const ProductHero = ({item,index}) => {
     setQuantity(1)
   };
 
-  const wishList = {
-    getWishList() {
-      return JSON.parse(sessionStorage.getItem('wishList')) || [];
-    },
-    addToWishList(productId:string) {
-      const wishListData = this.getWishList();
-      if (item) {
-        const existingProduct = wishListData.find((p) => p.id === productId);
-        if (existingProduct) {
-          toast.message(
-            <p className='text-xl'>
-              Product already in watchlist
-            </p>
-          )
-          setWishListCount((prev:number) => prev + 1)
-        } else {
-          toast.success(
-          <p className='text-xl'>
-            Added To Wishlist 🎯
-          </p>
-          )
-          wishListData.push(item);
-        }
-        sessionStorage.setItem('wishList', JSON.stringify(wishListData));
+  const addToWishList = () => {
+      const data = wishList.getWishList().find((p) => p.id === item.id)
+      if (data) {
+        toast.message(
+          "Product already in watchlist"
+        )
+      } else {
+        setWishListCount((prev) => prev + 1)
+        wishList.addToWishList(item.id) 
       }
-    },
-    removeFromWishList(productId:string) {
-      const wishListData = this.getWishList();
-      const updatedwishList = wishListData.filter((p) => p.id !== productId);
-      sessionStorage.setItem('wishList', JSON.stringify(updatedwishList));
-    },
-  };
+    }
 
   return (
     <div>
@@ -90,7 +70,7 @@ const ProductHero = ({item,index}) => {
                         <ShoppingCart />
                         Add to Cart
                       </Button>
-                      <Button onClick={()=> wishList.addToWishList(item.id)}>
+                      <Button onClick={()=> addToWishList()}>
                         <Heart />
                         Add to Wishlist
                       </Button>
@@ -139,7 +119,7 @@ const ProductHero = ({item,index}) => {
                         <ShoppingCart />
                         Add to Cart
                       </Button>
-                      <Button onClick={()=> wishList.addToWishList(item.id)}>
+                      <Button onClick={()=> addToWishList()}>
                         <Heart />
                         Add to Wishlist
                       </Button>

@@ -23,9 +23,9 @@ export default function GlobalError({
           alt="Cozy interior with an armchair and lamp"
           className="object-cover relative h-screen w-screen bg-stone-50 dark:bg-stone-900"
         />
-        <div className='abs-center'>
-          <h1 data-error className="text-3xl font-bold headFont text-stone-900 dark:text-stone-100">Something went wrong</h1>
-          <p className="mt-3">
+        <div className='abs-center w-full px-5'>
+          <h1 data-error className="text-3xl font-bold headFont text-white">Something went wrong</h1>
+          <p className="mt-3 text-white/70">
             Our design team is rearranging things. Please try again.
           </p>
           <div className="mt-6 flex items-center justify-center gap-3">

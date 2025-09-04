@@ -85,7 +85,7 @@ const AnimatedBody = () => {
           ))}
         </div>
       </div>
-      <div className='flex md:item-row item-col -mt-100 md:-mt-130 w-full flex-center md:justify-around'>
+      <div className='flex md:item-row item-col -mt-130 w-full flex-center md:justify-around'>
         <img className='object-cover max-h-[70dvh] w-9/10 md:w-1/2 rounded-2xl' src="/images/IMG_20250622_191209_748.jpg" alt="flower" />
         <div className='flex item-col gap-7 justify-center w-8/10 md:w-1/3'>
           <h2 className='text-4xl text-center headFont'>

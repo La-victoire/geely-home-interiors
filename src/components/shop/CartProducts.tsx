@@ -1,24 +1,20 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { product } from './Mini-Components/CollectionCard'
-import { Button } from '../ui/button'
 import CartCard from './Mini-Components/CartCard'
-import { cart } from '@/lib/cart'
 import CartTotal from './CartTotal'
+import { cart } from '@/lib/cart'
+import { useCart } from '../contexts/CartContext'
 
 const CartProducts = () => {
-  const [childData, setChildData] = useState(false);
   const [childQuantity, setChildQuantity] = useState<number>();
   const [childId, setChildId] = useState<string>("");
   const [cartProducts, setCartProducts] = useState([]);
-  
+  const {setCartCount} = useCart()
   useEffect(()=> {
     setCartProducts(cart.getCart())
   },[]);
   
-  const handleChildData = (data:boolean) => {
-    setChildData(data);
-  }
   const handleChildQuantity = (data:any) =>  {
     setChildQuantity(data);
   }
@@ -33,7 +29,8 @@ const CartProducts = () => {
   };
   const handleCartRemoval = (id:string) => {
     setCartProducts((prev) => 
-    prev.filter((item) => item.id !== id) )
+    prev.filter((item) => item.id !== id))
+    setCartCount((prev:number) => prev - 1)
     cart.removeFromCart(id)
   }
 
@@ -56,14 +53,14 @@ const CartProducts = () => {
               
             </div>
         )):(
-          <div className='text-4xl headFont h-full flex flex-center'>
+          <div className='text-3xl headFont h-full flex flex-center'>
             <p>Cart Empty</p>
           </div>
         )} 
       </section>  
       {
         cartProducts?.length > 0 && (
-        <div className='flex flex-1/3 h-[50dvh]'>
+        <div className='flex flex-1/3 h-[60dvh]'>
           <CartTotal />
         </div>
         )

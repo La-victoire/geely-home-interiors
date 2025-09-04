@@ -53,7 +53,7 @@ const Hero = () => {
 
         <div className="abs-center w-full flex-center gap-10 flex item-col z-20 ">
         <div className=" z-20 abs-center bg-black/30 pointer-events-none blur-3xl rounded-full h-[70dvh] w-1/3"/>
-        <h2 id="text" className='headFont text-[#020618] text-3xl md:text-5xl text-center p-15'>
+        <h2 id="text" className='headFont text-[#020618] text-2xl md:text-5xl text-center p-3 md:p-15'>
           Transform Your Space into Your Sanctuary
         </h2>
         <Link href={`shop/products`} className="flex flex-center items-center">
@@ -62,7 +62,7 @@ const Hero = () => {
         </div>
     </div>
     <div className="abs-center w-full flex-center flex item-col z-0 ">
-    <h2 className='headFont text-3xl md:text-5xl text-center flex flex-wrap p-15'>
+    <h2 className='headFont text-2xl md:text-5xl text-center flex flex-wrap p-3 md:p-15'>
       Transform Your Space into Your Sanctuary
     </h2>
     </div>
