@@ -10,7 +10,7 @@ const page = () => {
         <div className='hidden md:flex w-1/2 h-dvh flex-1/2'>
           <img src="/images/Bedroom.jpg"/>
         </div>
-        <div className='w-1/2 space-y-5'>
+        <div className='lg:w-1/2 space-y-5'>
           <BackButton />
           <TabSelector />
         </div>
