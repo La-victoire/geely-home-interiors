@@ -1,3 +1,6 @@
+import { User } from "@/lib/types";
+import { product } from "./shop/Mini-Components/CollectionCard";
+
 export const CATEGORIES = [
   {
     title: "Wall Art",
@@ -147,7 +150,7 @@ export const VALUE_PROPS = [
     },
   ]
 
- export const products = [
+ export const products:product[] = [
   {
     id: "prod1",
     name: "Modern Velvet Sofa",
@@ -1209,4 +1212,103 @@ export const VALUE_PROPS = [
     dimensions: { width: "30 cm", height: "150 cm", depth: "30 cm" },
     colors: ["Black", "White", "Gold"],
   },
+];
+
+export const users: User[] = [
+  {
+    id: "u001",
+    firstname: "Jane",
+    lastname: "Doe",
+    email: "jane.doe@example.com",
+    phone: "+1-202-555-0178",
+    passwordHash: "$2a$10$xyz...",
+    addresses: [
+      {
+        id: "a001",
+        type: "home",
+        street: "123 Elm Street",
+        city: "New York",
+        state: "NY",
+        postalCode: "10001",
+        country: "USA",
+      },
+      // {
+      //   id: "a002",
+      //   type: "work",
+      //   street: "456 Madison Ave",
+      //   city: "New York",
+      //   state: "NY",
+      //   postalCode: "10022",
+      //   country: "USA",
+      // },
+    ],
+    orders: [
+      {
+        id: "o1001",
+        date: "2025-09-01T14:32:00Z",
+        status: "shipped",
+        shippingAddressId: "a001",
+        payment: {
+          method: "credit_card",
+          transactionId: "txn_7890",
+          amount: 249.99,
+          currency: "USD",
+        },
+        items: [
+          {
+            productId: "p101",
+            name: "Luxury Crystal Chandelier",
+            quantity: 1,
+            price: 199.99,
+          },
+          {
+            productId: "p202",
+            name: "Velvet Cushion Set",
+            quantity: 2,
+            price: 25.0,
+          },
+        ],
+      },
+      {
+        id: "o1002",
+        date: "2025-09-03T09:15:00Z",
+        status: "processing",
+        shippingAddressId: "a002",
+        payment: {
+          method: "paypal",
+          transactionId: "txn_7891",
+          amount: 89.99,
+          currency: "USD",
+        },
+        items: [
+          {
+            productId: "p303",
+            name: "Wall Art Painting",
+            quantity: 1,
+            price: 89.99,
+          },
+        ],
+      },
+    ],
+  },
+  // {
+  //   id: "u002",
+  //   firstname: "John",
+  //   lastname: "Smith",
+  //   email: "john.smith@example.com",
+  //   phone: "+1-415-555-0132",
+  //   passwordHash: "$2a$10$abc...",
+  //   addresses: [
+  //     {
+  //       id: "a003",
+  //       type: "home",
+  //       street: "789 Pine Street",
+  //       city: "San Francisco",
+  //       state: "CA",
+  //       postalCode: "94108",
+  //       country: "USA",
+  //     },
+  //   ],
+  //   orders: [],
+  // },
 ];

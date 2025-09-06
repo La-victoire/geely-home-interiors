@@ -49,8 +49,7 @@ const Navbar = () => {
 
 
   return (
-    <nav className='flex w-dvw px-2 lg:px-5 not-sm:gap-6 md:px-10 item-row fixed z-50 h-[10dvh] justify-between items-center'>
-     <div className=" z-20 abs-center bg-black/30 pointer-events-none blur-xs h-full w-full"/>
+    <nav className='flex w-dvw px-2 bg-black/30 lg:px-5 not-sm:gap-6 md:px-10 item-row fixed z-50 h-[10dvh] justify-between items-center'>
       <p className='headFont text-md md:text-xl'>
         <span className='text-accent'>Geely</span> Home Interiors
       </p>
