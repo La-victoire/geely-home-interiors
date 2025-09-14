@@ -17,9 +17,11 @@ export type product = {
     categoryId: string;
     images: string[];
     stock:number;
+    status:string;
     sku?: string;
     quantity?:number;
     rating?: number;
+    dimensions:{};
     reviewsCount?: number;
     features: string[];
     colors?: string[];

@@ -27,6 +27,7 @@ export interface Order {
   date: string; // ISO string
   status: "processing" | "shipped" | "delivered" | "cancelled";
   shippingAddressId: string;
+  client: string;
   payment: Payment;
   items: OrderItem[];
 }
@@ -37,6 +38,8 @@ export interface User {
   lastname: string;
   email: string;
   phone: string;
+  joinDate: string;
+  status: string;
   passwordHash: string;
   addresses: Address[];
   orders: Order[];

@@ -128,10 +128,8 @@ const Products = () => {
       {/* Collection header section */}
       <div className='md:text-4xl text-3xl flex gap-10 justify-between headFont w-full '>
         <h1>Collections</h1>
-        <Drawer
-        
-        >
-          <DrawerTrigger>
+        <Drawer>
+          <DrawerTrigger asChild>
             <Button>
               {!isMobile ? "Filter" : (<Filter />)}
             </Button>

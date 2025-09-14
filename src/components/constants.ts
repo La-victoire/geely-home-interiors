@@ -157,6 +157,7 @@ export const VALUE_PROPS = [
     description:
       "Luxurious velvet sofa with a modern design, perfect for any contemporary living room. Features high-density foam cushions and sturdy wooden frame.",
     stock: 20,
+    status: "In Stock",
     price: 1299.99,
     currency: "USD",
     category: "Living Room",
@@ -179,6 +180,7 @@ export const VALUE_PROPS = [
     description:
       "Sleek and minimalist coffee table made from high-quality tempered glass and polished stainless steel. Adds a touch of elegance to your living area.",
     stock: 20,
+    status: "In Stock",
     price: 349.5,
     currency: "USD",
     category: "Living Room",
@@ -200,6 +202,7 @@ export const VALUE_PROPS = [
     description:
       "Sturdy and stylish king-size platform bed with a tufted headboard. Provides excellent support and a luxurious feel for your bedroom.",
     stock: 20,
+    status: "In Stock",
     price: 899.0,
     currency: "USD",
     category: "Bedroom",
@@ -221,6 +224,7 @@ export const VALUE_PROPS = [
     description:
       "Adjustable desk lamp with an industrial design, perfect for home offices or study areas. Features a durable metal construction and a warm light.",
     stock: 20,
+    status: "In Stock",
     price: 75.0,
     currency: "USD",
     category: "Lighting",
@@ -247,6 +251,7 @@ export const VALUE_PROPS = [
     description:
       "Large abstract canvas art piece, hand-painted with vibrant colors. Adds a contemporary focal point to any room.",
     stock: 20,
+    status: "In Stock",
     price: 250.0,
     currency: "USD",
     category: "Accessories",
@@ -268,6 +273,7 @@ export const VALUE_PROPS = [
     description:
       "High-back ergonomic office chair with adjustable lumbar support, armrests, and headrest. Designed for maximum comfort during long working hours.",
     stock: 20,
+    status: "In Stock",
     price: 450.0,
     currency: "USD",
     category: "Office",
@@ -289,6 +295,7 @@ export const VALUE_PROPS = [
     description:
       "Modern extendable dining table made from solid oak, perfect for hosting large gatherings. Seats 6-10 people comfortably.",
     stock: 20,
+    status: "In Stock",
     price: 999.99,
     currency: "USD",
     category: "Dining Room",
@@ -310,6 +317,7 @@ export const VALUE_PROPS = [
     description:
       "Set of four elegant velvet dining chairs with sturdy metal legs. Adds a touch of luxury to your dining space.",
     stock: 20,
+    status: "In Stock",
     price: 599.0,
     currency: "USD",
     category: "Dining Room",
@@ -331,6 +339,7 @@ export const VALUE_PROPS = [
     description:
       "Soft and durable area rug with a modern geometric pattern. Perfect for adding warmth and style to your living room or bedroom.",
     stock: 20,
+    status: "In Stock",
     price: 180.0,
     currency: "USD",
     category: "Living Room",
@@ -352,6 +361,7 @@ export const VALUE_PROPS = [
     description:
       "Voice-controlled smart LED floor lamp with adjustable brightness and color temperature. Integrates with smart home systems.",
     stock: 20,
+    status: "In Stock",
     price: 150.0,
     currency: "USD",
     category: "Lighting",
@@ -378,6 +388,7 @@ export const VALUE_PROPS = [
     description:
       "Stylish armchair with a solid wood frame and comfortable fabric upholstery, inspired by mid-century design. Perfect for a reading nook.",
     stock: 20,
+    status: "In Stock",
     price: 499.0,
     currency: "USD",
     category: "Living Room",
@@ -399,6 +410,7 @@ export const VALUE_PROPS = [
     description:
       "Open-concept bookshelf with clean lines and natural wood finish, embodying Scandinavian design principles. Ideal for displaying books and decor.",
     stock: 20,
+    status: "In Stock",
     price: 280.0,
     currency: "USD",
     category: "Living Room",
@@ -420,6 +432,7 @@ export const VALUE_PROPS = [
     description:
       "Premium queen size mattress with memory foam layers for ultimate comfort and support. Reduces motion transfer for undisturbed sleep.",
     stock: 20,
+    status: "In Stock",
     price: 799.0,
     currency: "USD",
     category: "Bedroom",
@@ -441,6 +454,7 @@ export const VALUE_PROPS = [
     description:
       "Compact bedside table with a single drawer and open shelf, perfect for keeping essentials close at hand. Made from durable MDF with a smooth finish.",
     stock: 20,
+    status: "In Stock",
     price: 120.0,
     currency: "USD",
     category: "Bedroom",
@@ -462,6 +476,7 @@ export const VALUE_PROPS = [
     description:
       "Elegant crystal chandelier with multiple tiers, casting a dazzling light. Perfect for dining rooms or grand entryways.",
     stock: 20,
+    status: "In Stock",
     price: 650.0,
     currency: "USD",
     category: "Lighting",
@@ -483,6 +498,7 @@ export const VALUE_PROPS = [
     description:
       "Modern tabletop sculpture with interlocking geometric shapes, made from polished metal. Adds a contemporary touch to any surface.",
     stock: 20,
+    status: "In Stock",
     price: 95.0,
     currency: "USD",
     category: "Accessories",
@@ -504,6 +520,7 @@ export const VALUE_PROPS = [
     description:
       "Large executive desk with a genuine leather inlay and multiple drawers for ample storage. Ideal for a sophisticated home office.",
     stock: 20,
+    status: "In Stock",
     price: 1500.0,
     currency: "USD",
     category: "Office",
@@ -525,6 +542,7 @@ export const VALUE_PROPS = [
     description:
       "Set of two contemporary dining chairs with comfortable upholstered seats and sleek metal legs. Perfect for modern dining spaces.",
     stock: 20,
+    status: "In Stock",
     price: 299.0,
     currency: "USD",
     category: "Dining Room",
@@ -546,6 +564,7 @@ export const VALUE_PROPS = [
     description:
       "Luxuriously soft faux fur throw blanket, perfect for adding warmth and texture to your sofa or bed. Generously sized for ultimate comfort.",
     stock: 20,
+    status: "In Stock",
     price: 85.0,
     currency: "USD",
     category: "Living Room",
@@ -567,6 +586,7 @@ export const VALUE_PROPS = [
     description:
       "Large wall clock with a distressed finish and Roman numerals, adding a touch of vintage charm to any room.",
     stock: 20,
+    status: "In Stock",
     price: 110.0,
     currency: "USD",
     category: "Accessories",
@@ -588,6 +608,7 @@ export const VALUE_PROPS = [
     description:
       "Highly customizable modular sectional sofa, allowing you to arrange it to fit any living space. Features deep seats and plush cushions.",
     stock: 20,
+    status: "In Stock",
     price: 2499.0,
     currency: "USD",
     category: "Living Room",
@@ -609,6 +630,7 @@ export const VALUE_PROPS = [
     description:
       "Elegant round coffee table with a genuine marble top and a sturdy metal base. A luxurious centerpiece for your living room.",
     stock: 20,
+    status: "In Stock",
     price: 580.0,
     currency: "USD",
     category: "Living Room",
@@ -630,6 +652,7 @@ export const VALUE_PROPS = [
     description:
       "Functional queen size bed with integrated under-bed storage drawers, perfect for maximizing space in smaller bedrooms.",
     stock: 20,
+    status: "In Stock",
     price: 1100.0,
     currency: "USD",
     category: "Bedroom",
@@ -651,6 +674,7 @@ export const VALUE_PROPS = [
     description:
       "Spacious dresser with six smooth-gliding drawers, offering ample storage for clothing and linens. Modern design with clean lines.",
     stock: 20,
+    status: "In Stock",
     price: 550.0,
     currency: "USD",
     category: "Bedroom",
@@ -672,6 +696,7 @@ export const VALUE_PROPS = [
     description:
       "Sleek single pendant light with a minimalist design, perfect for kitchen islands or dining areas. Provides focused illumination.",
     stock: 20,
+    status: "In Stock",
     price: 120.0,
     currency: "USD",
     category: "Lighting",
@@ -693,6 +718,7 @@ export const VALUE_PROPS = [
     description:
       "Hand-crafted ceramic vase with a unique textured finish, ideal for displaying fresh flowers or as a standalone decorative piece.",
     stock: 20,
+    status: "In Stock",
     price: 45.0,
     currency: "USD",
     category: "Accessories",
@@ -714,6 +740,7 @@ export const VALUE_PROPS = [
     description:
       "Spacious L-shaped executive desk with ample workspace and integrated storage, perfect for a productive home office setup.",
     stock: 20,
+    status: "In Stock",
     price: 850.0,
     currency: "USD",
     category: "Office",
@@ -735,6 +762,7 @@ export const VALUE_PROPS = [
     description:
       "Compact round dining table, ideal for small spaces, seating up to 4 people comfortably. Features a sturdy wooden top and metal legs.",
     stock: 20,
+    status: "In Stock",
     price: 420.0,
     currency: "USD",
     category: "Dining Room",
@@ -756,6 +784,7 @@ export const VALUE_PROPS = [
     description:
       "Stylish velvet ottoman that doubles as extra seating and hidden storage. Perfect for living rooms or bedrooms.",
     stock: 20,
+    status: "In Stock",
     price: 180.0,
     currency: "USD",
     category: "Living Room",
@@ -777,6 +806,7 @@ export const VALUE_PROPS = [
     description:
       "Modern floating wall shelves, perfect for displaying decor, books, or plants. Easy to install and adds a contemporary touch.",
     stock: 20,
+    status: "In Stock",
     price: 65.0,
     currency: "USD",
     category: "Accessories",
@@ -798,6 +828,7 @@ export const VALUE_PROPS = [
     description:
       "Luxurious reclining sofa upholstered in genuine leather, offering ultimate comfort and relaxation. Features power recline and adjustable headrests.",
     stock: 20,
+    status: "In Stock",
     price: 2800.0,
     currency: "USD",
     category: "Living Room",
@@ -819,6 +850,7 @@ export const VALUE_PROPS = [
     description:
       "Sleek console table with a tempered glass top and a minimalist metal frame. Perfect for entryways or behind a sofa.",
     stock: 20,
+    status: "In Stock",
     price: 220.0,
     currency: "USD",
     category: "Living Room",
@@ -840,6 +872,7 @@ export const VALUE_PROPS = [
     description:
       "Ergonomic standing desk with electric height adjustment, promoting a healthier work posture. Features a spacious desktop and quiet motor.",
     stock: 20,
+    status: "In Stock",
     price: 600.0,
     currency: "USD",
     category: "Office",
@@ -861,6 +894,7 @@ export const VALUE_PROPS = [
     description:
       "Versatile bookshelf with open shelves and a lower cabinet with doors, offering both display and concealed storage.",
     stock: 20,
+    status: "In Stock",
     price: 350.0,
     currency: "USD",
     category: "Office",
@@ -882,6 +916,7 @@ export const VALUE_PROPS = [
     description:
       "Sleek wall sconce with an integrated LED light, providing ambient illumination. Perfect for hallways, bedrooms, or living rooms.",
     stock: 20,
+    status: "In Stock",
     price: 90.0,
     currency: "USD",
     category: "Lighting",
@@ -903,6 +938,7 @@ export const VALUE_PROPS = [
     description:
       "Set of two soft decorative throw pillows with a unique geometric pattern, perfect for adding comfort and style to your sofa or bed.",
     stock: 20,
+    status: "In Stock",
     price: 55.0,
     currency: "USD",
     category: "Accessories",
@@ -924,6 +960,7 @@ export const VALUE_PROPS = [
     description:
       "Solid wood dining table with a distressed finish, bringing a rustic farmhouse charm to your dining area. Seats 6-8 people.",
     stock: 20,
+    status: "In Stock",
     price: 850.0,
     currency: "USD",
     category: "Dining Room",
@@ -945,6 +982,7 @@ export const VALUE_PROPS = [
     description:
       "Comfortable upholstered dining bench, perfect for pairing with a dining table or as extra seating in an entryway. Seats 2-3 people.",
     stock: 20,
+    status: "In Stock",
     price: 320.0,
     currency: "USD",
     category: "Dining Room",
@@ -966,6 +1004,7 @@ export const VALUE_PROPS = [
     description:
       "Oversized decorative wall mirror with an ornate frame, perfect for adding depth and light to any room.",
     stock: 20,
+    status: "In Stock",
     price: 280.0,
     currency: "USD",
     category: "Accessories",
@@ -987,6 +1026,7 @@ export const VALUE_PROPS = [
     description:
       "Central smart home hub that connects and controls all your smart devices, from lighting to thermostats. Voice control enabled.",
     stock: 20,
+    status: "In Stock",
     price: 199.0,
     currency: "USD",
     category: "Accessories",
@@ -1008,6 +1048,7 @@ export const VALUE_PROPS = [
     description:
       "Elegant velvet accent chair with a unique design, perfect for adding a pop of color and luxury to any room.",
     stock: 20,
+    status: "In Stock",
     price: 380.0,
     currency: "USD",
     category: "Living Room",
@@ -1029,6 +1070,7 @@ export const VALUE_PROPS = [
     description:
       "Robust TV stand with a blend of wood and metal, offering an industrial aesthetic. Features open shelving and a cabinet for media storage.",
     stock: 20,
+    status: "In Stock",
     price: 390.0,
     currency: "USD",
     category: "Living Room",
@@ -1050,6 +1092,7 @@ export const VALUE_PROPS = [
     description:
       "Contour memory foam pillows designed for optimal neck and head support, ensuring a restful night's sleep. Hypoallergenic cover.",
     stock: 20,
+    status: "In Stock",
     price: 90.0,
     currency: "USD",
     category: "Bedroom",
@@ -1071,6 +1114,7 @@ export const VALUE_PROPS = [
     description:
       "Spacious wardrobe with smooth-gliding sliding doors, perfect for organizing clothes and accessories in any bedroom.",
     stock: 20,
+    status: "In Stock",
     price: 750.0,
     currency: "USD",
     category: "Bedroom",
@@ -1092,6 +1136,7 @@ export const VALUE_PROPS = [
     description:
       "Modern ceiling fan with integrated LED light and smart control features. Perfect for cooling and illuminating large rooms.",
     stock: 20,
+    status: "In Stock",
     price: 280.0,
     currency: "USD",
     category: "Lighting",
@@ -1113,6 +1158,7 @@ export const VALUE_PROPS = [
     description:
       "Stylish set of four absorbent coasters, protecting your surfaces from spills and condensation. Features a modern design.",
     stock: 20,
+    status: "In Stock",
     price: 25.0,
     currency: "USD",
     category: "Accessories",
@@ -1134,6 +1180,7 @@ export const VALUE_PROPS = [
     description:
       "Space-saving home office desk with a minimalist design, perfect for small apartments or dedicated work nooks. Features a single drawer.",
     stock: 20,
+    status: "In Stock",
     price: 180.0,
     currency: "USD",
     category: "Office",
@@ -1155,6 +1202,7 @@ export const VALUE_PROPS = [
     description:
       "Set of two modern bar stools with comfortable upholstered seats and sturdy metal legs. Perfect for kitchen islands or home bars.",
     stock: 20,
+    status: "In Stock",
     price: 250.0,
     currency: "USD",
     category: "Dining Room",
@@ -1176,6 +1224,7 @@ export const VALUE_PROPS = [
     description:
       "Weather-resistant outdoor patio sofa with comfortable cushions, perfect for relaxing in your garden or on your balcony.",
     stock: 20,
+    status: "In Stock",
     price: 700.0,
     currency: "USD",
     category: "Living Room",
@@ -1197,6 +1246,7 @@ export const VALUE_PROPS = [
     description:
       "Tall decorative floor lamp with a unique design and soft ambient light, perfect for adding character to any corner of a room.",
     stock: 20,
+    status: "In Stock",
     price: 160.0,
     currency: "USD",
     category: "Lighting",
@@ -1220,6 +1270,8 @@ export const users: User[] = [
     firstname: "Jane",
     lastname: "Doe",
     email: "jane.doe@example.com",
+    status: "Active",
+    joinDate: "2025-09-01T14:32:00Z",
     phone: "+1-202-555-0178",
     passwordHash: "$2a$10$xyz...",
     addresses: [
@@ -1248,6 +1300,7 @@ export const users: User[] = [
         date: "2025-09-01T14:32:00Z",
         status: "shipped",
         shippingAddressId: "a001",
+        client:"Jane Doe",
         payment: {
           method: "credit_card",
           transactionId: "txn_7890",
@@ -1274,6 +1327,7 @@ export const users: User[] = [
         date: "2025-09-03T09:15:00Z",
         status: "processing",
         shippingAddressId: "a002",
+        client:"Jane Doe",
         payment: {
           method: "paypal",
           transactionId: "txn_7891",
@@ -1291,24 +1345,26 @@ export const users: User[] = [
       },
     ],
   },
-  // {
-  //   id: "u002",
-  //   firstname: "John",
-  //   lastname: "Smith",
-  //   email: "john.smith@example.com",
-  //   phone: "+1-415-555-0132",
-  //   passwordHash: "$2a$10$abc...",
-  //   addresses: [
-  //     {
-  //       id: "a003",
-  //       type: "home",
-  //       street: "789 Pine Street",
-  //       city: "San Francisco",
-  //       state: "CA",
-  //       postalCode: "94108",
-  //       country: "USA",
-  //     },
-  //   ],
-  //   orders: [],
-  // },
+  {
+    id: "u002",
+    firstname: "John",
+    lastname: "Smith",
+    email: "john.smith@example.com",
+    phone: "+1-415-555-0132",
+    status: "Inactive",
+    joinDate: "2025-09-01T14:32:00Z",
+    passwordHash: "$2a$10$abc...",
+    addresses: [
+      {
+        id: "a003",
+        type: "home",
+        street: "789 Pine Street",
+        city: "San Francisco",
+        state: "CA",
+        postalCode: "94108",
+        country: "USA",
+      },
+    ],
+    orders: [],
+  },
 ];
