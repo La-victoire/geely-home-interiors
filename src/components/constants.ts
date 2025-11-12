@@ -248,14 +248,12 @@ export const users: User[] = [
 },
 ];
 
-// constants.ts
-// ==========================
 // Geely Home Interiors – Brand, Policy, and Meta Data
 // ==========================
 
 export const SITE_META = {
-  name: "Geely Home Interiors",
-  domain: "https://geelyhomeinteriors.com",
+  name: "Geely Home Interiors and Accessories",
+  domain: "https://geely-home-interiors.vercel.app/",
   email: "geelyinteriors@gmail.com",
   phoneNumbers: ["+234-9066824344", "+234-7049539860"],
   whatsapp: "+234-7049539860",
@@ -271,6 +269,14 @@ export const SITE_META = {
     facebook: "https://facebook.com/geelyinterior",
     twitter: "https://twitter.com/geelyinterior",
   },
+  keywords: [
+    "Luxury Interiors",
+    "Home Accessories",
+    "Chandeliers",
+    "Wall Mirrors",
+    "Interior Decor Nigeria",
+    "Geely Home Interiors"
+  ],
 };
 
 export const PAYMENT_INFO = {
