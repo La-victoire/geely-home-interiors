@@ -7,16 +7,15 @@ import Autoplay from 'embla-carousel-autoplay';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/all';
+import Link from 'next/link';
+import { Button } from '../ui/button';
 
 const Reviews = () => {
 
    const isMobile = useMediaQuery({maxWidth: 767 });
 
 
-    useGSAP(()=> {
-
-    const profSplit = new SplitText('#subtext', {type:'chars, words'});
-    
+    useGSAP(()=> {    
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -26,20 +25,7 @@ const Reviews = () => {
           scrub: 1
         }
       })
-        tl.from("#headtext", {
-          opacity: 0,
-          scale: 0.4,
-          duration: 4,
-          ease: "expo.Out",
-        })
-        .from(profSplit.chars, {
-          opacity: 0,
-          scale: 0.5,
-          stagger: 0.1,
-          delay: 1,
-          duration: 4,
-          ease: "power1.inOut",
-        })
+        tl
         .from("#reviews", {
           opacity: 0,
           scale: 0.5,
@@ -97,7 +83,7 @@ const Reviews = () => {
           >
           <CarouselContent className='mt-30'>
             {CLIENT_REVIEWS.map(({name,location,review},index)=> (
-            <CarouselItem key={name} className='px-10'>
+            <CarouselItem key={index} className='px-10'>
               <Card key={name} className='gap-20 bg-white/85 px-5 py-10'>
                 <p className='text-black/40'>
                   {review}
@@ -114,7 +100,7 @@ const Reviews = () => {
         ) : (
         <div className='grid md:grid-cols-2 grid-cols-1 absolute w-full px-80 mt-10 gap-10'>
           {CLIENT_REVIEWS.map(({name,location,review},index)=> (
-          <Card id='reviews' key={name} className='flex flex-center bg-white/85 px-5 py-10'>
+          <Card id='reviews' key={index} className='flex flex-center bg-white/85 px-5 py-10'>
             <p className='text-black/40'>
               {review}
             </p>
@@ -127,9 +113,13 @@ const Reviews = () => {
         </div>
         )}
       </div>
-      <p className='underline text-center pb-15 text-2xl text-[#ed9e59]'>
-        SEE MORE REVIEWS
-      </p>
+      <div className='flex-center flex'>
+        <Button asChild variant="link" className='pb-15 text-xl text-primary'>
+          <Link href={'/reviews'} >
+            SEE MORE REVIEWS
+          </Link>
+        </Button>
+      </div>
 
     </section>
 
@@ -137,10 +127,10 @@ const Reviews = () => {
       <div className='flex md:item-row item-col gap-13 md:gap-5 w-full'>
         {VALUE_PROPS.map(({title, description, icon},index) => (
           <Card id='value-cards' key={index} className='border-[#ed9e59] lg:w-1/2 border-1 px-10 py-5 gap-2'>
-            <div className='relative w-20 h-20 flex flex-center left-1/3 -top-15 bg-background rounded-full'>
+            <div className='relative w-20 h-5 flex flex-center left-1/3 -top-10 bg-background rounded-full'>
               <h2 className='text-center text-3xl'>{icon}</h2>
             </div>
-            <h3 className='text-4xl text-center mb-5 headFont'>{title}</h3>
+            <h3 className='md:text-3xl text-2xl text-center mb-5 headFont'>{title}</h3>
             <p className='text-muted-foreground text-center'> {description}</p>
           </Card>
         ))}

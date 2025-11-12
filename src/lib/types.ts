@@ -9,7 +9,6 @@ export interface Address {
 }
 
 export interface OrderItem {
-  productId: string;
   name: string;
   quantity: number;
   price: number;
@@ -23,24 +22,37 @@ export interface Payment {
 }
 
 export interface Order {
-  id: string;
-  date: string; // ISO string
-  status: "processing" | "shipped" | "delivered" | "cancelled";
-  shippingAddressId: string;
+  _id: string;
+  _createdAt: string; // ISO string
+  status: "pending" | "shipped" | "paid" | "failed";
   client: string;
-  payment: Payment;
+  amount: number;
   items: OrderItem[];
 }
 
+export interface cartProduct {
+  product: {
+    _id: string;
+    name: string;
+    stock: number;
+    images: { url: string, public_url: string }[];
+  };
+  quantity: number;
+  price: number;
+}
+
 export interface User {
-  id: string;
+  _id: string;
   firstname: string;
+  role: "Client" | "Admin";
   lastname: string;
   email: string;
-  phone: string;
-  joinDate: string;
+  phone: number;
+  _createdAt: string;
+  _updatedAt: string;
   status: string;
   passwordHash: string;
   addresses: Address[];
   orders: Order[];
+  cart: cartProduct[];
 }

@@ -5,22 +5,34 @@ import { users } from '@/components/constants'
 import { Order, User } from '@/lib/types'
 import OrderTable from './mini-comp/OrderTable'
 import { Input } from '@/components/ui/input'
+import { deleteProfile, getData } from '@/lib/actions'
+import useSWR from 'swr'
+import { toast } from 'sonner'
 
 
 const Orders = () => {
+   const fetcher = (url:string) => getData(url) as unknown as  Order[]
    const [order, setOrder] = useState<Order[]>([]);
    const [search, setSearch] = useState("")
+   const { data, isLoading, error } = useSWR("/orders", fetcher)
 
     useEffect(()=> {
-      const data:Order[] = []
-      const list = users.map(item => item.orders.forEach((ord) => data.push(ord)))
+      if (data)
       setOrder(data)
     },[])
     
-    const handleDelete = (id:string) => {
+    const handleDelete = async (id:string) => {
     setOrder((prev)=>
-      prev.filter((item) => item?.id !== id)
+      prev.filter((item) => item?._id !== id)
     )
+    try {
+      await deleteProfile(`/orders/${id}`)
+      toast.info("Order Deleted")
+    } catch (error) {
+      console.log(error);
+      toast.error("Error deleting Order record");
+    }
+
     };
 
     const queriedResults = useMemo(() => {
@@ -33,6 +45,19 @@ const Orders = () => {
         <CardTitle className='headFont mb-3'>Order Collection</CardTitle>
         <p>Monitor Your Sales</p>
       </CardHeader>
+      {isLoading ? 
+      <div className="flex justify-center items-center">
+        <p className='text-center text-3xl animate-pulse'>
+          Loading...
+        </p>
+      </div>
+      : error ?
+      <div className="flex justify-center items-center">
+        <p className='text-center text-3xl text-red-400 animate-pulse'>
+          Error Loading Order Records
+        </p>
+      </div>
+      :
       <CardContent className='overflow-x-scroll'>
         <div className='md:w-1/4 w-1/2'>
           <Input
@@ -68,6 +93,7 @@ const Orders = () => {
           </div>
         )}
       </CardContent>
+      }
     </Card>
   )
 }

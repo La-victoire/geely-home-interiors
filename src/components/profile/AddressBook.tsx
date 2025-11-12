@@ -9,11 +9,11 @@ const AddressBook = ({user}:{user:User}) => {
       <CardHeader className='text-2xl md:text-3xl text-center headFont border-0 border-b'>Address Book</CardHeader>
       <CardContent className=''>
         <p className='font-bold mb-3'>Your Shipping Address:</p>
-        {user.addresses.map((item)=> (
-          <div key={item.id}>
-            <p>{item.street}</p>
-            <p>{item.city},{item.state}</p>
-            <p>{item.country}</p>
+        {user?.addresses?.map((item)=> (
+          <div key={item?._id}>
+            <p>{item?.street}</p>
+            <p>{item?.city} City</p>
+            <p>{item?.state}, {item?.country}</p>
           </div>
         ))}
       </CardContent>

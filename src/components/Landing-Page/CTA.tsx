@@ -3,6 +3,7 @@ import { Button } from '../ui/button'
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/all';
 import gsap from 'gsap';
+import Link from 'next/link';
 
 const CTA = () => {
 
@@ -42,16 +43,15 @@ const CTA = () => {
       src="/images/white-bedroom.jpg" 
       alt="white-bed" />
       <div className='text-center h-full py-15 px-5 md:px-20 w-full flex item-col flex-center'>
-        <p id='cta' className=' headFont text-3xl'>Think you can't afford beautiful interior design? <br /> Think again.</p>
-        <Button className='w-full text-lg' >
-          ORDER NOW
+        <p id='cta' className=' headFont text-2xl md:text-3xl'>Think you can't afford beautiful interior design? <br /> Think again.</p>
+        <Button asChild className='w-full bg-primary hover:bg-foreground text-md md:text-lg' >
+          <Link href={'/shop/products'}>
+            ORDER NOW
+          </Link>
         </Button>
       </div>
     </div>
     </section>
-    <div className='bg-accent mb-3 text-xl text-center w-dvw z-20'>
-      <p>Note: This Website is still under construction</p>
-    </div>
     </>
   )
 }

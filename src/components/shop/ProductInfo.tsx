@@ -25,7 +25,7 @@ const ProductInfo = ({item}) => {
                   )}
                 </div>
               </li>
-              <li>Dimensions: W:{item.dimensions.width}, H:{item.dimensions.height}, D:{item.dimensions.depth} </li>
+              <li>Dimensions: W:{item?.dimensions?.width}, H:{item?.dimensions?.height} </li>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="feature">

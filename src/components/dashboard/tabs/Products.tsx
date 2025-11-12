@@ -2,7 +2,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import React, { useEffect, useMemo, useState } from 'react'
 import { product } from '@/components/shop/Mini-Components/CollectionCard'
-import { products } from '@/components/constants'
 import ProductTable from './mini-comp/ProductTable'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRightSquare, PlusCircle, X } from 'lucide-react'
@@ -12,9 +11,13 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
+import { useProducts } from '@/components/contexts/ProductsContext'
+import { toast } from 'sonner'
+import { deleteProduct, postData } from '@/lib/actions'
 
 
 const Products = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const [items, setItems] = useState<product[]>([]);
     const [colors, setColors] = useState<string[]>([]);
     const [color, setColor] = useState<string>("");
@@ -37,6 +40,7 @@ const Products = () => {
       status:"",
     })
 
+    const {products} = useProducts() as {products:product[]}
     useEffect(()=> {
       setItems(products)
     },[])
@@ -66,23 +70,40 @@ const Products = () => {
       return obj
     }
   
-    const handleDelete = (id:string) => {
+    const handleDelete = async (id:string) => {
     setItems((prev)=>
-      prev.filter((item) => item.id !== id)
-    )}
+      prev.filter((item) => item._id !== id)
+    )
+    try {
+      const response = await deleteProduct(`/products/${id}`);
+      if (response) {
+        toast.success("Product deleted successfully!")
+      } else {
+        toast.error("Failed to delete product. Please try again.")
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("An error occurred. Please try again.")
+    }
+    }
 
     const queriedResults = useMemo(() => {
+       if (items) {
       return items
-        .filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+        .filter(p => search || p.name.toLowerCase().includes(search.toLowerCase())) as products;
+    }
+    return []
     }, [items,search]);
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
       const { name , value } = e.target;
-      setProduct({...product, [name] : name === "price" ? Number(value) : value });
+      setProduct({...product, [name] : value });
     }
 
     const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      setIsLoading(true)
+      // Prepare form data
       const formData = new FormData();
       formData.append("name", product.name);
       formData.append("category", product.category);
@@ -98,9 +119,8 @@ const Products = () => {
       colors?.forEach((color) => {
         formData.append("colors", color)
       })
-      formData.append("dimensions", JSON.stringify({ width: product.dimensions.width, height: product.dimensions.height }));
-      const stock = Number(formData.get("stock"))
-      if (stock > 0 ) {
+       formData.append("dimensions", JSON.stringify({ width: product.dimensions.width, height: product.dimensions.height }));
+      if (product.stock !== "0" ) {
         formData.append("status", "In Stock")
         setProduct({...product, status:"In Stock"})
       } else {
@@ -111,6 +131,25 @@ const Products = () => {
       for (let [key, value] of formData.entries()) {
         console.log(key,":",value);
       }
+
+      // API call to create a product
+      try {
+        const createProduct = async () => {
+          const response = await postData("/products", formData);
+          if (response) {
+            toast.success("Product created successfully!")
+            console.log(response)
+            setIsLoading(false)
+          } 
+        }
+        createProduct();
+      } catch (error) {
+        console.error(error)
+        toast.error("Failed to create product. Please try again.")
+        setIsLoading(false)
+      }
+      setIsLoading(false)
+      // Update local state with the new product
       const data = formDataToObject(formData)
       console.log("All data:", data);
       console.log("All data part 2:", product);
@@ -170,6 +209,22 @@ const Products = () => {
         return true
       });
     };
+
+    const clearProducts = async () => {
+      setItems([])
+      try {
+      const response = await deleteProduct(`/products`);
+      if (response) {
+        toast.success(response)
+      } else {
+        toast.error("Failed to Clear products. Please try again.")
+      }
+    } catch (error) {
+      console.error("Error deleting products:", error);
+      toast.error("An error occurred. Please try again.")
+    }
+
+    }
     
   return (
     <Card className='max-h-[60dvh]'>
@@ -179,7 +234,7 @@ const Products = () => {
           <p>Manage your product catalog and inventory</p>
         </div>
         <div className='flex not-sm:flex-col gap-3'>
-          <Button variant="outline"> <ArrowUpRightSquare /> Reset Products</Button>
+          <Button onClick={clearProducts} variant="outline"> <ArrowUpRightSquare /> Reset Products</Button>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button variant="secondary"  className='bg-blue-300 text-black'><PlusCircle /> Add Product</Button>
@@ -218,7 +273,7 @@ const Products = () => {
     
                     <div className='grid gap-3'>
                       <Label htmlFor='product-price'>Price*</Label>
-                      <Input id='product-price' type="number" name='price' value={product.price} onChange={handleChange} placeholder='$' required/>
+                      <Input id='product-price' type="number" name='price' value={product.price} onChange={handleChange} placeholder='₦' required/>
                     </div>
     
                     <div className='grid gap-3'>
@@ -307,7 +362,7 @@ const Products = () => {
                   <DialogClose asChild>
                     <Button variant="outline">Cancel</Button>
                   </DialogClose>
-                  <Button type="submit"> Add Product</Button>
+                  <Button disabled={isLoading} type="submit">{isLoading ? "Creating... " : "Add Product"}</Button>
                 </DialogFooter>
                 </form>
             </DialogContent>
@@ -342,7 +397,7 @@ const Products = () => {
             <tbody className='overflow-y-scroll'>
               {queriedResults.length > 0 && (
                 queriedResults.map((data:product,index)=> (
-                  <ProductTable Product={data} setItems={setItems} onDelete={handleDelete} key={index}/>
+                  <ProductTable Product={data} onDelete={handleDelete} key={index}/>
                 ))
               )}
             </tbody>

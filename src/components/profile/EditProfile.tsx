@@ -1,25 +1,45 @@
 "use clent"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Edit } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { User } from '@/lib/types'
+import { editProfile } from '@/lib/actions'
+import { toast } from 'sonner'
 
-const EditProfile = ({setPerson, user}:{setPerson:any, user:User}) => {
-  const [ind, setInd] = useState(user)
+const EditProfile = ({setPerson, person}:{setPerson:any, person:User}) => {
+  const [ind, setInd]:User = useState()
+  const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (person) {
+      setInd({...person, addresses: person?.addresses?.length > 0 ? person.addresses : [{ street: '', city: '', state: '', postalCode: '', country: '' }]});
+    }
+  }, [person]);
+  
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const { name , value } = e.target;
     setInd({...ind, [name] : value });
   }
   const handleAddress = (index:number, key:string, value:string) => {
     setInd({...ind, addresses: ind.addresses.map((addr, idx) => idx === index ? {...addr, [key]: value } : addr) })
+    console.log("Address Update:", ind.addresses);
   }
-  const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setPerson((prev:User[]) => prev.map((list) => (list.id === user.id ? ind : list) ))
+    setIsLoading(true)
+    setPerson(ind)
+    const data =  await editProfile(`/users/${ind._id}`, ind);
+    if (data?.error) {
+      toast.error(`${data?.error}, Please try again!`);
+      setIsLoading(false)
+      return;
+    }
+    toast.success("Profile Edited Successfully!");
+    setIsLoading(false)
     setOpen(false)
   }
 
@@ -55,26 +75,26 @@ return (
             </div>
             <div className='grid gap-3'>
               <Label htmlFor='Street'>Street*</Label>
-              <Input id='street' name='street' value={ind?.addresses[0].street} onChange={(e) => handleAddress(0, "street", e.target.value)}  placeholder="123 Oak street" required/>
+              <Input id='street' name='street' value={ind?.addresses[0]?.street} onChange={(e) => handleAddress(0, "street", e.target.value)}  placeholder="123 Oak street" required/>
             </div>
             <div className='grid grid-cols-2 gap-5'>
               <div className='grid gap-3'>
                 <Label htmlFor='state'>State*</Label>
-                <Input id='state' name='state' value={ind?.addresses[0].state} onChange={(e) => handleAddress(0, "state", e.target.value)} placeholder="Lagos" required/>
+                <Input id='state' name='state' value={ind?.addresses[0]?.state} onChange={(e) => handleAddress(0, "state", e.target.value)} placeholder="Lagos" required/>
               </div>
               <div className='grid gap-3'>
                 <Label htmlFor='city'>City*</Label>
-                <Input id='city' name='city' value={ind?.addresses[0].city} onChange={(e) => handleAddress(0, "city", e.target.value)} placeholder="Ikeja" required/>
+                <Input id='city' name='city' value={ind?.addresses[0]?.city} onChange={(e) => handleAddress(0, "city", e.target.value)} placeholder="Ikeja" required/>
               </div>
             </div>
             <div className='grid grid-cols-2 gap-5'>
               <div className='grid gap-3'>
                 <Label htmlFor='postalCode'>Postal Code*</Label>
-                <Input id='postalCode' name='postalCode' value={ind?.addresses[0].postalCode} onChange={(e) => handleAddress(0, "postalCode", e.target.value)} placeholder="10001" required/>
+                <Input id='postalCode' name='postalCode' value={ind?.addresses[0]?.postalCode} onChange={(e) => handleAddress(0, "postalCode", e.target.value)} placeholder="10001" required/>
               </div>
               <div className='grid gap-3'>
                 <Label htmlFor='country'>Country*</Label>
-                <Input id='country' name='country' value={ind?.addresses[0].country} onChange={(e) => handleAddress(0, "country", e.target.value)} placeholder="Nigeria" required/>
+                <Input id='country' name='country' value={ind?.addresses[0]?.country} onChange={(e) => handleAddress(0, "country", e.target.value)} placeholder="Nigeria" required/>
               </div>
             </div>
           </div>
@@ -82,7 +102,7 @@ return (
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit"> Edit Profile</Button>
+            <Button type="submit" disabled={isLoading}> {isLoading ? "Editing..." : "Edit Profile"}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

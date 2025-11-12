@@ -1,7 +1,7 @@
 "use client"
 import { product } from '@/components/shop/Mini-Components/CollectionCard'
 import { Button } from '@/components/ui/button'
-import { Edit, Trash2, X } from 'lucide-react'
+import { Edit, Loader2Icon, Trash2, X } from 'lucide-react'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -10,9 +10,12 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import React, { useState } from 'react'
 import { products } from '@/components/constants'
 import { Badge } from '@/components/ui/badge'
+import { editProduct } from '@/lib/actions'
+import { toast } from 'sonner'
 
-const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:any ,onDelete: (id:string) => void}) => {
+const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string) => void}) => {
   const [open, setOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [form , setForm] = useState(Product);
   const [Feat, setFeat] = useState(form.features);
   const [colors, setColors] = useState(form.colors);
@@ -20,7 +23,6 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
   const [images, setImages] = useState<any>(form.images)
   const [width, setWidth] = useState<string>(form.dimensions?.width);
   const [height, setHeight] = useState<string>(form.dimensions?.height);
-
   const increaseFeatures = () => {
     setFeat((prev) => [...prev, ""])
   }
@@ -45,26 +47,26 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
     return obj
   }
     
-  const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
     const formData = new FormData();
     formData.append("name", form.name);
     formData.append("category", form.category);
     formData.append("description", form.description);
-    formData.append("price", JSON.stringify(form.price));
-    formData.append("stock", JSON.stringify(form.stock));
+    formData.append("price", form.price.toString());
+    formData.append("stock", form.stock.toString());
     Feat.forEach((feature,index) => 
       formData.append(`features`, feature)
     );
     form.images.forEach((img) => {
-      formData.append("images", img)
+      formData.append("images", img.url)
     })
     colors?.forEach((color) => {
       formData.append("colors", color)
     })
-    formData.append("dimensions", JSON.stringify({ width: width, height: height }));
-    const stock = Number(formData.get("stock"))
-    if (stock > 0 ) {
+     formData.append("dimensions", JSON.stringify({ width: width, height: height }));
+    if (form.stock > 0 ) {
       formData.append("status", "In Stock")
     } else {
       formData.append("status", "Out Of Stock");
@@ -73,14 +75,31 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
       console.log(key,":",value);
     }
     console.log("All images:",formData.getAll("colors"));
-    const data = formDataToObject(formData)
-    setItems((prev:product[]) => prev.map((list) => (list.id === form.id ? data : list) ))
-    setOpen(false)
+
+    // update product api call
+    try {
+      setTimeout( async () => {
+        const update = await editProduct(`/products/${form._id}`, formData);
+        console.log(update)
+        if (update) {
+          toast.success("Product updated successfully!")
+          setIsLoading(false)
+        } else if (update?.error) {
+          toast.error(update.error)
+          setIsLoading(false)
+        }
+        setOpen(false)
+      }, 3000);
+      setIsLoading(false)
+    } catch (error) {
+      console.error(error)
+      toast.error(`${error} Failed to update product. Please try again.`)
+    }
   }
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const { name , value } = e.target;
-    setForm({...form, [name] : name === "price" ? Number(value) : value });
+    setForm({...form, [name] : value });
   }
 
   const handleSelectChange = (value : string) => {
@@ -96,7 +115,7 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    setImages([...images, files])
+    setImages(files)
     if (files) {
       setForm({ ...form, images: images })
     }
@@ -121,11 +140,11 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
     <tr className='border-0 border-b'>
       <td className='pl-3'>{form.name}</td>
       <td className=''>{form.category}</td>
-      <td className=''>${form.price}</td>
+      <td className=''>₦{form.price}</td>
       <td className=' p-3'>{form.stock}</td>
       <td className={`md:px-5 px-2 py-3`}>
-        <div className={`border font-semibold not-sm:p-2 py-2 text-center text-white rounded-full ${form.status === "In Stock" ? "bg-green-300 border-green-500 ": "bg-red-300 border-red-500 "}`}>
-          {form.status}
+        <div className={`border font-semibold not-sm:p-2 py-2 text-center text-white rounded-full ${form.stock > 0 ? "bg-green-300 border-green-500 ": "bg-red-300 border-red-500 "}`}>
+          {form.stock > 0 ? "In Stock" : "Out Of Stock"}
         </div>
       </td>
       <td className=' flex flex-center py-3 space-x-3'>
@@ -150,7 +169,7 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
                   <Label htmlFor='product-category'>Product Category*</Label>
                   <Select name='category' value={form.category} onValueChange={handleSelectChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a category"/>
+                      <SelectValue placeholder={form.category ? form.category : "Select a category"}/>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -167,7 +186,7 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
 
                 <div className='grid gap-3'>
                   <Label htmlFor='product-price'>Price*</Label>
-                  <Input id='product-price' type="number" name='price' value={form.price} onChange={handleChange} placeholder='$' required/>
+                  <Input id='product-price' type="number" name='price' value={form.price} onChange={handleChange} placeholder='₦' required/>
                 </div>
 
                 <div className='grid gap-3'>
@@ -187,15 +206,15 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
                   <div className='flex gap-3'>
                     {form.images.map((img,index) => 
                       <div key={index}>
-                        {typeof img === "string" ? (
+                        {typeof img.url === "string" ? (
                           <div className='relative'>
-                            <img className='w-[120px] h-[100px] mt-2' src={img} alt='preview-img' />
-                            <Button className='rounded-full absolute -top-3 -right-3 p-1' onClick={() => removeImage(index)} variant="destructive"> <X /> </Button>
+                            <img className='w-[120px] h-[100px] mt-2' src={img.url} alt='preview-img' />
+                            <Button type='button' className='rounded-full absolute -top-3 -right-3 p-1' onClick={() => removeImage(index)} variant="destructive"> <X /> </Button>
                           </div>
                         ):(
                           <div className='relative'>
                             <img className='w-[120px] h-[100px] mt-2' src={URL.createObjectURL(img)} alt='new-upload' />
-                            <Button className='rounded-full absolute -top-3 -right-3 p-1' onClick={() => removeImage(index)} variant="destructive"> <X /> </Button>
+                            <Button type='button' className='rounded-full absolute -top-3 -right-3 p-1' onClick={() => removeImage(index)} variant="destructive"> <X /> </Button>
                           </div>
                         )}
                       </div>
@@ -247,13 +266,13 @@ const ProductTable = ({Product, onDelete, setItems}:{Product:product,setItems:an
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <Button type="submit"> Edit Product</Button>
+              <Button disabled={isLoading} type="submit"> {isLoading ? `Editing Product...` : "Edit Product"}</Button>
             </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
         <Button
-         onClick={() => onDelete(form.id)}
+         onClick={() => onDelete(form._id)}
          variant="outline" 
          className='hover:bg-red-500 hover:text-white'
          >

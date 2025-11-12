@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import Footer from "@/components/Landing-Page/Footer";
-import Navbar from "@/components/Landing-Page/Navbar";
-import LayoutWrapper from "@/components/LayoutWrapper";
-import { Toaster } from "sonner";
-import { CartProvider } from "@/components/contexts/CartContext";
+import Provider from "@/components/contexts/Provider";
 
 export const metadata: Metadata = {
   title: "Geely Home Interiors and Accessories",
@@ -26,12 +22,9 @@ export default function RootLayout({
         className={`antialiased`}
       >
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <CartProvider>
-       <LayoutWrapper>
+        <Provider>
           {children}
-        <Toaster position='bottom-right' richColors closeButton />
-       </LayoutWrapper>
-      </CartProvider>
+        </Provider>
       </ThemeProvider>
       </body>
     </html>
