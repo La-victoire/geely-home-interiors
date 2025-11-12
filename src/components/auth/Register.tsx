@@ -93,8 +93,8 @@ const Register = () => {
           <div className="flex w-full items-center justify-center space-x-2">
             <Checkbox id="terms" required />
             <Label htmlFor="terms" className="md:text-sm text-xs font-normal">
-              <p> I agree to the <Link href="#" className="text-primary font-semibold hover:underline">
-              Terms of service</Link> and <Link href="#" className="text-primary font-semibold hover:underline">
+              <p> I agree to the <Link href="/terms-of-service" className="text-primary font-semibold hover:underline">
+              Terms of service</Link> and <Link href="privacy-policy" className="text-primary font-semibold hover:underline">
               Privacy policy</Link> </p>
                 
             </Label>
