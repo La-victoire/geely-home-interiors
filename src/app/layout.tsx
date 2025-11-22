@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     url: SITE_META.domain,
     siteName: "Geely Home Interiors",
     images: [{
-      url: "/couch.jpg",
+      url: "/images/couch.jpg",
       width: 1200,
       height: 630,
       alt: "Luxury Interiors by Geely"
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description:
       "Luxury home accessories and elegant decor collections to elevate your space.",
     creator: "@geelyinteriors",
-    images: ["/couche.jpg"]
+    images: ["/images/couch.jpg"]
   },
   alternates: {
     canonical: "https://www.geelyhomeinteriors.com",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
       "max-snippet": -1
     }
   },
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.json",
   category: "Interior Design",
   other: {
     "application-name": "Geely Home Interiors",

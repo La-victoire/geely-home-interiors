@@ -20,7 +20,6 @@ const CTA = () => {
       })
         tl.from("#cta-Card", {
           opacity: 0,
-          scale: 0.4,
           duration: 1.2,
           ease: "expo.Out",
         })
