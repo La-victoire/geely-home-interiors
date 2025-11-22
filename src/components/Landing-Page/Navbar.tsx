@@ -10,9 +10,9 @@ import { Card } from '../ui/card';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Badge } from '../ui/badge';
-import { cart } from '@/lib/cart';
-import { wishList } from '@/lib/wishList';
 import { useCart } from '../contexts/CartContext';
+import { useUsers } from '../contexts/UserContext';
+import { useSession } from 'next-auth/react';
 
 
 const Navbar = () => {
@@ -20,14 +20,17 @@ const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
   const { theme, setTheme } = useTheme();
   const {cartCount, wishListCount} = useCart();
-
+  const {users} = useUsers();
+  const { data: session } = useSession();
   const handleOpenSidebar = () => {
     setIsActive(true);
   }
   const handleCloseSidebar = () => {
     setIsActive(false)
   }
-  useEffect(() => setMounted(true), []);
+  useEffect(() => 
+    setMounted(true),
+   []);
 
   useGSAP(()=> {
     isActive ? (
@@ -76,7 +79,7 @@ const Navbar = () => {
             <Heart />
           </Button>
         </Link>
-        <Link href={`/profile`}>
+        <Link href={users?.role === "Client" ? `/profile/${users?._id}` : users?.role === "Admin" ? "/dashboard" : session ? `/profile/${session?.userId}`: "/auth" }>
           <Button className='text-foreground rounded-4xl bg-background hover:text-accent'>
             <User2 />
           </Button>
@@ -106,7 +109,7 @@ const Navbar = () => {
           )}
         </Button>
 
-        <Link href={`/profile`}>
+        <Link href={users?.role === "Client" ? `/profile/${users?._id}` : users?.role === "Admin" ? "/dashboard" : "/auth" }>
           <Button className='text-foreground rounded-4xl bg-background hover:text-accent'>
             <User2 />
           </Button>

@@ -13,7 +13,7 @@ const ProductReview = ({item}) => {
     <>
     <section className='text-center'>
       <p className='text-4xl font-bold'>
-        Customer Reviews ({item?.reviews?.length() || "0"})
+        Customer Reviews ({item?.reviews?.length || "0"})
       </p>
       <div className='my-5 text-xl'>
         {item?.reviews ? (

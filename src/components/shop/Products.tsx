@@ -5,11 +5,14 @@ import { useMediaQuery } from 'react-responsive';
 import { ArrowUpRight, Filter } from 'lucide-react';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/pagination"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from '../ui/drawer';
-import { products } from '../constants';
+// import { products } from '../constants';
 import CollectionCard from "./Mini-Components/CollectionCard"
 import SearchForm from './Mini-Components/SearchForm';
 import searchItems from '@/lib/searchItems';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { getData } from '@/lib/actions';
+import useSWR from "swr"
+import { useProducts } from '../contexts/ProductsContext';
 
 interface product {
   id: string;
@@ -29,6 +32,7 @@ interface product {
 type products = product[] 
 
 const Products = () => {
+  const {products, productsLoading, productsError} = useProducts() as {products:products, productsLoading:boolean, productsError:any};
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory] = useState("");
   const [productsPerPage] = useState(15);
@@ -47,9 +51,23 @@ const Products = () => {
     if (currentPage !== page) setCurrentPage(page);
   }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  if (productsLoading) {
+    return (
+      <div className='text-center text-3xl animate-pulse'>
+        Loading...
+      </div>
+    )
+  } else if (productsError) {
+    return (
+      <div className='text-center mt-50 text-3xl text-red-500'>
+        Error Loading Products
+      </div>
+    )
+  }
+
   const categoryFilter = (arr:products, categoryKey = "category") => {
     const seen = new Set();
-    return arr.filter((obj:any) => {
+    return arr?.filter((obj:any) => {
       const categoryVal = obj[categoryKey];
       if (seen.has(categoryVal)) return false; 
       seen.add(categoryVal);
@@ -59,12 +77,12 @@ const Products = () => {
 
   // Filter first (category -> search), then paginate
   const filteredProducts = useMemo(() => {
-    return products
-      .filter(p => !category || p.category === category)
-      .filter(p => !query || p.name.toLowerCase().includes(query.toLowerCase()));
+    return (products || [])
+      .filter((p) => !category || p.category === category)
+      .filter((p) => !query || p.name.toLowerCase().includes(query.toLowerCase()));
   }, [products, category, query]);
 
-  const totalPage = Math.max(1, Math.ceil(filteredProducts.length / productsPerPage));
+  const totalPage = Math.max(1, Math.ceil(filteredProducts?.length / productsPerPage));
 
   // clamp page if filters shrink results
   useEffect(() => {
@@ -73,11 +91,11 @@ const Products = () => {
       params.set("page", String(totalPage));
       router.push(`?${params.toString()}`);
     }
-  }, [totalPage]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [totalPage, page, router, searchParams]);
 
   const paginatedProducts = useMemo(() => {
     const start = (currentPage - 1) * productsPerPage;
-    return filteredProducts.slice(start, start + productsPerPage);
+    return filteredProducts?.slice(start, start + productsPerPage);
   }, [filteredProducts, currentPage, productsPerPage]);
 
   const updateParams = (newParams: Record<string, string | number | null>) => {
@@ -131,7 +149,7 @@ const Products = () => {
         <Drawer>
           <DrawerTrigger asChild>
             <Button>
-              {!isMobile ? "Filter" : (<Filter />)}
+              {!isMobile ? "Filter" : <Filter />}
             </Button>
           </DrawerTrigger>
           <DrawerContent>

@@ -8,33 +8,41 @@ import { toast } from 'sonner'
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
 import { useCart } from '../contexts/CartContext'
 import { wishList } from '@/lib/wishList'
+import { product } from './Mini-Components/CollectionCard'
+import { createProfile } from '@/lib/actions'
+import { cartProduct } from '@/lib/types'
 
-const ProductHero = ({item,index}) => {
+const ProductHero = ({item}:{item:product}) => {
   const [quantity, setQuantity] = useState(1)
-  const [isVisble, setIsVisible] = useState(item.images[0])
-  const {setCartCount, setWishListCount} = useCart()
+  const [isVisble, setIsVisible] = useState(item.images[0]?.url)
+  const {cartProducts, setCartCount, setWishListCount} = useCart() as {cartProducts:cartProduct[], setCartCount:React.Dispatch<React.SetStateAction<number>>, setWishListCount:React.Dispatch<React.SetStateAction<number>>};
   const isMobile = useMediaQuery({maxWidth: 767 });
 
   const handleCart = () => {
-     const data = cart.getCart().find((p) => p.id === item.id)
-        if (!data) {
-          cart.addToCart(item.id, quantity);
-          setCartCount((prev:number) => prev + 1)
-        } {
-          cart.addToCart(item.id, quantity);
-        }
+    if (cartProducts.find((p) => p.product._id === item._id)) {
+      createProfile('/carts/add', {product:item._id, quantity: quantity, price: item.price})
+      toast.success(
+        "Product quantity updated in cart"
+      )
+      return;
+    }
+    setCartCount((prev:number) => prev + 1)
+    createProfile('/carts/add', {product:item._id, quantity: quantity, price: item.price})
+    toast.success(
+      "Product Added to cart"
+    )
     setQuantity(1)
   };
 
   const addToWishList = () => {
-      const data = wishList.getWishList().find((p) => p.id === item.id)
+      const data = wishList.getWishList().find((p) => p.id === item._id)
       if (data) {
         toast.message(
           "Product already in watchlist"
         )
       } else {
         setWishListCount((prev) => prev + 1)
-        wishList.addToWishList(item.id) 
+        wishList.addToWishList(item._id) 
       }
     }
 
@@ -42,7 +50,7 @@ const ProductHero = ({item,index}) => {
     <div>
       {
         isMobile ? (
-          <div key={index} className='flex flex-col-reverse gap-5'>
+          <div className='flex flex-col-reverse gap-5'>
               <div className=''>
                 <Button variant="outline" onClick={() => history.back()}>
                   <ArrowLeft />
@@ -53,16 +61,16 @@ const ProductHero = ({item,index}) => {
                   <div>
                     <Carousel className=''>
                     <CarouselContent className=''>
-                      {item.images.map((image:string,index:number)=> (
+                      {item?.images?.map((image,index:number)=> (
                       <CarouselItem key={index} className='basis-1/4'>
-                        <img onClick={()=> setIsVisible(image)} src={image} alt="mini-image" className='w-[110px] bg-black/20 h-[100px] rounded-2xl' />
+                        <img onClick={()=> setIsVisible(image?.url)} src={image.url} alt="mini-image" className='w-[110px] bg-black/20 h-[100px] rounded-2xl' />
                       </CarouselItem>
                       ))}
                     </CarouselContent>
                   </Carousel>
-                    <div className='flex gap-5 items-end'>
-                      <p className='text-[#ed9e59] text-3xl'>${item.price}</p>
-                      <p>{item.rating} ({item.reviewsCount} reviews)</p>
+                    <div className='flex justify-between my-2 items-end'>
+                      <p className='text-[#ed9e59] text-3xl'>₦{item.price}</p>
+                      <p><span className={item.status === "In Stock" ? "text-green-400" : "text-red-400"}>{item.status}</span> ({item.stock | 0})</p>
                     </div>
                     <p className='mb-5'>{item.description}</p>
                     <div className='flex gap-5'>
@@ -91,7 +99,7 @@ const ProductHero = ({item,index}) => {
               </div>
           </div>
         ) : (
-          <div key={index} className='flex gap-5'>
+          <div className='flex gap-5'>
               <div className='w-1/2'>
                 <Button variant="outline" onClick={() => history.back()}>
                   <ArrowLeft />
@@ -102,16 +110,16 @@ const ProductHero = ({item,index}) => {
                   <div>
                   <Carousel className='-mr-45 mb-3'>
                     <CarouselContent className='flex flex-row-reverse'>
-                      {item.images.map((image:string,index:number)=> (
+                      {item?.images?.map((image,index:number)=> (
                       <CarouselItem key={index} className='basis-1/5 -ml-7'>
-                        <img src={image} onClick={()=> setIsVisible(image)} alt="mini-image" className='w-[110px] bg-black/20 h-[100px] rounded-2xl' />
+                        <img src={image.url} onClick={()=> setIsVisible(image.url)} alt="mini-image" className='w-[110px] bg-black/20 h-[100px] rounded-2xl' />
                       </CarouselItem>
                       ))}
                     </CarouselContent>
                   </Carousel>
                     <div className='flex gap-5 items-end'>
-                      <p className='text-[#ed9e59] text-3xl'>${item.price}</p>
-                      <p>{item.rating} ({item.reviewsCount} reviews)</p>
+                      <p className='text-[#ed9e59] text-3xl'>₦{item.price}</p>
+                      <p><span className={item.status === "In Stock" ? "text-green-400" : "text-red-400"}>{item.status}</span> ({item.stock | 0})</p>
                     </div>
                     <p className='mb-5 w-[30dvw]'>{item.description}</p>
                     <div className='flex gap-5'>

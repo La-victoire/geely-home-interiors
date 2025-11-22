@@ -4,16 +4,39 @@ import React, { useEffect, useState } from 'react'
 import UserTable from './mini-comp/UserTable'
 import { users } from '@/components/constants'
 import { User } from '@/lib/types'
+import { deleteProfile, getProfile } from '@/lib/actions'
+import { toast } from 'sonner'
 
 const Users = () => {
   const [clients, setClient] = useState<User[]>([]);
   useEffect(()=> {
-    setClient(users)
+    const fetcher = async () => {
+      try {
+        const users = await getProfile<User[]>("/users");
+        setClient(users)
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to fetch user data")
+      }
+    }
+    fetcher();
   },[])
 
-  const handleDelete = (id:string) => {
+  const handleDelete = async (id:string) => {
+    try {
+      const response = await deleteProfile(`/users/${id}`);
+      console.log(response)
+      if (response) {
+        toast.success("User Successfully deleted")
+      } else {
+        toast.error(response)
+      }
+    } catch (error) {
+      console.error("Error deleting User:", error);
+      toast.error(`An error occurred: ${error}`);
+    }
   setClient((prev)=>
-    prev.filter((item) => item.id !== id)
+    prev.filter((item) => item._id !== id)
   )
   };
   return (
@@ -36,12 +59,12 @@ const Users = () => {
                 <th className='md:px-4 px-2 py-2 border-0 border-b'>Phone</th>
                 <th className='md:px-4 px-2 py-2 border-0 border-b'>Join Date</th>
                 <th className='md:px-4 px-2 py-2 border-0 border-b'>Products Ordered</th>
-                <th className='md:px-4 px-2 py-2 border-0 border-b'>Status</th>
+                <th className='md:px-4 px-2 py-2 border-0 border-b'>Role</th>
                 <th className='md:px-4 px-2 py-2 border-0 border-b'>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {clients.map((data:User,index)=> (
+              {clients?.map((data:User,index)=> (
                 <UserTable user={data} onDelete={handleDelete} key={index}/>
               ))}
             </tbody>

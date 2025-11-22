@@ -5,6 +5,7 @@ import React, { useLayoutEffect, useRef } from 'react'
 import { Card } from '../ui/card'
 import { useMediaQuery } from 'react-responsive'
 import { Button } from '../ui/button'
+import Link from 'next/link'
   
 const AnimatedBody = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,8 +97,10 @@ const AnimatedBody = () => {
             At Geely Home Interiors, we believe that exceptional design transforms spaces and elevate experiences. We are dedicated to sourcing and curating the finest interior decoration pieces from around the globe, bringing unparalleled luxury and style to your business. <span className='mt-5'/> Our mission is to empower businesses to create environment that inspire, impress, and reflect their unique brand identity.
           </p>
           <div>
-          <Button variant="outline">
-            LEARN MORE
+          <Button asChild className=' hover:bg-primary hover:text-white' variant="outline">
+            <Link href={"/about-us"}>
+              LEARN MORE
+            </Link>
           </Button>
           </div>
           </div>

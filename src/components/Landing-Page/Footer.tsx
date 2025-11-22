@@ -40,7 +40,7 @@ const Footer = () => {
                   :
                   content.map((item,index) => (
                     <Link key={index} 
-                     href={`/${item}` }>
+                     href={`/${item.toLocaleLowerCase()}` }>
                       {item}
                     </Link>
                   ))}
@@ -67,7 +67,7 @@ const Footer = () => {
                   :
                   content.map((item,index) => (
                     <Link key={index} 
-                     href={`/${item}` }>
+                     href={`/${item.toLocaleLowerCase()}` }>
                       {item}
                     </Link>
                   ))}

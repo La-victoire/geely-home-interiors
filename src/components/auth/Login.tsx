@@ -6,14 +6,69 @@ import Link from 'next/link'
 import { Label } from '../ui/label'
 import { Button } from '../ui/button'
 import { Eye, EyeClosed } from 'lucide-react'
+import { createProfile } from '@/lib/actions'
+import { toast } from 'sonner'
+import { useUsers } from '../contexts/UserContext'
+import { User } from '@/lib/types'
+import { signIn } from 'next-auth/react'
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
-  const [isLoading, setIsLoading] = useState(false)
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
+  const [user, setUser] = useState({
+    email: "",
+    password: ""
+  })
+  const {users,setUsers} = useUsers() as UserContextType
+  interface UserContextType {
+    users: User;
+    setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  }
+  
+  const auth = async () => {
+    const data = await signIn("google", { callbackUrl: "/" })
+  }
+    
   const changeEye = () => {
     setIsPasswordVisible((prev)=> !prev)
   }
+
+  const handleFormSubmit = (e:React.FormEvent) => {
+    e.preventDefault();
+    // Simulate an API call
+    setTimeout(async () => {
+      setIsLoading(true);
+      try {
+        const data = await createProfile("users/login", user)
+        if (data?.error) {
+          toast.error(data?.error);
+          setIsLoading(false);
+          return;
+        } 
+
+        sessionStorage.setItem("userToken", data?.token!);
+        sessionStorage.setItem("userId", data?.userData?._id!);
+        toast.success(`Welcome, ${data?.userData?.firstname}!`);
+        setIsLoading(false);
+        if (data?.userData?.role === "Admin") {
+          window.location.href = "/dashboard";
+          return;
+        }
+        window.location.href = `/profile/${data?.userData?._id}`;
+      } catch (error) {
+        toast.error("An error occurred. Please try again later.");
+        console.error("Login error:", error);
+        setIsLoading(false);
+      }
+    }, 5000);
+  }
+
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { name , value } = e.target;
+    setUser({...user, [name] : value });
+  }
+  
   return (
     <Card>
       <CardHeader>
@@ -24,7 +79,7 @@ const Login = () => {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label className='headFont' htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="name@example.com"   required />
+            <Input id="email" name='email' type="email" placeholder="name@example.com" onChange={handleChange}  required />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -34,19 +89,22 @@ const Login = () => {
               </Link>
             </div>
             <div className='flex items-center gap-3'>
-              <Input id="password" type={!isPasswordVisible ? "text" : "password"} placeholder='******' required />
+              <Input id="password" name='password' type={!isPasswordVisible ? "text" : "password"} onChange={handleChange} placeholder='******' required />
               {isPasswordVisible ? (<EyeClosed onClick={()=> changeEye()}/>) : (<Eye onClick={()=> changeEye()}/>)} 
             </div>
           </div>
         </CardContent>
         <CardFooter className="flex relative not-lg:flex-col pt-5 gap-2">
-          <Button type="submit" className="lg:w-3/5 w-full" disabled={isLoading}>
+          <Button type="submit" className="lg:w-3/5 w-full" onClick={handleFormSubmit} disabled={isLoading}>
             {isLoading ? "Logging in..." : "Login"} 
           </Button>
           <div className='border-0 border-b flex md:hidden w-full my-5'/>
           <p className='text-xs not-md:absolute top-19 not-md:bg-background px-2 text-foreground/50'>or</p>
-           <Button type="button" className="lg:w-1/3 w-full bg-accent-foreground border text-background hover:text-white" >
-              Sign in with Google 
+           <Button
+            type="button"
+            onClick={auth}
+            className="lg:w-1/3 w-full bg-accent-foreground border text-background hover:text-white" >
+             <FcGoogle /> Sign in with Google 
           </Button>
         </CardFooter>
       </form>

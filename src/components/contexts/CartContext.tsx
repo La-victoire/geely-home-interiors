@@ -1,24 +1,28 @@
 "use client"
-import { cart } from '@/lib/cart';
-import React, { useMemo } from 'react';
+import { deleteProduct, getData, postData } from "@/lib/actions";
+import React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { product } from '../shop/Mini-Components/CollectionCard';
 import { wishList } from '@/lib/wishList';
+import { cartProduct, User } from '@/lib/types';
 
 const CartContext = createContext({});
 
 export function CartProvider({ children}: {children:React.ReactNode}) {
-  const [cartProducts, setCartProducts] = useState<product[]>([]);
+
+  const [cartProducts, setCartProducts] = useState<cartProduct[]>([]);
   const [cartCount, setCartCount] = useState<number>(0)
   const [wishListCount, setWishListCount] = useState<number>(0)
   useEffect(() => {
-    const cart = sessionStorage.getItem('cart');
-    const wishlist = wishList.getWishList();
-    setCartProducts(
-      JSON.parse(cart)
-    )
-    setCartCount(JSON.parse(cart)?.length)
+    const fetcher = async () => {
+    const data = await getData("/carts")
+    if (!data.error) {
+    setCartProducts(data?.cart || [])
+    setCartCount(data?.cart.length || 0)    
+    }};
+    
+    fetcher();
 
+    const wishlist = wishList.getWishList();
     setWishListCount(wishlist?.length)
   }, [])
 
