@@ -24,17 +24,17 @@ const ShowCase = () => {
    scrollTimeline
    .from(splitText.words, {
     opacity: 0,
-    duration: 1,
+    duration: 0.5,
     yPercent: 100,
     ease: "expo.out",
-    stagger: 0.02
+    stagger: 0.03
    })
    .from('#grid-cards', {
     opacity: 0,
-    duration: 1,
+    duration: 0.5,
     ease: "power1.inOut",
-    stagger: 0.23
-   }, '-=0.5')
+    stagger: 0.18
+   }, '-=0.7')
   },[])
 
   const increase = (index:number) => {

@@ -20,15 +20,14 @@ const CTA = () => {
       })
         tl.from("#cta-Card", {
           opacity: 0,
-          scale: 0.4,
           duration: 1.2,
           ease: "expo.Out",
         })
         .from(ctaText.chars, {
           opacity: 0,
           scale: 0.8,
-          stagger: 0.05,
-          duration: 0.3,
+          stagger: 0.03,
+          duration: 0.1,
           ease: "power1.inOut",
         })
 

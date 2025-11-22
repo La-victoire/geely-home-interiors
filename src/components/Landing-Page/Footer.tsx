@@ -87,9 +87,9 @@ const Footer = () => {
             JOIN OUR COMMUNITY
           </p>
           <div className='flex -mt-5 gap-5'>
-              <Instagram />
-              <Facebook />
-              <Twitter />
+              <a href="https://www.instagram.com/geelyinteriors/"><Instagram /></a>
+              <a href="https://web.facebook.com/geelydecorwallpapers"><Facebook /></a>
+              <a href="https://x.com/geelyInteriors"><Twitter /></a>
           </div>
         </div>
       </section>
@@ -99,7 +99,7 @@ const Footer = () => {
       </p>
       <div className='flex md:item-row item-col md:gap-10'>
         <p>Copyright &copy;2025</p>
-        <p>Developed by <span className='headFont'> La_Victoire&trade;</span></p>
+        <p>Developed by <a href="https://la-victoireportfolio.vercel.app/"><span className='headFont'> La_Victoire&trade;</span></a></p>
       </div>
       </section>
     </footer>
