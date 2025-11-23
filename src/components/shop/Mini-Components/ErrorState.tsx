@@ -7,8 +7,7 @@ interface ErrorStateProps {
 }
 
 export default function ErrorState({
-  message,
-  onRetry,
+  message
 }: ErrorStateProps) {
   return (
     <div className="w-full flex flex-col items-center justify-center py-20 text-center">
@@ -23,15 +22,14 @@ export default function ErrorState({
           {message}
         </p>
 
-        {onRetry && (
           <Button
-            onClick={onRetry}
+            onClick={()=> location.reload(true)}
             className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white"
           >
             <RotateCcw className="h-4 w-4" />
             Retry
           </Button>
-        )}
+        
       </div>
     </div>
   );

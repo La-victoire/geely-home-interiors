@@ -15,7 +15,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
           <CartProvider>
           <LayoutWrapper>
               {children}
-            <Toaster position='bottom-right' richColors closeButton />
+            <Toaster position='top-right' richColors closeButton />
           </LayoutWrapper>
           </CartProvider>
           </ProductsProvider>

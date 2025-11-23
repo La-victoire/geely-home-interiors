@@ -9,13 +9,20 @@ import { toast } from 'sonner'
 
 const Users = () => {
   const [clients, setClient] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
   useEffect(()=> {
     const fetcher = async () => {
       try {
         const users = await getProfile<User[]>("/users");
+        setLoading(true);
+        if (users.length > 0) {
         setClient(users)
+        setLoading(false);    
+    }
+        setLoading(false)
       } catch (error) {
         console.error(error);
+        setLoading(false)
         toast.error("Failed to fetch user data")
       }
     }
@@ -27,9 +34,9 @@ const Users = () => {
       const response = await deleteProfile(`/users/${id}`);
       console.log(response)
       if (response) {
-        toast.success("User Successfully deleted")
-      } else {
         toast.error(response)
+      } else {
+        toast.success("User Successfully deleted")
       }
     } catch (error) {
       console.error("Error deleting User:", error);
@@ -46,11 +53,15 @@ const Users = () => {
         <p>View and manage your client database</p>
       </CardHeader>
       <CardContent className='overflow-scroll'>
-        {clients.length < 1 ? (
+        {clients.length < 1 && !loading ? (
           <p className='text-center headFont text-3xl'>
             No User Data
           </p>
-        ):(
+        ): loading ? (
+            <p className='text-center animate-pulse headFont text-3xl'>
+            Loading...
+          </p>       
+        ) : (
           <table className='not-md:w-[150dvw] w-full px-5 not-sm:text-sm'>
             <thead>
               <tr className=''>

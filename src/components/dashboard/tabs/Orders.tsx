@@ -11,15 +11,28 @@ import { toast } from 'sonner'
 
 
 const Orders = () => {
-   const fetcher = (url:string) => getData(url) as unknown as  Order[]
    const [order, setOrder] = useState<Order[]>([]);
    const [search, setSearch] = useState("")
-   const { data, isLoading, error } = useSWR("/orders", fetcher)
-
+   const [loading, setLoading] = useState(false);
+    
     useEffect(()=> {
-      if (data)
-      setOrder(data)
-    },[])
+    const fetcher = async () => {
+      try {
+        const data = await getData<Order[]>("/orders");
+        setLoading(true);
+        if (data.length > 0) {
+        setOrder(data)
+        setLoading(false);    
+    }
+        setLoading(false)
+      } catch (error) {
+        console.error(error);
+        setLoading(false)
+        toast.error("Failed to fetch Order data")
+      }
+    }
+    fetcher();
+  },[])
     
     const handleDelete = async (id:string) => {
     setOrder((prev)=>
@@ -45,16 +58,10 @@ const Orders = () => {
         <CardTitle className='headFont mb-3'>Order Collection</CardTitle>
         <p>Monitor Your Sales</p>
       </CardHeader>
-      {isLoading ? 
+      {loading ? 
       <div className="flex justify-center items-center">
         <p className='text-center text-3xl animate-pulse'>
           Loading...
-        </p>
-      </div>
-      : error ?
-      <div className="flex justify-center items-center">
-        <p className='text-center text-3xl text-red-400 animate-pulse'>
-          Error Loading Order Records
         </p>
       </div>
       :
@@ -89,7 +96,7 @@ const Orders = () => {
         </table>
         {queriedResults.length < 1 && (
           <div className='text-center mt-5 headFont text-3xl'>
-            Order Not Found
+            No Order Found 
           </div>
         )}
       </CardContent>

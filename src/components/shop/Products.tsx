@@ -202,8 +202,7 @@ const Products = () => {
   } else if (productsError) {
     return (
   <ErrorState
-    message="Failed to fetch products. Check your connection or try again."
-    onRetry={loadProducts}
+    message="No Products Available."
   />
     )
   }

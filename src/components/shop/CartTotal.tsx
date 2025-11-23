@@ -26,6 +26,7 @@ const CartTotal = () => {
 
   useEffect(()=> {
     if (!cartProducts.length) return;
+    if (users === null) return;
 
     const items = cartProducts.map((product:any) => ({
       productId: product.product._id,
@@ -37,7 +38,8 @@ const CartTotal = () => {
     const amount = cartProducts?.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0);
 
     setOrderData({ ...orderData, client:users?.email, amount, items, name: users?.firstname, metadata: users?._id})
-  },[cartProducts])
+  },[cartProducts, users])
+
 
   useEffect(()=> {
     if (!window.PaystackPop) {
@@ -66,6 +68,11 @@ const CartTotal = () => {
     toast.error('User Unavailable');
     return;    
     }
+    
+    if (users.phone === "" || users.addresses.length < 1) {
+        toast.message("Please provide your complete contact information before paying.") 
+    return;
+}
 
     if (!window.PaystackPop ) {
       toast.error("Paystack is not available. Please try again later.");

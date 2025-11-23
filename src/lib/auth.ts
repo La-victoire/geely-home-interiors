@@ -89,7 +89,7 @@ export const authOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: "/",
-        signOut: "/",
+        signOut: "/auth",
         error: "/error", // Error code passed in query string as ?error=
     },
 };

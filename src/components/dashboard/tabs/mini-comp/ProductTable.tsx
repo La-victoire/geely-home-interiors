@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import React, { useState } from 'react'
-import { products } from '@/components/constants'
 import { Badge } from '@/components/ui/badge'
 import { editProduct } from '@/lib/actions'
 import { toast } from 'sonner'
@@ -174,7 +173,7 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Categories</SelectLabel>
-                        {categoryFilter(products).map((data:product,index:number)=> (
+                        {categoryFilter([Product]).map((data:product,index:number)=> (
                           <SelectItem key={index} value={data.category}>
                             {data.category}
                           </SelectItem>

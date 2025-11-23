@@ -9,10 +9,11 @@ import React, { useState } from 'react'
 import { toast } from 'sonner'
 
 const ContactCard = () => {
-   const [phone, setPhone] = useState<number>();
+   const [phone, setPhone] = useState<string>();
    const {users,setUsers} = useUsers() as {users:User, setUsers:React.Dispatch<React.SetStateAction<User>>};
     const phoneSubmit = async () => {
         try {
+            console.log(phone)
             const data:User = await editProfile(`users/${users._id}`, {phone:phone})
             if (!data.error)
                 setUsers({...users, phone:phone!})
@@ -41,7 +42,7 @@ const ContactCard = () => {
                     <p>{users?.phone}</p>
                 ):(
                     <div className='flex gap-3'>
-                        <Input className='flex-1/2' placeholder='+234-###########' onChange={(e)=> setPhone(Number(e.target.value))}/>
+                        <Input className='flex-1/2' placeholder='+234-###########' type={'text'} onChange={(e)=> setPhone(e.target.value)}/>
                         <Button className='flex-1/3' onClick={phoneSubmit}>Save</Button>
                     </div>
                 )}

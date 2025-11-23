@@ -6,13 +6,14 @@ import { Heart, X } from 'lucide-react'
 import { wishList } from '@/lib/wishList'
 import Link from 'next/link'
 import { useCart } from '@/components/contexts/CartContext'
+import { useProducts } from '@/components/contexts/ProductsContext'
 import { toast } from 'sonner'
 import { cartProduct } from '@/lib/types'
 
 const CartCard = ({item, index, onChildData, onChildQuantity, onChildRemoval,onChildId}:{item:cartProduct,index:number,onChildData:any,onChildQuantity:any,onChildRemoval:any,onChildId:any}) => {
     const [quantity, setQuantity] = useState<number>(item?.quantity)
     const {setWishListCount, cartProducts} = useCart() as {setWishListCount:React.Dispatch<React.SetStateAction<number>>, cartProducts:cartProduct[]};
-    console.log(item)
+    const {products} = useProducts() as any
 
     const quantityReduce = () => {
   setQuantity((prev) => {
@@ -45,15 +46,24 @@ const CartCard = ({item, index, onChildData, onChildQuantity, onChildRemoval,onC
 
     useMemo(() => {
       onChildQuantity(quantity)
-      onChildId(item.product._id)
+      onChildId(item?.product?._id)
 
+    console.log(item)
      }, [quantity])
+    const image = useMemo(() => {
+        if (!item || !item.product) {
+    return [];}
+     const match = products.find((prod)=> prod._id === item.product._id)
+            console.log(match)
+            return match ? match.images : []; 
+    },[products, item])
+
   return (
     <Card key={index} className='flex w-full border-0 border-b rounded-none bg-transparent p-5 flex-row '>
-    <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={item.product.images[0]?.url} alt={item.product._id} /> 
+    <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={image[0]?.url} alt={item.product?.name} /> 
       <div className='flex justify-between w-full'>
-        <Link href={`/shop/products/${item.product._id}`}>
-          <p className='font-bold'>{item.product.name}</p>
+        <Link href={`/shop/products/${item.product?._id}`}>
+          <p className='font-bold'>{item.product?.name}</p>
           <p>Quantity: {quantity}</p>
           <p>Price: ₦{item?.price}</p>
         </Link>

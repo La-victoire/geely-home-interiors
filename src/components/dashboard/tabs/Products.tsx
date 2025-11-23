@@ -49,6 +49,7 @@ const Products = () => {
       setFeat((prev) => [...prev, ""])
     }
 
+console.log(products)
     const decreaseFeatures = (index:number) => {
       const updated = product.features.filter((_,idx) => idx !== index)
       setProduct({...product, features : updated})
@@ -173,6 +174,8 @@ const Products = () => {
       setFeat([])
       setOpen(false)
     }
+    const cat = [
+{category:"living room"}, {category:"bedroom"}, {category:"dinning-room"}]
 
     const handleSelectChange = (value : string) => {
       setProduct( prev => ({...prev, category:value}) )
@@ -261,7 +264,7 @@ const Products = () => {
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Categories</SelectLabel>
-                            {categoryFilter(products).map((data:product,index:number)=> (
+                            {cat.map((data:product,index:number)=> (
                               <SelectItem key={index} value={data.category}>
                                 {data.category}
                               </SelectItem>
@@ -403,7 +406,7 @@ const Products = () => {
             </tbody>
           </table>
         )}
-        {queriedResults.length < 1 && (
+        {queriedResults.length < 1 && items.length > 0 && (
           <div className='text-center mt-5 headFont text-3xl'>
             Product Not Found
           </div>
