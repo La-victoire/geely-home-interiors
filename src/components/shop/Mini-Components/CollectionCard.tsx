@@ -60,6 +60,7 @@ const CollectionCard:React.FC<products>  = ({product}) => {
     <Card className='lg:w-[30dvw] border-r-8 hover:border-r-2 duration-200 relative gap-0 p-0 h-[70dvh]'>
       <img 
       src={product?.images[0]?.url}
+      loading='lazy'
       alt='product-image'
       className='w-full relative rounded-t-2xl h-full not-sm:rounded-2xl md:h-1/2 object-cover'
       />

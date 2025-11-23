@@ -1,12 +1,14 @@
 "use client"
+
 import React, { useMemo, useState, useEffect } from 'react'
 import { Button } from '../ui/button'
 import { useMediaQuery } from 'react-responsive';
 import { ArrowUpRight, Filter } from 'lucide-react';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/pagination"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from '../ui/drawer';
-// import { products } from '../constants';
+import { Skeleton } from '../ui/skeleton'
 import CollectionCard from "./Mini-Components/CollectionCard"
+import ErrorState from './Mini-Components/ErrorState'
 import SearchForm from './Mini-Components/SearchForm';
 import searchItems from '@/lib/searchItems';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -49,40 +51,43 @@ const Products = () => {
   // keep local currentPage in sync with URL page
   useEffect(() => {
     if (currentPage !== page) setCurrentPage(page);
-  }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page]); // intentionally only sync from URL -> local
 
-  if (productsLoading) {
-    return (
-      <div className='text-center text-3xl animate-pulse'>
-        Loading...
-      </div>
-    )
-  } else if (productsError) {
-    return (
-      <div className='text-center mt-50 text-3xl text-red-500'>
-        Error Loading Products
-      </div>
-    )
-  }
-
-  const categoryFilter = (arr:products, categoryKey = "category") => {
-    const seen = new Set();
-    return arr?.filter((obj:any) => {
-      const categoryVal = obj[categoryKey];
-      if (seen.has(categoryVal)) return false; 
+  // Defensive category filter: returns unique categories from array
+  const categoryFilter = (arr: products | undefined, categoryKey = "category") => {
+    if (!Array.isArray(arr) || arr.length === 0) return [];
+    const seen = new Set<string>();
+    return arr.filter((obj: any) => {
+      const categoryVal = obj?.[categoryKey] ?? "";
+      if (seen.has(categoryVal)) return false;
       seen.add(categoryVal);
-      return true
+      return true;
     });
   };
 
-  // Filter first (category -> search), then paginate
+  // -----------------------
+  // Memoized filtering
+  // -----------------------
   const filteredProducts = useMemo(() => {
-    return (products || [])
-      .filter((p) => !category || p.category === category)
-      .filter((p) => !query || p.name.toLowerCase().includes(query.toLowerCase()));
+    // defensive: ensure products is an array
+    if (!Array.isArray(products)) return [];
+
+    const normalizedQuery = (query || "").toLowerCase().trim();
+
+    return products
+      .filter((p) => {
+        // if category is absent or explicitly empty => allow all
+        if (!category || category === "") return true;
+        // p.category might be undefined — guard it
+        return String(p.category) === String(category);
+      })
+      .filter((p) => {
+        if (!normalizedQuery) return true;
+        return String(p.name || "").toLowerCase().includes(normalizedQuery);
+      });
   }, [products, category, query]);
 
-  const totalPage = Math.max(1, Math.ceil(filteredProducts?.length / productsPerPage));
+  const totalPage = Math.max(1, Math.ceil((filteredProducts?.length || 0) / productsPerPage));
 
   // clamp page if filters shrink results
   useEffect(() => {
@@ -93,10 +98,16 @@ const Products = () => {
     }
   }, [totalPage, page, router, searchParams]);
 
+  // -----------------------
+  // Memoized pagination slice
+  // -----------------------
   const paginatedProducts = useMemo(() => {
-    const start = (currentPage - 1) * productsPerPage;
-    return filteredProducts?.slice(start, start + productsPerPage);
-  }, [filteredProducts, currentPage, productsPerPage]);
+    if (!Array.isArray(filteredProducts) || filteredProducts.length === 0) return [];
+    // clamp currentPage to valid range defensively
+    const safeCurrent = Math.min(Math.max(1, currentPage), Math.max(1, totalPage));
+    const start = (safeCurrent - 1) * productsPerPage;
+    return filteredProducts.slice(start, start + productsPerPage);
+  }, [filteredProducts, currentPage, productsPerPage, totalPage]);
 
   const updateParams = (newParams: Record<string, string | number | null>) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -140,6 +151,63 @@ const Products = () => {
     if (currentPage < totalPage) updateParams({ page: currentPage + 1 });
   };
 
+  // -----------------------
+  // Render
+  // -----------------------
+  if (productsLoading) {
+    // show skeleton grid while loading
+    const skeletonItems = Array.from({ length: Math.min(productsPerPage, 9) });
+    return (
+      <section className='md:p-10 px-5 py-10 w-full flex item-col'>
+        <div className='md:text-4xl text-3xl flex gap-10 justify-between headFont w-full mb-6'>
+          <h1>Collections</h1>
+          <div>
+            <Button>
+              {!isMobile ? "Filter" : <Filter />}
+            </Button>
+          </div>
+        </div>
+
+        <div className='w-full mb-6'>
+          <SearchForm 
+            setQuery={setQuery}
+            query={query}
+            updateParams={updateParams}
+          />
+        </div>
+
+        <div className='text-3xl text-center my-10 font-bold'>
+          { (!query) ? (
+            <h2>All {category || "Products"}</h2>
+          ) : (
+            <h2>
+              Showing Results of "<span className="text-blue-500">{query}</span>"
+            </h2>
+          )}
+        </div>
+
+        <section className='w-full'>
+          <div className='grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-5'>
+            {skeletonItems.map((_, i) => (
+              <div key={i} className="w-full rounded-lg p-4">
+                <Skeleton className="h-48 w-full rounded-md mb-3" />
+                <Skeleton className="h-6 w-3/4 rounded mb-2" />
+                <Skeleton className="h-4 w-1/2 rounded" />
+              </div>
+            ))}
+          </div>
+        </section>
+      </section>
+    )
+  } else if (productsError) {
+    return (
+  <ErrorState
+    message="Failed to fetch products. Check your connection or try again."
+    onRetry={loadProducts}
+  />
+    )
+  }
+
   return (
     <section className='md:p-10 px-5 py-10 w-full flex item-col'>
 
@@ -159,14 +227,15 @@ const Products = () => {
                 <DrawerDescription>Select your desired home asset</DrawerDescription>
               </DrawerHeader>
               <div className='flex item-col hover:bg-accent px-2 gap-3 mb-20 w-full'>
-               <DrawerClose asChild>
-                <Button onClick={()=> handleCategorySelect("all")}>
-                  <p>All</p>
-                  <ArrowUpRight />
-                </Button>
+                <DrawerClose asChild>
+                  <Button onClick={()=> handleCategorySelect("all")}>
+                    <p>All</p>
+                    <ArrowUpRight />
+                  </Button>
                 </DrawerClose>
-                {categoryFilter(products).map((data:product,index:number)=> (
-                  <DrawerClose asChild>
+
+                {categoryFilter(products).map((data:product, index:number)=> (
+                  <DrawerClose asChild key={`cat-${data?.category ?? index}`}>
                     <Button onClick={()=> updateParams({ category: `${data.category}`, page: 1 })}>
                       <p>{data.category}</p>
                       <ArrowUpRight />
@@ -179,12 +248,12 @@ const Products = () => {
         </Drawer>
       </div>
 
-      <div>
+      <div className='w-full'>
         <SearchForm 
-         setQuery={setQuery}
-         query={query}
-         updateParams={updateParams}
-         />
+          setQuery={setQuery}
+          query={query}
+          updateParams={updateParams}
+        />
         <div className='text-3xl text-center my-10 font-bold'>
           { (!query) ? (
             <h2>All {category || "Products"}</h2>
@@ -197,10 +266,10 @@ const Products = () => {
       </div>
 
       {/* Collection products section */}
-      <section className=''>
+      <section className='w-full'>
         <div className='grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-5'>
-          {paginatedProducts.map((data:product,index:number) => (
-            <CollectionCard key={index} product={data}/>
+          {(paginatedProducts ?? []).map((data:product, index:number) => (
+            <CollectionCard key={data?.id ?? index} product={data}/>
           ))}
         </div> 
       </section>
@@ -247,3 +316,4 @@ const Products = () => {
 }
 
 export default Products
+

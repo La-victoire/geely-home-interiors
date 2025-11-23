@@ -43,7 +43,7 @@ const Navbar = () => {
       gsap.to("#sidebar", {
       xPercent: -500,
       duration: 1.2,
-      ease: "expo.in",
+      ease: "expo.out",
       })
     )
   },[isActive]);
@@ -53,15 +53,18 @@ const Navbar = () => {
 
   return (
     <nav className='flex w-dvw px-2 bg-black/30 lg:px-5 not-sm:gap-6 md:px-10 item-row fixed z-50 h-[10dvh] justify-between items-center'>
-      <p className='headFont text-md md:text-xl'>
+      <a href='/' className='headFont text-md md:text-xl'>
         <span className='text-accent'>Geely</span> Home Interiors
-      </p>
+      </a>
 
       <div className='md:flex hidden gap-10'>
         {Header_Menu.map(({name,link},index)=> (
-          <Link key={index} href={`${link}`}>{name}</Link>
+          <Link className={`hover:text-background duration-300 hover:border-b`} key={index} href={`${link}`}>{name}</Link>
         ))}
       </div>
+       
+        {/* Large Screen Icons */}
+
       <div className='md:flex hidden gap-3'>
         <Link href={`/shop/cart`}>
           <Button className='text-foreground rounded-4xl bg-background hover:text-accent'>
@@ -97,16 +100,14 @@ const Navbar = () => {
         </Button>
       </div>
 
+        {/* Small Screen Icons */}
+
       <div className='md:hidden gap-3 flex'>
         <Button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           className="rounded-full"
         >
-          {theme === "dark" ? (
-            <Sun />
-          ) : (
-            <Moon />
-          )}
+          {theme === "dark" ? <Sun /> : <Moon />}
         </Button>
 
         <Link href={users?.role === "Client" ? `/profile/${users?._id}` : users?.role === "Admin" ? "/dashboard" : "/auth" }>
@@ -123,7 +124,7 @@ const Navbar = () => {
             )}
           </Button>
           {isActive && (
-            <Card id='sidebar' className='absolute bg-black/70 px-10 py-2 w-dvw -left-0 top-0.5 z-50 h-dvh'>
+            <Card id='sidebar' className='absolute bg-black/70 rounded-r-none px-10 py-2 w-[80dvw] right-3 top-5 z-50 h-[90dvh]'>
               <div className='w-full flex justify-end'>
                 <Button className='rounded-full p-0' onClick={handleCloseSidebar}>
                   <X />
