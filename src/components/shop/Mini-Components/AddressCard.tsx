@@ -22,10 +22,11 @@ const AddressCard = () => {
   // Guarantee at least one address object exists
   // ------------------------------------------
   useEffect(() => {
-    if (!users.addresses || users.addresses.length === 0) {
+    if (!users?.addresses || users?.addresses.length === 0) {
       setUsers({
         ...users,
         addresses: [{
+          id: "",
           street: "",
           state: "",
           city: "",
@@ -39,7 +40,7 @@ const AddressCard = () => {
   const handleAddress = (index: number, key: string, value: string) => {
     setIsEditing(true);
 
-    const updated = [...users.addresses];
+    const updated = [...users?.addresses];
     updated[index] = { ...updated[index], [key]: value };
 
     setUsers({ ...users, addresses: updated });
@@ -60,7 +61,7 @@ const AddressCard = () => {
     }
   };
 
-  const addr = users.addresses?.[0] ?? {};
+  const addr = users?.addresses?.[0] ?? {};
 
   return (
     <Card className="w-full rounded-md px-7">
