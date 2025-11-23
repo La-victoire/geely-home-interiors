@@ -58,7 +58,7 @@ const ShowCase = () => {
       })
     }
   return (
-    <section id='showcase' className='mt-50 md:px-7'>
+    <section id='showcase' className='mt-45 md:px-7'>
       <h2 className='text-3xl text-center px-5 mb-25 -mt-33 headFont md:text-5xl'>
         Explore What We Have To Offer.
       </h2>

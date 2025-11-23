@@ -5,11 +5,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..
 import { Footer_Links } from '../constants';
 import Link from 'next/link';
 import { Input } from '../ui/input';
-import { Facebook, Instagram, Twitter } from 'lucide-react';
+import { FaFacebook, FaInstagram, FaTiktok, FaXTwitter } from 'react-icons/fa6';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '../ui/button';
 
 const Footer = () => {
    const isMobile = useMediaQuery({maxWidth: 767 });
+   const currentYear = new Date().getFullYear();
 
   return (
     <footer className='bg-accent w-screen'> 
@@ -77,19 +79,23 @@ const Footer = () => {
             </div>
           )}
         </div>
-        <div className='flex item-col gap-10'>
+        <div className='flex item-col gap-7'>
           <label htmlFor='email' className=''>GET EXCLUSIVE TIPS & OFFERS</label>
           <Input 
-          className='-mt-5'
+          className=''
           placeholder='Enter email address'
           />
+          <Button className='w-max -mt-3 px-10 bg-foreground text-background hover:bg-foreground/80'>
+            Subscribe
+          </Button>
           <p>
             JOIN OUR COMMUNITY
           </p>
-          <div className='flex -mt-5 gap-5'>
-              <a href="https://www.instagram.com/geelyinteriors/"><Instagram /></a>
-              <a href="https://web.facebook.com/geelydecorwallpapers"><Facebook /></a>
-              <a href="https://x.com/geelyInteriors"><Twitter /></a>
+          <div className='flex -mt-4 gap-5'>
+              <a href="https://www.instagram.com/geelyinteriors/"><FaInstagram size={20}/></a>
+              <a href="https://web.facebook.com/geelydecorwallpapers"><FaFacebook size={20}/></a>
+              <a href="https://x.com/geelyInteriors"><FaXTwitter size={20}/></a>
+              <a href="https://tiktok.com/@geelyInteriors?_r=1&_t=ZS-91cma6zQagC"><FaTiktok size={20}/></a>
           </div>
         </div>
       </section>
@@ -98,7 +104,7 @@ const Footer = () => {
           <span className='text-white dark:text-white/50'>Geely</span> Home Interiors
       </p>
       <div className='flex md:item-row item-col md:gap-10'>
-        <p>Copyright &copy;2025</p>
+        <p>Copyright &copy;{currentYear}</p>
         <p>Developed by <a href="https://la-victoireportfolio.vercel.app/"><span className='headFont'> La_Victoire&trade;</span></a></p>
       </div>
       </section>
