@@ -34,7 +34,7 @@ export const CATEGORIES = [
     image: "/images/Home Accessories in display for sale in a room_20250728_045806_0000.jpg",
     description:
       "This is where luxury lives,in the details. Sculptures, vases, trays, and conversation pieces that silently shout taste, power, and precision. If your shelf game isn’t on point, don’t worry,we’ve got the ammo.",
-    slug: "decorative-objects",
+    slug: "accessories",
   },
 ];
 
@@ -165,7 +165,6 @@ export const users: User[] = [
   addresses: [
     {
       id: "a001",
-      type: "home",
       street: "123 Elm Street",
       city: "New York",
       state: "NY",
@@ -236,7 +235,6 @@ export const users: User[] = [
   addresses: [
     {
       id: "a003",
-      type: "home",
       street: "789 Pine Street",
       city: "San Francisco",
       state: "CA",
@@ -299,8 +297,7 @@ export const SHIPPING_POLICY = {
   trackingAvailable: false,
   confirmationRequired: true,
   overview: [
-    "Geely Home Interiors operates as an online storefront/agent coordinating purchases and deliveries via supplier partners.",
-    "Delivery is available only within Lagos State, Nigeria.",
+    "Delivery is currently available only within Lagos State, Nigeria.",
     "Orders are processed within 0–2 business days after payment confirmation.",
     "Estimated delivery time: up to 48 hours from dispatch.",
     "Shipping is free for all Lagos deliveries. Customers only pay shipping on returns.",
@@ -430,3 +427,94 @@ export const CONTACTS = {
   socials: SITE_META.socials,
 };
 
+export const INTERIOR_CATEGORIES = [
+  {
+    category: "Living Room",
+    subcategories: [
+      "Chandeliers",
+      "Wall Art",
+      "Console Table",
+      "Floor Lamp",
+      "Coffee Table",
+      "Throw Pillows",
+      "Area Rug",
+      "Wall Mirror",
+      "Sofa Set",
+      "Side Stool"
+    ]
+  },
+  {
+    category: "Dining Room",
+    subcategories: [
+      "Dining Table",
+      "Dining Chairs",
+      "Pendant Light",
+      "Wall Mirror",
+      "Centerpiece",
+      "Sideboard"
+    ]
+  },
+  {
+    category: "Bedroom",
+    subcategories: [
+      "Bed Frame",
+      "Night Stand",
+      "Table Lamp",
+      "Duvet Set",
+      "Wall Art",
+      "Wardrobe",
+      "Vanity Set"
+    ]
+  },
+  {
+    category: "Kitchen",
+    subcategories: [
+      "Bar Stools",
+      "Pendant Light",
+      "Storage Rack",
+      "Wall Clock",
+      "Table Sets"
+    ]
+  },
+  {
+    category: "Office",
+    subcategories: [
+      "Office Desk",
+      "Desk Chair",
+      "Wall Shelf",
+      "Table Lamp",
+      "Rug Mat",
+      "Wall Art"
+    ]
+  },
+  {
+    category: "Entryway",
+    subcategories: [
+      "Console Table",
+      "Wall Mirror",
+      "Pendant Light",
+      "Sculpt Pieces",
+      "Wall Shelf"
+    ]
+  },
+  {
+    category: "Bathroom",
+    subcategories: [
+      "Wall Mirror",
+      "Towel Rack",
+      "Storage Shelf",
+      "Scent Diffuser",
+      "Bath Rug"
+    ]
+  },
+  {
+    category: "Outdoor",
+    subcategories: [
+      "Patio Sofa",
+      "Garden Chair",
+      "Outdoor Table",
+      "Wall Lantern",
+      "Planter Pot"
+    ]
+  }
+]

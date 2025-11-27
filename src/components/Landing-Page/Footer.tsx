@@ -6,12 +6,15 @@ import { Footer_Links } from '../constants';
 import Link from 'next/link';
 import { Input } from '../ui/input';
 import { FaFacebook, FaInstagram, FaTiktok, FaXTwitter } from 'react-icons/fa6';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '../ui/button';
+import { signOut } from 'next-auth/react';
+import { Session } from 'next-auth';
 
-const Footer = () => {
-   const isMobile = useMediaQuery({maxWidth: 767 });
-   const currentYear = new Date().getFullYear();
+const Footer = ({session}:{session:Session | null}) => {
+  const isMobile = useMediaQuery({maxWidth: 767 });
+  const currentYear = new Date().getFullYear();
+  const authUser = typeof window === "undefined" ? [] : sessionStorage.getItem("userId");
+  const isAuthenticated = session?.userId || authUser;
 
   return (
     <footer className='bg-accent w-screen'> 
@@ -97,6 +100,17 @@ const Footer = () => {
               <a href="https://x.com/geelyInteriors"><FaXTwitter size={20}/></a>
               <a href="https://tiktok.com/@geelyInteriors?_r=1&_t=ZS-91cma6zQagC"><FaTiktok size={20}/></a>
           </div>
+          {isAuthenticated ? 
+            <Button onClick={() => signOut()} className='w-max px-10 bg-foreground text-background hover:bg-foreground/80'>
+             Log Out
+            </Button>
+          :
+           <Button className='w-max px-10 bg-foreground text-background hover:bg-foreground/80'>
+            <Link href="/auth">
+                Log In
+            </Link>
+          </Button>
+           }
         </div>
       </section>
       <section className='py-5 border-t border-foreground flex md:item-row item-col justify-between px-12'>

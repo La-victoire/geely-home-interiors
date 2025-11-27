@@ -6,12 +6,12 @@ import Footer from './Landing-Page/Footer';
 
 const LayoutWrapper = (
   {
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>
+  children, session
+}:{
+  children: React.ReactNode, session:any
+}, 
 ) => {
-  const [isSpecialPage, setIsSpecialPage] = useState(false)
+  const [isSpecialPage, setIsSpecialPage] = useState(false);
 
   useEffect(() => {
     const hasMarkers = document.querySelector('[data-not-found]') || document.querySelector('[data-loading]') || document.querySelector('[data-error]') || document.querySelector('[data-authentication]');
@@ -24,15 +24,16 @@ const LayoutWrapper = (
     return <>
     {children}
     </>
-  }
-
+  } else {
   return (
     <>
-    <Navbar />
+    <Navbar session={session}/>
     {children}
-    <Footer />
+    <Footer session={session}/>
     </>
   )
 }
+}
+
 
 export default LayoutWrapper

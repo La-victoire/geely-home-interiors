@@ -7,13 +7,13 @@ import { CartProvider } from './CartContext'
 import LayoutWrapper from '../LayoutWrapper'
 import { Toaster } from 'sonner'
 
-const Provider = ({ children }: { children: React.ReactNode }) => {
+const Provider = ({ children, session }: { children: React.ReactNode, session:any }) => {
   return (
     <SessionProvider>
       <UsersProvider>
           <ProductsProvider>
           <CartProvider>
-          <LayoutWrapper>
+          <LayoutWrapper session={session}>
               {children}
             <Toaster position='top-right' richColors closeButton />
           </LayoutWrapper>

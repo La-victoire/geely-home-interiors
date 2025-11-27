@@ -1,6 +1,7 @@
 import React from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
 import { product } from './Mini-Components/CollectionCard'
+import { SHIPPING_POLICY } from '../constants'
 
 const ProductInfo = ({item}) => {
   return (
@@ -41,10 +42,9 @@ const ProductInfo = ({item}) => {
              Shipping & Returns
             </AccordionTrigger>
             <AccordionContent className='p-5'>
-              <p>
-                We offer fast and reliable shipping options. Estimated delivery times vary by location. Returns are accepted within 30 days
-                of purchase, provided the item is in its original condition.
-              </p>
+              {SHIPPING_POLICY.overview.map((point:string,index:number) => (
+                <li key={index} className='mb-2'>{point}</li>
+              ))}
             </AccordionContent>
           </AccordionItem>
         </Accordion>

@@ -11,6 +11,7 @@ import React, { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { editProduct } from '@/lib/actions'
 import { toast } from 'sonner'
+import { INTERIOR_CATEGORIES } from '@/components/constants'
 
 const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string) => void}) => {
   const [open, setOpen] = useState(false)
@@ -36,15 +37,6 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
     updated[index] = value;
     setFeat(updated);
   } 
-
-  const formDataToObject = (fd:FormData) => {
-    const obj: Record<string,any> = {}
-    for (let key of fd.keys()) {
-      const values = fd.getAll(key)
-      obj[key] = values.length > 1 ? values : values[0]
-    }
-    return obj
-  }
     
   const handleFormSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -173,7 +165,7 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Categories</SelectLabel>
-                        {categoryFilter([Product]).map((data:product,index:number)=> (
+                        {INTERIOR_CATEGORIES.map((data,index)=> (
                           <SelectItem key={index} value={data.category}>
                             {data.category}
                           </SelectItem>
@@ -196,7 +188,7 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
               <div className='w-full space-y-5'>
                 <div className='grid gap-3'>
                   <Label htmlFor='product-description'>Description*</Label>
-                  <Textarea id='product-description' name='description' value={form.description} onChange={handleChange} placeholder='Product description' required/>
+                  <Textarea id='product-description' name='description' maxLength={200} value={form.description} onChange={handleChange} placeholder='Product description' required/>
                 </div>
 
                 <div className='grid gap-3'>

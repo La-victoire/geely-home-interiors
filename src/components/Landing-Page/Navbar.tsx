@@ -12,16 +12,15 @@ import gsap from 'gsap';
 import { Badge } from '../ui/badge';
 import { useCart } from '../contexts/CartContext';
 import { useUsers } from '../contexts/UserContext';
-import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 
-const Navbar = () => {
+const Navbar = ({session}:{session:Session | null}) => {
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const { theme, setTheme } = useTheme();
   const {cartCount, wishListCount} = useCart();
   const {users} = useUsers();
-  const { data: session } = useSession();
   const handleOpenSidebar = () => {
     setIsActive(true);
   }

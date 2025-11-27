@@ -3,6 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Provider from "@/components/contexts/Provider";
 import { SITE_META } from "@/components/constants";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: {
@@ -71,18 +73,19 @@ export const metadata: Metadata = {
 
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
   return (
     <html suppressHydrationWarning lang="en">
       <body
         className={`antialiased`}
       >
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Provider>
+        <Provider session={session}>
           {children}
         </Provider>
       </ThemeProvider>

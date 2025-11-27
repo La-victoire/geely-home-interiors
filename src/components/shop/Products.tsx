@@ -15,6 +15,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { getData } from '@/lib/actions';
 import useSWR from "swr"
 import { useProducts } from '../contexts/ProductsContext';
+import ProductNotFound from './Mini-Components/ProductNotFound';
 
 interface product {
   id: string;
@@ -199,7 +200,12 @@ const Products = () => {
         </section>
       </section>
     )
-  } else if (productsError) {
+  } else if (!Array.isArray(products) || products.length === 0) {
+    return (
+  <ProductNotFound />
+    )
+  }
+   else if (productsError) {
     return (
   <ErrorState
     message="No Products Available."

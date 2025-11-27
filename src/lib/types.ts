@@ -46,7 +46,7 @@ export interface User {
   role: "Client" | "Admin";
   lastname: string;
   email: string;
-  phone: number;
+  phone: string;
   _createdAt: string;
   _updatedAt: string;
   status: string;

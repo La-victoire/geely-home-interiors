@@ -13,7 +13,7 @@ import { toast } from 'sonner'
 import { createProfile, deleteProduct } from '@/lib/actions';
 
 const CartTotal = () => {
-  const {cartProducts} = useCart() as {cartProducts:cartProduct[]};
+  const {cartProducts, setCartProducts} = useCart() as {cartProducts:cartProduct[], setCartProducts:React.Dispatch<React.SetStateAction<cartProduct[]>>};
   const [loaded, setLoaded] = useState(false)
   const {users, setUsers} = useUsers() as {users:User, setUsers:React.Dispatch<React.SetStateAction<User>>};
   const [orderData, setOrderData] = useState({
@@ -23,16 +23,17 @@ const CartTotal = () => {
     items: [],
     metadata: {}
   });
+  const sessionCart = cart.getCart() as unknown as cartProduct[];
 
   useEffect(()=> {
     if (!cartProducts.length) return;
     if (users === null) return;
 
     const items = cartProducts.map((product:any) => ({
-      productId: product.product._id,
-      name: product.product.name,
-      quantity: product.quantity,
-      price: product.price,
+      productId: product.product?._id,
+      name: product.product?.name,
+      quantity: product?.quantity,
+      price: product?.price,
     }))
 
     const amount = cartProducts?.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0);
@@ -54,22 +55,32 @@ const CartTotal = () => {
         setLoaded(true)    
     }
   },[])
-
-
+    const geelyCart = sessionStorage.getItem("geely_cart")
+    const localCart = geelyCart ? JSON.parse(geelyCart) : [];
+    console.log(cartProducts[0].quantity)
   const handlePayment = async () => {
-
-    
+    console.log(cartProducts)
     if (!loaded) {
       toast.error("Payment gateway is not loaded. Please try again later.");
       return;
+    }
+
+    if (!cartProducts.length) {
+    toast.error("No Cart Products")
+    return;
     }
 
     if (!orderData.client) {
     toast.error('User Unavailable');
     return;    
     }
+
+    if (sessionCart.length < 1) {
+        toast.message("Your cart is empty. Please add items to your cart before proceeding to payment.") 
+    return;
+    }
     
-    if (users.phone === "" || users.addresses.length < 1) {
+    if(users.phone === "" || users.addresses.length < 1) {
         toast.message("Please provide your complete contact information before paying.") 
     return;
 }
@@ -97,6 +108,8 @@ const CartTotal = () => {
           await deleteProduct('/carts/clear')
           toast.success(`Payment ${response.status}!`);
           console.log("Payment Response:", response);
+          sessionCart.length > 0 && cart.clearCart();
+          setCartProducts([]);
           window.location.href = "/shop/products";
         },
         onCancel: () => {
@@ -120,20 +133,20 @@ const CartTotal = () => {
     <CardHeader className='not-sm:text-xl text-3xl headFont'> Order Summary</CardHeader>
     <div className='flex justify-between border-0 border-b pb-5 px-5'>
       <div>
-        <p>Subtotal ({cartProducts.length} items)</p>
+        <p>Subtotal ({cartProducts.map((product:any) => Math.ceil(product.quantity)).reduce((a, b) => a + b, 0) || localCart.map((product:any) => Math.ceil(product.quantity)).reduce((a, b) => a + b, 0)} items)</p>
         <p>Shipping cost</p>
       </div>
 
       <div>
-        <p>₦{cartProducts.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0)}</p>
+        <p>₦{cartProducts.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0) || localCart.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0)}</p>
         <p>₦0</p>
       </div>
     </div>
     <div className='flex justify-between px-5'>
       <p className='font-bold text-lg'>Sum Total</p>
-      <p>₦{ 0 + cartProducts.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0)}</p>
+      <p>₦{ 0 + (cartProducts.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0) || localCart.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0))}</p>
     </div>
-      <Button onClick={handlePayment}>
+      <Button disabled={users?.phone === "" || users?.addresses.length < 1 ? true : false} onClick={handlePayment}>
         Pay
       </Button>
    </Card>

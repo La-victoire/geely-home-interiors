@@ -25,10 +25,10 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
         // 3. Fetch user profile
         const data = await getProfile(`/users/${idToUse}`);
 
-        if (!data) throw new Error("No user data returned");
+        if (!data) console.log("No user data returned");
         setUsers(data);
       } catch (error) {
-        console.error("Failed to fetch user data:", error);
+        throw new Error("Failed to fetch user data:", error);
         toast.error("Failed to fetch user data.");
       }
     };
@@ -37,7 +37,7 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
     if (status === "authenticated" || sessionStorage.getItem("userId")) {
       fetchUser();
     }
-  }, [session, status]); // re-run when session becomes available
+  }, [status]); // re-run when session becomes available
 
   return (
     <UserContext.Provider value={{ users, setUsers }}>

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { editProfile } from '@/lib/actions'
 import { User } from '@/lib/types'
+import { useSession } from 'next-auth/react'
 import React, { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -17,6 +18,8 @@ const AddressCard = () => {
   };
 
   const [isEditing, setIsEditing] = useState(false);
+  const {status} = useSession();
+  const authUser = sessionStorage.getItem("userId");
 
   // ------------------------------------------
   // Guarantee at least one address object exists
@@ -48,6 +51,11 @@ const AddressCard = () => {
 
   const handleProfile = async () => {
     try {
+      if (status !== "authenticated" || !authUser) {
+          console.log(users.addresses[0])
+          toast.success("User Address Updated Successfully")
+          return;
+      }
       const data: User = await editProfile(`users/${users._id}`, {
         addresses: users.addresses
       });
@@ -133,6 +141,7 @@ const AddressCard = () => {
             />
           </div>
         </div>
+          <p className='text-xs'>Please ensure your address information is accurate in order to avoid mixups and Loss of property</p>
       </CardContent>
 
       {isEditing && (

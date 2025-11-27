@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge'
 import { useProducts } from '@/components/contexts/ProductsContext'
 import { toast } from 'sonner'
 import { deleteProduct, postData } from '@/lib/actions'
+import { INTERIOR_CATEGORIES } from '@/components/constants'
 
 
 const Products = () => {
@@ -49,7 +50,6 @@ const Products = () => {
       setFeat((prev) => [...prev, ""])
     }
 
-console.log(products)
     const decreaseFeatures = (index:number) => {
       const updated = product.features.filter((_,idx) => idx !== index)
       setProduct({...product, features : updated})
@@ -174,8 +174,6 @@ console.log(products)
       setFeat([])
       setOpen(false)
     }
-    const cat = [
-{category:"living room"}, {category:"bedroom"}, {category:"dinning-room"}]
 
     const handleSelectChange = (value : string) => {
       setProduct( prev => ({...prev, category:value}) )
@@ -201,16 +199,6 @@ console.log(products)
     const removeImage = (index:number) => {
       const updated = product.images.filter((_, idx) => idx !== index);
       setProduct({...product, images:updated});
-    };
-
-    const categoryFilter = (arr:product[], categoryKey = "category") => {
-      const seen = new Set();
-      return arr.filter((obj:any) => {
-        const categoryVal = obj[categoryKey];
-        if (seen.has(categoryVal)) return false; 
-        seen.add(categoryVal);
-        return true
-      });
     };
 
     const clearProducts = async () => {
@@ -264,7 +252,7 @@ console.log(products)
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Categories</SelectLabel>
-                            {cat.map((data:product,index:number)=> (
+                            {INTERIOR_CATEGORIES.map((data,index)=> (
                               <SelectItem key={index} value={data.category}>
                                 {data.category}
                               </SelectItem>
@@ -291,7 +279,7 @@ console.log(products)
                   <div className='w-full space-y-5'>
                     <div className='grid gap-3'>
                       <Label htmlFor='product-description'>Description*</Label>
-                      <Textarea id='product-description' name='description' value={product.description} onChange={handleChange} placeholder='Product description' required/>
+                      <Textarea id='product-description' name='description' value={product.description} maxLength={200} onChange={handleChange} placeholder='Product description' required/>
                     </div>
     
                     <div className='grid gap-3'>
@@ -399,7 +387,7 @@ console.log(products)
             </thead>
             <tbody className='overflow-y-scroll'>
               {queriedResults.length > 0 && (
-                queriedResults.map((data:product,index)=> (
+                queriedResults.map((data:product,index:number)=> (
                   <ProductTable Product={data} onDelete={handleDelete} key={index}/>
                 ))
               )}

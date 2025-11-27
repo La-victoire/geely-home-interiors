@@ -42,19 +42,40 @@ const CollectionCard:React.FC<products>  = ({product}) => {
   const {users} = useUsers() as {users:User};
 
   const handleCart = () => {
-     if (cartProducts.find((p) => p.product._id === product._id)) {
-          createProfile('/carts/add', {product:product._id, quantity: 1, price: product.price})
-          toast.success(
-            "Product quantity updated in cart"
-          )
-          return;
-        }
-        setCartCount((prev:number) => prev + 1)
-        createProfile('/carts/add', {product:product._id, quantity: 1, price: product.price})
-        toast.success(
-          "Product Added to cart"
-        )
-  };
+  if (users) {
+    const exists = cartProducts.find((p) => p.product?._id === product?._id);
+
+    if (exists) {
+      createProfile('/carts/add', {
+        product: product._id,
+        quantity: 1,
+        price: product.price
+      });
+      toast.success("Product quantity updated in cart");
+      return;
+    }
+
+    setCartCount((prev: number) => prev + 1);
+    createProfile('/carts/add', {
+      product: product._id,
+      quantity: 1,
+      price: product.price
+    });
+    toast.success("Product Added to cart");
+    return;
+  }
+
+  // guest flow
+  const exists = cartProducts.find((p) => p.product?._id === product?._id);
+
+  if (exists) {
+    cart.addToCart(product, 1);
+    setCartCount((prev: number) => prev + 1);
+  } else {
+    cart.addToCart(product, 1);
+  }
+};
+
 
   return (
     <Card className='lg:w-[30dvw] border-r-8 hover:border-r-2 duration-200 relative gap-0 p-0 h-[70dvh]'>

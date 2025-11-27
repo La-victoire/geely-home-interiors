@@ -6,6 +6,8 @@ import { cartProduct } from '@/lib/types';
 import { editProfile } from '@/lib/actions';
 import { debounce } from '@/lib/debounce';
 import { Button } from '../ui/button';
+import { cart } from '@/lib/cart'
+import { useUsers } from '../contexts/UserContext'
 import Link from 'next/link';
 
 const CartProducts = () => {
@@ -16,6 +18,7 @@ const CartProducts = () => {
     setCartProducts: React.Dispatch<React.SetStateAction<cartProduct[]>>;
     setCartCount: React.Dispatch<React.SetStateAction<number>>;
   };
+  const {users} = useUsers()
 
   // ----- FIXED DEBOUNCE LOGIC -----
   const debounceRef = useRef<any>(null);
@@ -29,12 +32,12 @@ const CartProducts = () => {
     // Optimistic UI
     setCartProducts((prev) =>
       prev.map((item) =>
-        item.product._id === id ? { ...item, quantity: newQty } : item
+        item.product?._id === id ? { ...item, quantity: newQty } : item
       )
     );
-
     // Debounced API call
     debounceCartUpdate(async () => {
+    if (!users?.lastname || users?.lastname === "" ) return;
       try {
         await editProfile(`/carts/update/${id}`, { quantity: newQty });
         console.log("✅ Cart updated:", id, newQty);
@@ -45,7 +48,10 @@ const CartProducts = () => {
   };
 
   const handleCartRemoval = (id: string) => {
-    setCartProducts((prev) => prev.filter((item) => item.product._id !== id));
+    cart.removeFromCart(id);
+    setCartProducts((prev) => prev.filter((item) =>
+        item._id !== id && item.product?._id !== id
+    ));
     setCartCount((prev: number) => prev - 1);
   };
 

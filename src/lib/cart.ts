@@ -1,100 +1,90 @@
-// import { products } from "@/components/constants";
 import { toast } from "sonner";
-import { deleteProduct, getData, postData } from "./actions";
 import { product } from "@/components/shop/Mini-Components/CollectionCard";
 
+// KEY FOR SESSION STORAGE
+const CART_KEY = "geely_cart";
+
+/* ---------------------------- UTIL FUNCTIONS ---------------------------- */
+
+function loadCart(): { productId: string; quantity: number; price: number }[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const data = sessionStorage.getItem(CART_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveCart(cart: any) {
+  if (typeof window === "undefined") return;
+  sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+/* ---------------------------- CART MODULE ---------------------------- */
 
 export const cart = {
-   getProducts () {
-    try {
-      const fetchedProducts = async () => {
-        const data = await getData('/products');
-        if (data) {
-          return data;
-        } else {
-          toast.error("Failed to fetch products.");
-          return [];
-        }
-      };
-      return fetchedProducts();
-    } catch (error) {
-      toast.error("Failed to fetch products.");
-      console.error("Failed to fetch products:", error);
-      return [];
-    }
+  /* -------------------------- GET CART -------------------------- */
+  getCart() {
+    return loadCart();
   },
 
-  getCart () {
-    try {
-      const fetchedCart = async () => {
-        const data = await getData('/carts');
-        if (!data) {
-          toast.error("Failed to fetch cart data.");
-          return [];
-        }
-        return data?.cart
-      };
-      return fetchedCart();
-    } catch (error) {
-      toast.error("Failed to fetch cart data.");
-      console.error("Failed to fetch cart data:", error);
-    }
-  },
-  addToCart(productId:string, productQuantity:number) {
-    const cartData = this.getCart() as unknown as product[];
-    const products = this.getProducts() as product[];
+  /* -------------------------- ADD TO CART -------------------------- */
+  addToCart(product: product, quantity: number = 1) {
+    const cartData = loadCart();
 
-    const product = products.find((p) => p._id === productId);
-    if (product) {
-      try {
-        const addProduct = async () => {
-          return await postData('/carts/add', {productId, quantity: productQuantity, price: product.price});
-        }
-        const data = addProduct();
-        if (data) {
-        toast.success(
-          "Product Added to Cart"
-        )}
-      } catch (error) {
-          toast.error("Failed to add product to cart.");
-          console.error("Failed to add product to cart:", error);
-      }
+    const existing = cartData.find((p) => p.productId === product._id);
+
+    if (existing) {
+      // Increase quantity
+      existing.quantity += quantity;
+      toast.success("Product quantity updated");
+    } else {
+      // Add new item
+      cartData.push({
+        productId: product._id,
+        quantity,
+        price: product.price,
+      });
+
+      toast.success("Product added to cart");
     }
+
+    saveCart(cartData);
     return cartData;
   },
-  removeFromCart(productId:string) {
-    const cartData = this.getCart();
-    try {
-      const removeProduct = async () => {
-        return await deleteProduct(`/carts/${productId}`);
-      }
-      const data = removeProduct();
-      if (data) {
-        toast.success(
-          "Product Removed from Cart"
-        )}
-    } catch (error) {
-        toast.error("Failed to remove product from cart.");
-        console.error("Failed to remove product from cart:", error);
-    }
+
+  /* ------------------------- REMOVE FROM CART ------------------------- */
+  removeFromCart(productId: string) {
+    let cartData = loadCart();
+    const newCart = cartData.filter((p) => p.productId !== productId);
+
+    saveCart(newCart);
+    toast.success("Product removed from cart");
+    return newCart;
   },
-  updateCartQuantity(productId:string, quantity:number) {
-    const cartData = this.getCart() as unknown as product[];
-    const product = cartData.find((p) => p.id === productId);
-    if (product) {
-      try {
-        const updateProduct = async () => {
-          return await postData(`/carts/update/${productId}`, {quantity});
-        }
-        const data = updateProduct();
-        if (data) {
-        toast.success(
-          "Cart Updated"
-        )}
-      } catch (error) {
-          toast.error("Failed to update cart.");
-          console.error("Failed to update cart:", error);
-      }
-    } 
+
+  /* ------------------------ UPDATE QUANTITY ------------------------ */
+  updateCartQuantity(productId: string, quantity: number) {
+    let cartData = loadCart();
+    const item = cartData.find((p) => p.productId === productId);
+
+    if (!item) {
+      toast.error("Product not in cart");
+      return cartData;
+    }
+
+    item.quantity = Math.max(1, quantity); // prevent 0 or negative
+
+    saveCart(cartData);
+    toast.success("Cart updated");
+
+    return cartData;
+  },
+
+  /* ------------------------ CLEAR CART ------------------------ */
+  clearCart() {
+    saveCart([]);
+    toast.success("Cart cleared");
   },
 };

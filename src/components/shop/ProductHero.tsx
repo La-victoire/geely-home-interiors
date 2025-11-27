@@ -11,28 +11,55 @@ import { wishList } from '@/lib/wishList'
 import { product } from './Mini-Components/CollectionCard'
 import { createProfile } from '@/lib/actions'
 import { cartProduct } from '@/lib/types'
+import { useUsers } from '../contexts/UserContext'
+import { User } from 'next-auth'
 
 const ProductHero = ({item}:{item:product}) => {
   const [quantity, setQuantity] = useState(1)
   const [isVisble, setIsVisible] = useState(item.images[0]?.url)
+  const {users} = useUsers() as {users:User};
   const {cartProducts, setCartCount, setWishListCount} = useCart() as {cartProducts:cartProduct[], setCartCount:React.Dispatch<React.SetStateAction<number>>, setWishListCount:React.Dispatch<React.SetStateAction<number>>};
   const isMobile = useMediaQuery({maxWidth: 767 });
 
-  const handleCart = () => {
-    if (cartProducts.find((p) => p.product._id === item._id)) {
-      createProfile('/carts/add', {product:item._id, quantity: quantity, price: item.price})
-      toast.success(
-        "Product quantity updated in cart"
-      )
+const handleCart = () => {
+  if (users) {
+    const exists = cartProducts.find((p) => p.product._id === item._id);
+
+    if (exists) {
+      createProfile('/carts/add', {
+        product: item._id,
+        quantity,
+        price: item.price
+      });
+      toast.success("Product quantity updated in cart");
+      setQuantity(1);
       return;
     }
-    setCartCount((prev:number) => prev + 1)
-    createProfile('/carts/add', {product:item._id, quantity: quantity, price: item.price})
-    toast.success(
-      "Product Added to cart"
-    )
-    setQuantity(1)
-  };
+
+    setCartCount((prev: number) => prev + 1);
+    createProfile('/carts/add', {
+      product: item._id,
+      quantity,
+      price: item.price
+    });
+    toast.success("Product Added to cart");
+    setQuantity(1);
+    return;
+  }
+
+  // guest flow
+  const exists = cartProducts.find((p) => p.product._id === item._id);
+
+  if (exists) {
+    cart.addToCart(item, quantity);
+    setCartCount((prev: number) => prev + 1);
+  } else {
+    cart.addToCart(item, quantity);
+  }
+
+  setQuantity(1);
+};
+
 
   const addToWishList = () => {
       const data = wishList.getWishList().find((p) => p.id === item._id)
