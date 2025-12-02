@@ -27,7 +27,7 @@ const Login = () => {
   }
   
   const auth = async () => {
-    const data = await signIn("google", { callbackUrl: "/" })
+    window.location.href = "/api/auth/google"
   }
     
   const changeEye = () => {
@@ -37,8 +37,8 @@ const Login = () => {
   const handleFormSubmit = (e:React.FormEvent) => {
     e.preventDefault();
     // Simulate an API call
+    setIsLoading(true);
     setTimeout(async () => {
-      setIsLoading(true);
       try {
         const data = await createProfile("users/login", user)
         if (data?.error) {

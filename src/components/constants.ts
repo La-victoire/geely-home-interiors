@@ -431,70 +431,65 @@ export const INTERIOR_CATEGORIES = [
   {
     category: "Living Room",
     subcategories: [
-      "Chandeliers",
-      "Wall Art",
-      "Console Table",
-      "Floor Lamp",
-      "Coffee Table",
-      "Throw Pillows",
-      "Area Rug",
+     "Lighting",   
+     "Wall Art",
+     "Decorative Objects",
+      "Greenery",
       "Wall Mirror",
-      "Sofa Set",
+     "Furniture",
+     "Christmas Accessories",
       "Side Stool"
     ]
   },
   {
     category: "Dining Room",
     subcategories: [
-      "Dining Table",
-      "Dining Chairs",
-      "Pendant Light",
+      "Furniture",
+      "Greenery",
+      "Lighting",
       "Wall Mirror",
-      "Centerpiece",
-      "Sideboard"
     ]
   },
   {
     category: "Bedroom",
     subcategories: [
-      "Bed Frame",
-      "Night Stand",
-      "Table Lamp",
+      "Furniture",
+      "Lighting",
       "Duvet Set",
       "Wall Art",
-      "Wardrobe",
-      "Vanity Set"
+      "Christmas Accessories",
     ]
   },
   {
     category: "Kitchen",
     subcategories: [
       "Bar Stools",
-      "Pendant Light",
+      "Lighting",
       "Storage Rack",
-      "Wall Clock",
-      "Table Sets"
+     "Wall Clock",
+     "Furniture"
     ]
   },
   {
     category: "Office",
     subcategories: [
-      "Office Desk",
-      "Desk Chair",
+      "Furniture",
       "Wall Shelf",
-      "Table Lamp",
-      "Rug Mat",
-      "Wall Art"
+      "Lighting",
+      "Decorative Objects",
+      "Wall Art",
+      "Christmas Accessories",
     ]
   },
   {
     category: "Entryway",
     subcategories: [
-      "Console Table",
+      "Furniture",
       "Wall Mirror",
-      "Pendant Light",
-      "Sculpt Pieces",
-      "Wall Shelf"
+      "Lighting",
+      "Decorative Objects",
+      "Christmas Accessories",
+
     ]
   },
   {
@@ -502,7 +497,7 @@ export const INTERIOR_CATEGORIES = [
     subcategories: [
       "Wall Mirror",
       "Towel Rack",
-      "Storage Shelf",
+      "Furniture",
       "Scent Diffuser",
       "Bath Rug"
     ]
@@ -510,11 +505,10 @@ export const INTERIOR_CATEGORIES = [
   {
     category: "Outdoor",
     subcategories: [
-      "Patio Sofa",
-      "Garden Chair",
-      "Outdoor Table",
-      "Wall Lantern",
-      "Planter Pot"
+      "Furniture",
+      "Lighting",
+      "Christmas Accessories",
+      "Greenery",
     ]
   }
 ]

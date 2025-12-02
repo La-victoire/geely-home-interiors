@@ -33,7 +33,7 @@ const ContactCard = () => {
    const onSubmit = async () => {
         try {
            
-             if (info.firstname === "" || users?.firstname === "" || info.lastname === "" || users?.lastname === "") {
+             if (info.firstname === "" === "" || info.lastname === "") {
                 toast.error("PLEASE ENSURE YOUR FIRST AND LAST NAME ARE SEPARATED WITH A SPACE!") } 
              else {
                 if (info.firstname !== "" && info.lastname !== "") {

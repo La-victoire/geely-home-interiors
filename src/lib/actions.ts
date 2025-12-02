@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { User } from "./types";
 import { product } from "@/components/shop/Mini-Components/CollectionCard";
-import { getSession } from "next-auth/react";
 
 const productsApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -9,28 +8,7 @@ const productsApi = axios.create({
     "Content-Type":"multipart/form-data",
     "ngrok-skip-browser-warning":"69420"
   },
-  
-});
-
-productsApi.interceptors.request.use(async (config) => {
- let token;
-  if (typeof window !== "undefined") {
-  const session = await getSession();
-    if (session?.token) {
-      token = session?.token;
-    }
-    if (!token) {
-      token = sessionStorage.getItem("userToken");
-    }    
-   }
-  if (token) {
-    config.headers = config.headers || {};
-    config.headers['Authorization'] = `Bearer ${token}`;
-  }
-  return config;
-},
-(error) => {
-  return Promise.reject(error);
+  withCredentials:true,
 });
 
 const profileApi = axios.create({
@@ -39,29 +17,9 @@ const profileApi = axios.create({
     "Content-Type":"application/json",
     "ngrok-skip-browser-warning":"69420"
   },
+  withCredentials: true,
   maxRedirects: 0,
   validateStatus : (status) => status >= 200 && status < 400,
-});
-
-profileApi.interceptors.request.use(async (config) => {
-  let token;
-  if (typeof window !== "undefined") {
-  const session = await getSession();
-    if (session?.token) {
-      token = session?.token;
-    }
-    if (!token) {
-      token = sessionStorage.getItem("userToken");
-    }    
-   }
-  if (token) {
-    config.headers = config.headers || {};
-    config.headers['Authorization'] = `Bearer ${token}`;
-  }
-  return config;
-},
-(error) => {
-  return Promise.reject(error);
 });
 
 // Type for the expected response from this Api

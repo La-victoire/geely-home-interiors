@@ -105,7 +105,7 @@ const Footer = ({session}:{session:Session | null}) => {
              Log Out
             </Button>
           :
-           <Button className='w-max px-10 bg-foreground text-background hover:bg-foreground/80'>
+           <Button asChild className='w-max px-10 bg-foreground text-background hover:bg-foreground/80'>
             <Link href="/auth">
                 Log In
             </Link>
