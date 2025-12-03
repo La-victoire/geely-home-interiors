@@ -17,7 +17,7 @@ const Footer = () => {
   const isMobile = useMediaQuery({maxWidth: 767 });
   const currentYear = new Date().getFullYear();
   const authUser = typeof window === "undefined" ? [] : sessionStorage.getItem("userId");
-  const isAuthenticated = users._id || authUser;
+  const isAuthenticated = users?._id || authUser;
 
   return (
     <footer className='bg-accent w-screen'> 
