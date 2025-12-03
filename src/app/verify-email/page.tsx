@@ -15,7 +15,7 @@ import { toast } from "sonner"
 
 export default function VerifyEmailPage() {
   const {users}:{users:User} = useUsers();
-  const [email, setEmail] = useState(users.email || "")
+  const [email, setEmail] = useState(users?.email || "")
   const [isLoading, setIsLoading] = useState(false)
   const [isSent, setIsSent] = useState(false)
   const [error, setError] = useState("")
