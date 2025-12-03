@@ -23,7 +23,7 @@ const Login = () => {
   const {users,setUsers} = useUsers() as UserContextType
   interface UserContextType {
     users: User;
-    setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+    setUsers: React.Dispatch<React.SetStateAction<User>>;
   }
   
   const auth = async () => {
@@ -41,13 +41,11 @@ const Login = () => {
     setTimeout(async () => {
       try {
         const data = await createProfile("users/login", user)
-        if (data?.error) {
+        if (data?.error || !data) {
           toast.error(data?.error);
           setIsLoading(false);
           return;
         } 
-
-        sessionStorage.setItem("userToken", data?.token!);
         sessionStorage.setItem("userId", data?.userData?._id!);
         toast.success(`Welcome, ${data?.userData?.firstname}!`);
         setIsLoading(false);

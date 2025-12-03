@@ -31,18 +31,17 @@ const Register = () => {
     setTimeout(async () => {
       try {
         const data = await createProfile("users", user)
-        if (data?.error) {
+        if (data?.error || !data) {
           toast.error(data?.error);
           setIsLoading(false);
           return;
         } 
 
-        sessionStorage.setItem("userToken", data?.token);
-        sessionStorage.setItem("userId", data?.userData?._id);
+        sessionStorage.setItem("userId", data?.userData?._id as string);
         toast.success(`${data?.userData?.firstname} Registered successfully!`);
         console.log(data);
         setIsLoading(false);
-        window.location.href = `/profile/${data?.userData?._id}`;
+        window.location.href = `/verify-email`;
       } catch (error) {
         toast.error("An error occurred. Please try again.");
         console.error("Login error:", error);

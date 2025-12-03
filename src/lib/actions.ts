@@ -25,7 +25,7 @@ const profileApi = axios.create({
 // Type for the expected response from this Api
 type userApiResponse<T> = {
   userData: User;
-  token: string;
+  message?: string;
   error?: string;
 };
 

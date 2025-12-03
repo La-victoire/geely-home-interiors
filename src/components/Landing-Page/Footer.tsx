@@ -9,12 +9,15 @@ import { FaFacebook, FaInstagram, FaTiktok, FaXTwitter } from 'react-icons/fa6';
 import { Button } from '../ui/button';
 import { signOut } from 'next-auth/react';
 import { Session } from 'next-auth';
+import { useUsers } from '../contexts/UserContext';
+import { User } from '@/lib/types';
 
-const Footer = ({session}:{session:Session | null}) => {
+const Footer = () => {
+  const {users}:{users:User} = useUsers();
   const isMobile = useMediaQuery({maxWidth: 767 });
   const currentYear = new Date().getFullYear();
   const authUser = typeof window === "undefined" ? [] : sessionStorage.getItem("userId");
-  const isAuthenticated = session?.userId || authUser;
+  const isAuthenticated = users._id || authUser;
 
   return (
     <footer className='bg-accent w-screen'> 

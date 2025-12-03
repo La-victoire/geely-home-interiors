@@ -8,9 +8,14 @@ import { AuthCard } from "@/components/auth/Auth-card"
 import { PremiumButton } from "@/components/order/premium-button"
 import { PremiumInput } from "@/components/auth/Premium-input"
 import { Mail, ArrowRight } from "lucide-react"
+import { useUsers } from "@/components/contexts/UserContext"
+import { User } from "@/lib/types"
+import { createProfile } from "@/lib/actions"
+import { toast } from "sonner"
 
 export default function VerifyEmailPage() {
-  const [email, setEmail] = useState("")
+  const {users}:{users:User} = useUsers();
+  const [email, setEmail] = useState(users.email || "")
   const [isLoading, setIsLoading] = useState(false)
   const [isSent, setIsSent] = useState(false)
   const [error, setError] = useState("")
@@ -33,6 +38,18 @@ export default function VerifyEmailPage() {
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      const data = await createProfile("/users/send-verification", {email})
+      if (data?.message) {
+        toast.message(`${data.message}`)
+      }
+    } catch(error) {
+      console.error(error);
+      setIsLoading(false)
+      toast.error("Something went wrong.")
+      setIsSent(false)
+      return;
+    }
 
     setIsLoading(false)
     setIsSent(true)
@@ -110,7 +127,7 @@ export default function VerifyEmailPage() {
 
         <p className="text-xs text-muted-foreground pt-2">
           Already verified?{" "}
-          <a href="/" className="text-gold hover:text-gold/80 transition-colors underline underline-offset-2">
+          <a href="/shop/products" className="text-gold hover:text-gold/80 transition-colors underline underline-offset-2">
             Continue shopping
           </a>
         </p>

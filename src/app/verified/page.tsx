@@ -54,14 +54,14 @@ export default function VerifiedPage() {
             ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
           `}
         >
-          <Link href="/products">
+          <Link href="/shop/products">
             <PremiumButton>
               <Sparkles className="w-5 h-5" />
               <span>Continue Shopping</span>
             </PremiumButton>
           </Link>
 
-          <p className="text-xs text-muted-foreground">Explore our curated collection of luxury home interiors</p>
+          <p className="text-xs mt-3 text-muted-foreground">Explore our curated collection of luxury home interiors</p>
         </div>
       </div>
     </AuthCard>

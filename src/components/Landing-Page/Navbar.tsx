@@ -12,14 +12,13 @@ import gsap from 'gsap';
 import { Badge } from '../ui/badge';
 import { useCart } from '../contexts/CartContext';
 import { useUsers } from '../contexts/UserContext';
-import { Session } from 'next-auth';
 
 
-const Navbar = ({session}:{session:Session | null}) => {
+const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const { theme, setTheme } = useTheme();
-  const {cartCount, wishListCount} = useCart();
+  const {cartCount, wishListCount} = useCart() as any;
   const {users} = useUsers();
   const handleOpenSidebar = () => {
     setIsActive(true);
@@ -81,7 +80,7 @@ const Navbar = ({session}:{session:Session | null}) => {
             <Heart />
           </Button>
         </Link>
-        <Link href={users?.role === "Client" ? `/profile/${users?._id}` : users?.role === "Admin" ? "/dashboard" : session ? `/profile/${session?.userId}`: "/auth" }>
+        <Link href={users?.role === "Client" ? `/profile/${users?._id}` : users?.role === "Admin" ? "/dashboard" : "/auth" }>
           <Button className='text-foreground rounded-4xl bg-background hover:text-accent'>
             <User2 />
           </Button>

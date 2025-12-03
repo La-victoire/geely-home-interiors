@@ -33,8 +33,8 @@ const EditProfile = ({setPerson, person}:{setPerson:any, person:User}) => {
     setIsLoading(true)
     setPerson(ind)
     const data =  await editProfile(`/users/${ind._id}`, ind);
-    if (data?.error) {
-      toast.error(`${data?.error}, Please try again!`);
+    if (data?.error || !data) {
+      toast.error(`An error occured, Please try again!`);
       setIsLoading(false)
       return;
     }

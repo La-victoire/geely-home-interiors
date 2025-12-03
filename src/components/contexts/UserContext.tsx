@@ -3,41 +3,37 @@
 import React, { useEffect, useState, createContext, useContext } from "react";
 import { getProfile } from "@/lib/actions";
 import { toast } from "sonner";
-import { useSession } from "next-auth/react";
 
 const UserContext = createContext<any>(null);
 
 export function UsersProvider({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState<any>(null);
-  const { data: session, status } = useSession();
-
+  const [id, setId] = useState(()=> {
+    const storedId = sessionStorage.getItem("userId");
+    return storedId ? storedId : ""
+  })
   useEffect(() => {
     const fetchUser = async () => {
       try {
         // 1. Check for stored ID
-        const storedId = sessionStorage.getItem("userId");
+        if (id === "") return; // Nothing to fetch yet
 
-        // 2. Choose the best ID source
-        const idToUse = storedId || session?.userId;
-
-        if (!idToUse) return; // Nothing to fetch yet
-
-        // 3. Fetch user profile
-        const data = await getProfile(`/users/${idToUse}`);
+        // 2. Fetch user profile
+        const data = await getProfile(`/users/${id}`);
 
         if (!data) console.log("No user data returned");
         setUsers(data);
-      } catch (error) {
-        throw new Error("Failed to fetch user data:", error);
+      } catch (error:any) {
         toast.error("Failed to fetch user data.");
+        throw new Error("Failed to fetch user data:", error);
       }
     };
 
     // Only run when we have a valid session or status is known
-    if (status === "authenticated" || sessionStorage.getItem("userId")) {
+    if (sessionStorage.getItem("userId")) {
       fetchUser();
     }
-  }, [status]); // re-run when session becomes available
+  }, [id]); // re-run when session becomes available
 
   return (
     <UserContext.Provider value={{ users, setUsers }}>
