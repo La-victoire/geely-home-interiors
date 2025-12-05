@@ -6,9 +6,9 @@ import Footer from './Landing-Page/Footer';
 
 const LayoutWrapper = (
   {
-  children, session
+  children
 }:{
-  children: React.ReactNode, session:any
+  children: React.ReactNode
 }, 
 ) => {
   const [isSpecialPage, setIsSpecialPage] = useState(false);
@@ -27,9 +27,9 @@ const LayoutWrapper = (
   } else {
   return (
     <>
-    <Navbar session={session}/>
+    <Navbar/>
     {children}
-    <Footer session={session}/>
+    <Footer/>
     </>
   )
 }

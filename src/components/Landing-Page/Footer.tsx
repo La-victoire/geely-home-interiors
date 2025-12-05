@@ -8,7 +8,6 @@ import { Input } from '../ui/input';
 import { FaFacebook, FaInstagram, FaTiktok, FaXTwitter } from 'react-icons/fa6';
 import { Button } from '../ui/button';
 import { signOut } from 'next-auth/react';
-import { Session } from 'next-auth';
 import { useUsers } from '../contexts/UserContext';
 import { User } from '@/lib/types';
 

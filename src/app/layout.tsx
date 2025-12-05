@@ -3,7 +3,6 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Provider from "@/components/contexts/Provider";
 import { SITE_META } from "@/components/constants";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
   },
   description: SITE_META.description,
   icons: {
-    icon: '/favicon.svg'
+    icon: '/logo.png'
   },
   keywords: SITE_META.keywords,
   authors: [{
@@ -78,14 +77,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
   return (
     <html suppressHydrationWarning lang="en">
       <body
         className={`antialiased`}
       >
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Provider session={session}>
+        <Provider>
           {children}
         </Provider>
       </ThemeProvider>

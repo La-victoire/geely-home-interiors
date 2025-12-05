@@ -253,6 +253,8 @@ const Products = () => {
         </Drawer>
       </div>
 
+      <p className='text-primary'>Discover our curated collection of luxury home furnishings</p>
+
       <div className='w-full'>
         <SearchForm 
           setQuery={setQuery}
@@ -272,7 +274,7 @@ const Products = () => {
 
       {/* Collection products section */}
       <section className='w-full'>
-        <div className='grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-5'>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6'>
           {(paginatedProducts ?? []).map((data:product, index:number) => (
             <CollectionCard key={data?.id ?? index} product={data}/>
           ))}

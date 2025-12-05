@@ -5,7 +5,6 @@ import { Trash2 } from 'lucide-react'
 import React from 'react'
 
 const UserTable = ({user, onDelete}:{user:User, onDelete: (id:string) => void}) => {
-  console.log(user)
   const date = new Date(user?.createdAt)
   return (
     <tr className='border-0 border-b'>
@@ -15,7 +14,7 @@ const UserTable = ({user, onDelete}:{user:User, onDelete: (id:string) => void}) 
       <td className='text-center p-3'>{user?.createdAt ? date.toLocaleDateString() : "No Date Available"}</td>
       <td className='text-center'>{user.orders?.length | 0}</td>
       <td className={`md:px-5 px-2 py-3`}>
-        <div className={`border font-semibold py-2 text-center text-white rounded-full ${user.role === "Admin" ? "bg-green-300 border-green-500 ": "bg-yellow-300 border-yellow-500 "}`}>
+        <div className={`border font-semibold p-2 text-center rounded ${user.role === "Admin" ? "text-green-500 border-green-500 ": "text-yellow-300 border-yellow-500 "}`}>
           {user.role}
         </div>
       </td>

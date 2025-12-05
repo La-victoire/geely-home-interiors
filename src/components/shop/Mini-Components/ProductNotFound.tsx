@@ -7,7 +7,7 @@ import { AlertCircle, ArrowLeft } from "lucide-react"
 
 const ProductNotFound = () => {
   return (
-    <div className="w-full min-h-[70vh] flex flex-col items-center justify-center text-center px-5">
+    <div className="w-full min-h-[70vh] my-15 flex flex-col items-center justify-center text-center px-5">
       
       <div className="mb-6 flex items-center justify-center">
         <div className="w-24 h-24 rounded-full bg-black/5 flex items-center justify-center">
@@ -33,13 +33,6 @@ const ProductNotFound = () => {
         <Button className="bg-[#ed9e59] text-white" onClick={() => window.location.href = "/"}>
           Browse Collection
         </Button>
-      </div>
-
-      {/* Optional: Soft skeleton preview to guide the user's eyes */}
-      <div className="mt-10 flex gap-3">
-        <Skeleton className="w-32 h-44 rounded-xl" />
-        <Skeleton className="w-32 h-44 rounded-xl" />
-        <Skeleton className="w-32 h-44 rounded-xl" />
       </div>
 
     </div>

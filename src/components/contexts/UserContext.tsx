@@ -8,32 +8,35 @@ const UserContext = createContext<any>(null);
 
 export function UsersProvider({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState<any>(null);
-  const [id, setId] = useState(()=> {
+  const [id, setId] = useState<string>("");   // never read window here
+
+  // Load ID from sessionStorage on the client ONLY
+  useEffect(() => {
     const storedId = sessionStorage.getItem("userId");
-    return storedId ? storedId : ""
-  })
+    if (storedId) setId(storedId);
+  }, []);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        // 1. Check for stored ID
-        if (id === "") return; // Nothing to fetch yet
+        if (!id) return; // still no id, skip
 
-        // 2. Fetch user profile
         const data = await getProfile(`/users/${id}`);
 
-        if (!data) console.log("No user data returned");
+        if (!data) {
+          console.log("No user data returned");
+          return;
+        }
+
         setUsers(data);
-      } catch (error:any) {
+      } catch (error: any) {
         toast.error("Failed to fetch user data.");
-        throw new Error("Failed to fetch user data:", error);
+        console.error("Failed to fetch user data:", error);
       }
     };
 
-    // Only run when we have a valid session or status is known
-    if (sessionStorage.getItem("userId")) {
-      fetchUser();
-    }
-  }, [id]); // re-run when session becomes available
+    fetchUser();
+  }, [id]);
 
   return (
     <UserContext.Provider value={{ users, setUsers }}>

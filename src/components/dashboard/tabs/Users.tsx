@@ -13,10 +13,10 @@ const Users = () => {
   useEffect(()=> {
     const fetcher = async () => {
       try {
-        const users = await getProfile<User[]>("/users");
+        const data = await getProfile<User[]>("/users");
         setLoading(true);
-        if (users.length > 0) {
-        setClient(users)
+        if (data.users.length > 0) {
+        setClient(data.users)
         setLoading(false);    
     }
         setLoading(false)

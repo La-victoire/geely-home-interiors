@@ -431,73 +431,50 @@ export const INTERIOR_CATEGORIES = [
   {
     category: "Living Room",
     subcategories: [
-     "Lighting",   
-     "Wall Art",
-     "Decorative Objects",
-      "Greenery",
-      "Wall Mirror",
      "Furniture",
-     "Christmas Accessories",
       "Side Stool"
     ]
   },
   {
     category: "Dining Room",
     subcategories: [
-      "Furniture",
       "Greenery",
-      "Lighting",
       "Wall Mirror",
     ]
   },
   {
     category: "Bedroom",
     subcategories: [
-      "Furniture",
-      "Lighting",
       "Duvet Set",
-      "Wall Art",
-      "Christmas Accessories",
     ]
   },
   {
     category: "Kitchen",
     subcategories: [
       "Bar Stools",
-      "Lighting",
       "Storage Rack",
      "Wall Clock",
-     "Furniture"
     ]
   },
   {
     category: "Office",
     subcategories: [
-      "Furniture",
       "Wall Shelf",
-      "Lighting",
-      "Decorative Objects",
       "Wall Art",
-      "Christmas Accessories",
     ]
   },
   {
     category: "Entryway",
     subcategories: [
-      "Furniture",
-      "Wall Mirror",
       "Lighting",
       "Decorative Objects",
-      "Christmas Accessories",
 
     ]
   },
   {
     category: "Bathroom",
     subcategories: [
-      "Wall Mirror",
       "Towel Rack",
-      "Furniture",
       "Scent Diffuser",
       "Bath Rug"
     ]
@@ -505,10 +482,7 @@ export const INTERIOR_CATEGORIES = [
   {
     category: "Outdoor",
     subcategories: [
-      "Furniture",
-      "Lighting",
       "Christmas Accessories",
-      "Greenery",
     ]
   }
 ]

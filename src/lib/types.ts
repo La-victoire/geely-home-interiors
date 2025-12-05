@@ -1,3 +1,5 @@
+import { product } from "@/components/shop/Mini-Components/CollectionCard";
+
 export interface Address {
   id: string;
   street: string;
@@ -54,4 +56,32 @@ export interface User {
   addresses: Address[];
   orders: Order[];
   cart: cartProduct[];
+}
+
+export interface DiscountBadge {
+  label: string
+  percentage: number
+  type: "xmas" | "subcategory" | "festive"
+}
+
+export function getDiscountBadges(product: product): DiscountBadge[] {
+  const badges: DiscountBadge[] = []
+
+  if (product.isXmasDeal) {
+    badges.push({
+      label: "Xmas Sale",
+      percentage: 35,
+      type: "xmas",
+    })
+  }
+
+  if (product?.isDiscountDeal && product?.maxDiscountCap > 0) {
+    badges.push({
+      label: `${product.subcategory} Sale`,
+      percentage: product.maxDiscountCap,
+      type: "subcategory",
+    })
+  }
+
+  return badges
 }

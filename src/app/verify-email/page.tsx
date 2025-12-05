@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { GeelyLogo } from "@/components/order/geely-logo"
 import { AuthCard } from "@/components/auth/Auth-card"
 import { PremiumButton } from "@/components/order/premium-button"
@@ -15,10 +15,15 @@ import { toast } from "sonner"
 
 export default function VerifyEmailPage() {
   const {users}:{users:User} = useUsers();
-  const [email, setEmail] = useState(users?.email || "")
+  const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isSent, setIsSent] = useState(false)
   const [error, setError] = useState("")
+
+   useEffect(()=>{
+      if(users?.email && users?.email !== "")
+       setEmail(users.email)
+    },[])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

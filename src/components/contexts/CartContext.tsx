@@ -4,7 +4,6 @@ import React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { wishList } from '@/lib/wishList';
 import { useProducts } from './ProductsContext'
-import { useSession } from "next-auth/react";
 import { cartProduct } from '@/lib/types';
 import { cart } from "@/lib/cart";
 
@@ -17,15 +16,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const { products } = useProducts() as any;
 
   const [wishListCount, setWishListCount] = useState<number>(0)
-  const { status } = useSession();
 
   useEffect(() => {
     if (!products || products.length === 0) return;
 
     // ------- Load Session Cart Products -------
-    const sessionCart = cart.getCart() as cartProduct[];
-    const ids = new Set(sessionCart.map(i => i.productId));
-    const filtered = products.filter((prod: any) => ids.has(prod._id));
+    const sessionCart = cart.getCart() as unknown as cartProduct[];
+    const ids = new Set(sessionCart.map(i => i.productId as any));
+    const filtered = products?.filter((prod: any) => ids.has(prod._id));
 
     if (sessionCart.length > 0) {
       setCartProducts(filtered);
@@ -42,7 +40,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    if (status === "authenticated" || sessionStorage.getItem("userId")) {
+    if (sessionStorage.getItem("userId")) {
       fetcher();
     }
 

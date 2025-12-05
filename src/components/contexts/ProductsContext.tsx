@@ -10,15 +10,16 @@ const ProductContext = createContext({});
 export function ProductsProvider({ children}: {children:React.ReactNode}) {
   const fetcher = async (url: string) => await getData<any>(url);
   const [products, setProducts] = useState<product[]>([]);
+  const [pages, setPages] = useState();
   const { data, error:productsError, isLoading:productsLoading } = useSWR("/products", fetcher, { refreshInterval: 300000, revalidateOnFocus: false, revalidateIfStale: false });
 
   useEffect(() => {
     if (data)
-      setProducts(data || []);
+      setProducts(data.products || []);
+      setPages(data);
   }, [data]);
-
   return (
-    <ProductContext.Provider value={{products,productsError,productsLoading}}>
+    <ProductContext.Provider value={{products,productsError,productsLoading,pages}}>
       {children}
     </ProductContext.Provider>
   );

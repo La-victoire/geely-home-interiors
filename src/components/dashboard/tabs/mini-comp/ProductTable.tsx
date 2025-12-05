@@ -132,12 +132,6 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
       <td className='pl-3'>{form.name}</td>
       <td className=''>{form.category}</td>
       <td className=''>₦{form.price}</td>
-      <td className=' p-3'>{form.stock}</td>
-      <td className={`md:px-5 px-2 py-3`}>
-        <div className={`border font-semibold not-sm:p-2 py-2 text-center text-white rounded-full ${form.stock > 0 ? "bg-green-300 border-green-500 ": "bg-red-300 border-red-500 "}`}>
-          {form.stock > 0 ? "In Stock" : "Out Of Stock"}
-        </div>
-      </td>
       <td className=' flex flex-center py-3 space-x-3'>
         <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
@@ -180,10 +174,6 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
                   <Input id='product-price' type="number" name='price' value={form.price} onChange={handleChange} placeholder='₦' required/>
                 </div>
 
-                <div className='grid gap-3'>
-                  <Label htmlFor='product-quantity'>Stock Quantity*</Label>
-                  <Input id='product-quantity' type="number" name='stock' value={form.stock} onChange={handleChange} placeholder='0' required/>
-                </div>
               </div>
               <div className='w-full space-y-5'>
                 <div className='grid gap-3'>

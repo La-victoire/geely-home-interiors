@@ -28,7 +28,7 @@ const Products = () => {
     const [product, setProduct] = useState({
       name:"",
       category:"",
-      stock:"",
+      subCategory:"",
       price:"",
       description:"",
       images:[],
@@ -70,6 +70,26 @@ const Products = () => {
       }
       return obj
     }
+
+    const groupSubCategories = (data:any) => {
+        const grouped: Record<string, string[]> = {};
+
+        for (const item of data) {
+            if (!grouped[item.category]) {
+                grouped[item.category] = new Set();
+}
+        for (const sub of item.subcategories) {
+        grouped[item.category].add(sub.trim());
+}
+}
+
+        for (const cat in grouped) {
+            grouped[cat] = [...grouped[cat]];
+}
+        return grouped;
+}
+
+    const grouped = groupSubCategories(INTERIOR_CATEGORIES);
   
     const handleDelete = async (id:string) => {
     setItems((prev)=>
@@ -110,7 +130,7 @@ const Products = () => {
       formData.append("category", product.category);
       formData.append("description", product.description);
       formData.append("price", product.price);
-      formData.append("stock", product.stock);
+      formData.append("subCategory", product.subCategory);
       Feat.forEach((feature,index) => 
         formData.append(`features`, feature)
       );
@@ -121,13 +141,6 @@ const Products = () => {
         formData.append("colors", color)
       })
        formData.append("dimensions", JSON.stringify({ width: product.dimensions.width, height: product.dimensions.height }));
-      if (product.stock !== "0" ) {
-        formData.append("status", "In Stock")
-        setProduct({...product, status:"In Stock"})
-      } else {
-        formData.append("status", "Out Of Stock");
-        setProduct({...product, status:"Out Of Stock"})
-      }
 
       for (let [key, value] of formData.entries()) {
         console.log(key,":",value);
@@ -158,7 +171,7 @@ const Products = () => {
       setProduct({
       name:"",
       category:"",
-      stock:"",
+      subCategory:"",
       price:"",
       description:"",
       images:[],
@@ -178,6 +191,11 @@ const Products = () => {
     const handleSelectChange = (value : string) => {
       setProduct( prev => ({...prev, category:value}) )
     }
+
+    const handleSubCategory = (value: string) => {
+      setProduct(prev => ({...prev, subCategory:value}))    
+    }
+
     const convert = () => {
     product.stock === "0" ? setProduct({...product, status:"Out Of Stock"}) : setProduct({...product, status:"In Stock"})
     } 
@@ -261,20 +279,33 @@ const Products = () => {
                         </SelectContent>
                       </Select>
                     </div>
+
+                <div className='grid gap-3'>
+                      <Label htmlFor='product-category'>Product subcategory*</Label>
+                      <Select name='sub-category' onValueChange={handleSubCategory}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a subcategory"/>
+                        </SelectTrigger>
+                        <SelectContent>
+                            {Object.entries(grouped).map(([category, subs])=> (
+                          <SelectGroup key={category}>
+                            <SelectLabel>{category}</SelectLabel>
+                            {subs.map((sub,index) => (
+                              <SelectItem key={`${category}-${sub}`} value={sub}>
+                                {sub}
+                              </SelectItem>
+))}
+                          </SelectGroup>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
     
                     <div className='grid gap-3'>
                       <Label htmlFor='product-price'>Price*</Label>
                       <Input id='product-price' type="number" name='price' value={product.price} onChange={handleChange} placeholder='₦' required/>
                     </div>
     
-                    <div className='grid gap-3'>
-                      <Label htmlFor='product-quantity'>Stock Quantity*</Label>
-                      <Input id='product-quantity' type="number" name='stock' value={product.stock}
-                       onChange={ (e) => 
-                          (handleChange(e),convert)
-                        } 
-                        placeholder='0' required/>
-                    </div>
                   </div>
                   <div className='w-full space-y-5'>
                     <div className='grid gap-3'>

@@ -5,14 +5,12 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { editProfile } from '@/lib/actions'
 import { User } from '@/lib/types'
-import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
 
 const ContactCard = () => {
    const {users,setUsers} = useUsers() as {users:User, setUsers:React.Dispatch<React.SetStateAction<User>>};
    const [info, setInfo] = useState({firstname:"", lastname:"", phone:"", email:""})
-   const {status} = useSession();
    const authUser = sessionStorage.getItem("userId");
    const showButton = info.phone === "" || info?.firstname === "" || info?.lastname === "" || info?.email === "" || !users?.email || !users.phone || !users ?.firstname || !user?.lastname ;
 
@@ -33,11 +31,11 @@ const ContactCard = () => {
    const onSubmit = async () => {
         try {
            
-             if (info.firstname === "" === "" || info.lastname === "") {
+             if (info.firstname === "" || info.lastname === "") {
                 toast.error("PLEASE ENSURE YOUR FIRST AND LAST NAME ARE SEPARATED WITH A SPACE!") } 
              else {
                 if (info.firstname !== "" && info.lastname !== "") {
-                    if (status !== "authenticated" || !authUser) {
+                    if (!authUser) {
                         setUsers({...users, firstname:info.firstname, lastname:info.lastname})
                         setInfo({...info, firstname:"", lastname:""})
                         toast.success("User Name Updated Successfully")
@@ -51,7 +49,7 @@ const ContactCard = () => {
               }
    
             if (info.email !== "") {
-                if (status !== "authenticated" || !authUser) {
+                if (!authUser) {
                     setUsers({...users, email:info.email})
                     setInfo({...info, email:""})
                     toast.success("User Email Updated Successfully")
@@ -64,7 +62,7 @@ const ContactCard = () => {
                     setInfo(data.phone ? {...info, phone:data.phone} : {...info, email:data.email})
             }
             if (info.phone !== "") {
-                 if (status !== "authenticated" || !authUser) {
+                 if (!authUser) {
                     setUsers({...users, phone:info.phone})
                     setInfo({...info, phone:""})
                     toast.success("User Phone Number Updated Successfully")
@@ -72,7 +70,7 @@ const ContactCard = () => {
                 }
                 const data:User = await editProfile(`users/${users._id}`, {phone:info.phone})
                 if (!data.error)
-                    setUsers({...users, phone:phone!})
+                    setUsers({...users, phone:info.phone!})
                     toast.success("Phone Number Updated Successfully")
                     setInfo(data.firstname && data.lastname ? {...info, firstname:data.firstname, lastname:data.lastname} : {...info, phone:data.phone})
             }
@@ -80,7 +78,7 @@ const ContactCard = () => {
                 toast.error("Please fill in all fields before saving.")
             }
             if (info.firstname !== "" && info.lastname !== "" && info.phone !== "" && info.email !== "") {
-                 if (status !== "authenticated" || !authUser) {
+                 if (!authUser) {
                     setUsers({...users, firstname:info.firstname, lastname:info.lastname, phone:info.phone, email:info.email})
                     toast.success("User Profile Updated Successfully")
                     return;
