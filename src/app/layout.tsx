@@ -3,7 +3,6 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Provider from "@/components/contexts/Provider";
 import { SITE_META } from "@/components/constants";
-import { authOptions } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: {

@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { Input } from '../ui/input';
 import { FaFacebook, FaInstagram, FaTiktok, FaXTwitter } from 'react-icons/fa6';
 import { Button } from '../ui/button';
-import { signOut } from 'next-auth/react';
 import { useUsers } from '../contexts/UserContext';
 import { User } from '@/lib/types';
 
@@ -103,7 +102,7 @@ const Footer = () => {
               <a href="https://tiktok.com/@geelyInteriors?_r=1&_t=ZS-91cma6zQagC"><FaTiktok size={20}/></a>
           </div>
           {isAuthenticated ? 
-            <Button onClick={() => signOut()} className='w-max px-10 bg-foreground text-background hover:bg-foreground/80'>
+            <Button className='w-max px-10 bg-foreground text-background hover:bg-foreground/80'>
              Log Out
             </Button>
           :

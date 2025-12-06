@@ -12,12 +12,11 @@ import { product } from './Mini-Components/CollectionCard'
 import { createProfile } from '@/lib/actions'
 import { cartProduct } from '@/lib/types'
 import { useUsers } from '../contexts/UserContext'
-import { User } from 'next-auth'
 
 const ProductHero = ({item}:{item:product}) => {
   const [quantity, setQuantity] = useState(1)
   const [isVisble, setIsVisible] = useState(item.images[0]?.url)
-  const {users} = useUsers() as {users:User};
+  const {users} = useUsers() as {users:any};
   const {cartProducts, setCartCount, setWishListCount} = useCart() as {cartProducts:cartProduct[], setCartCount:React.Dispatch<React.SetStateAction<number>>, setWishListCount:React.Dispatch<React.SetStateAction<number>>};
   const isMobile = useMediaQuery({maxWidth: 767 });
 

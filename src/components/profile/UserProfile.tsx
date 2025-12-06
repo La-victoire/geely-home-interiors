@@ -9,7 +9,6 @@ import { Button } from '../ui/button'
 import { getProfile } from '@/lib/actions'
 import useSWR from 'swr'
 import { useUsers } from '../contexts/UserContext'
-import { signOut } from 'next-auth/react';
 
 const UserProfile = ({id}:{id:string}) => {
   const fetcher = async (url: string) => await getProfile<any>(url);
@@ -64,7 +63,7 @@ const UserProfile = ({id}:{id:string}) => {
           </div>
       </div>
        <div className="py-10 w-full flex justify-center item-center">
-        <Button className="hover:cursor-pointer" onClick={() => signOut()}> Log Out</Button>
+        <Button className="hover:cursor-pointer"> Log Out</Button>
     </div>
     </div>
     )

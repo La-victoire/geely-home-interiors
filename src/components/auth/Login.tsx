@@ -10,7 +10,6 @@ import { createProfile } from '@/lib/actions'
 import { toast } from 'sonner'
 import { useUsers } from '../contexts/UserContext'
 import { User } from '@/lib/types'
-import { signIn } from 'next-auth/react'
 import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
