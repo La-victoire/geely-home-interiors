@@ -7,11 +7,11 @@ import React from 'react'
 const page = () => {
 
   return (
-    <main className='px-10 py-20'>
+    <main className='md:px-10 px-5 py-20'>
       <h1 className='headFont text-2xl md:text-4xl'>Dashboard</h1>
       <h2 className='text-md md:text-2xl'>Manage Your interior decor business</h2>
       <div className='flex not-sm:flex-center'>
-        <div className='flex not-sm:item-col w-[80dvw] my-10 gap-5'>
+        <div className='flex not-sm:item-col w-full md:w-[80dvw] my-10 gap-5'>
           <TotalCard/>
           <ClientCard/>
         </div>

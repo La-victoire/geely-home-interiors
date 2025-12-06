@@ -35,8 +35,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const data = await getData("/carts");
 
       if (data && !data.error) {
-        setCartProducts(data.cart || []);
-        setCartCount(data.cart?.length || 0);
+        setCartProducts(data || []);
+        setCartCount(data?.length || 0);
       }
     };
 

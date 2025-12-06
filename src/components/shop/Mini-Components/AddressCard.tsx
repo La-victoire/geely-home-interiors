@@ -17,12 +17,14 @@ const AddressCard = () => {
   };
 
   const [isEditing, setIsEditing] = useState(false);
-  const authUser = sessionStorage.getItem("userId");
+  const [authUser, setAuthUser] = useState();
 
   // ------------------------------------------
   // Guarantee at least one address object exists
   // ------------------------------------------
   useEffect(() => {
+    const id = sessionStorage.getItem("userId");
+    if (authUser) setAuthUser(id)        
     if (!users?.addresses || users?.addresses.length === 0) {
       setUsers({
         ...users,
@@ -50,8 +52,8 @@ const AddressCard = () => {
   const handleProfile = async () => {
     try {
       if (!authUser) {
-          console.log(users.addresses[0])
           toast.success("User Address Updated Successfully")
+          setIsEditing(false)
           return;
       }
       const data: User = await editProfile(`users/${users._id}`, {

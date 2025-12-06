@@ -162,7 +162,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
               "rounded-xl py-4 font-medium tracking-wide",
               "text-sm sm:text-base"
             )}
-            disabled={product.status !== "In Stock" || users?.role === "Admin" && true } onClick={()=> handleCart()}
+            disabled={users?.role === "Admin" && true } onClick={()=> handleCart()}
           >
             <ShoppingBag className="w-4 h-4 mr-2 shrink-0" />
             <span className="truncate">Add to Cart</span>

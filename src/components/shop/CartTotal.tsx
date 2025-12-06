@@ -16,29 +16,35 @@ const CartTotal = () => {
   const {cartProducts, setCartProducts} = useCart() as {cartProducts:cartProduct[], setCartProducts:React.Dispatch<React.SetStateAction<cartProduct[]>>};
   const [loaded, setLoaded] = useState(false)
   const {users, setUsers} = useUsers() as {users:User, setUsers:React.Dispatch<React.SetStateAction<User>>};
+  const [localCart, setLocalCart] = useState([]);
   const [orderData, setOrderData] = useState({
     client: "",
     name: "",
     amount: 0,
     items: [],
+    subCategory: "",
     metadata: {}
   });
   const sessionCart = cart.getCart() as unknown as cartProduct[];
 
   useEffect(()=> {
+    const geelyCart = sessionStorage.getItem("geely_cart")
+
+    if (geelyCart) {setLocalCart(JSON.parse(geelyCart))}
+
     if (!cartProducts.length) return;
     if (users === null) return;
 
     const items = cartProducts.map((product:any) => ({
-      productId: product.product?._id,
-      name: product.product?.name,
-      quantity: product?.quantity,
-      price: product?.price,
+      productId: product.product?._id || product?._id,
+      name: product.product?.name || product?.name,
+      quantity: product?.quantity || 1,
+      price: Number(product?.price),
     }))
 
-    const amount = cartProducts?.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0);
+    const amount = cartProducts?.map((product:any) => Math.ceil(Number(product.price) * (product.quantity || 1))).reduce((a, b) => a + b, 0);
 
-    setOrderData({ ...orderData, client:users?.email, amount, items, name: users?.firstname, metadata: users?._id})
+    setOrderData({ ...orderData, client:users?.email, amount, items, name: users?.firstname, subCategory:cartProducts[0]?.subCategory ,metadata: (users?._id || "guest")})
   },[cartProducts, users])
 
 
@@ -55,11 +61,8 @@ const CartTotal = () => {
         setLoaded(true)    
     }
   },[])
-    const geelyCart = sessionStorage.getItem("geely_cart")
-    const localCart = geelyCart ? JSON.parse(geelyCart) : [];
-    console.log(cartProducts[0].quantity)
+
   const handlePayment = async () => {
-    console.log(cartProducts)
     if (!loaded) {
       toast.error("Payment gateway is not loaded. Please try again later.");
       return;
@@ -75,13 +78,13 @@ const CartTotal = () => {
     return;    
     }
 
-    if (sessionCart.length < 1) {
+    if (sessionCart.length < 1 && cartProducts.length < 1) {
         toast.message("Your cart is empty. Please add items to your cart before proceeding to payment.") 
     return;
     }
     
-    if(users.phone === "" || users.addresses.length < 1) {
-        toast.message("Please provide your complete contact information before paying.") 
+    if(users.phone === "" || users.addresses.length < 1 || users.firstname === "" || users.lastname === "" || users.email === "") {
+        toast.message("Please provide your complete contact information or ensure profile is saved completely before paying.") 
     return;
 }
 
@@ -105,12 +108,14 @@ const CartTotal = () => {
         ref: reference,
         onSuccess: async (response: any) => {
           paymentOpened = false;
-          await deleteProduct('/carts/clear')
+          if (users._id) {
+          await deleteProduct('/carts/clear')}
+          cart?.clearCart();
           toast.success(`Payment ${response.status}!`);
           console.log("Payment Response:", response);
           sessionCart.length > 0 && cart.clearCart();
           setCartProducts([]);
-          window.location.href = "/shop/products";
+          window.location.href = "/thank-you";
         },
         onCancel: () => {
         if (onCancel) onCancel();

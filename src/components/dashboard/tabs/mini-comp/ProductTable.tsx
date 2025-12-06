@@ -1,5 +1,5 @@
 "use client"
-import { product } from '@/components/shop/Mini-Components/CollectionCard'
+//import { product } from '@/components/shop/Mini-Components/CollectionCard'
 import { Button } from '@/components/ui/button'
 import { Edit, Loader2Icon, Trash2, X } from 'lucide-react'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -13,7 +13,7 @@ import { editProduct } from '@/lib/actions'
 import { toast } from 'sonner'
 import { INTERIOR_CATEGORIES } from '@/components/constants'
 
-const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string) => void}) => {
+const ProductTable = ({Product, onDelete}:{Product:any ,onDelete: (id:string) => void}) => {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const [form , setForm] = useState(Product);
@@ -23,6 +23,7 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
   const [images, setImages] = useState<any>(form.images)
   const [width, setWidth] = useState<string>(form.dimensions?.width);
   const [height, setHeight] = useState<string>(form.dimensions?.height);
+console.log(Product)
   const increaseFeatures = () => {
     setFeat((prev) => [...prev, ""])
   }
@@ -127,12 +128,35 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
     });
   };
 
+  function formatIsoDate(isoString) {
+      if (!isoString) return null;
+      const date = new Date(isoString);
+
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const day = date.getDate();
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+
+      const suffix =
+        day % 10 === 1 && day !== 11 ? "st" :
+        day % 10 === 2 && day !== 12 ? "nd" :
+        day % 10 === 3 && day !== 13 ? "rd" :
+        "th";
+
+      return `${month} ${day}${suffix}, ${year}`;
+    }
+
+
   return (
     <tr className='border-0 border-b'>
-      <td className='pl-3'>{form.name}</td>
-      <td className=''>{form.category}</td>
-      <td className=''>₦{form.price}</td>
-      <td className=' flex flex-center py-3 space-x-3'>
+      <td className='text-center pl-3'>{form.name}</td>
+      <td className='text-center border-l p-3'>{form.category}</td>
+      <td className='text-center border-l p-3'>₦{form.price}</td>
+      <td className='text-center border-l p-3'>{form.subCategory}</td>
+      <td className='text-center border-l p-3'>{form?.isXmasDeal && "Xmas-sale" || form?.isDiscountDeal && `${form.subCategory}-sale` || "No Discount"}</td>
+      <td className='text-center border-l p-3'>{formatIsoDate(form.discountUntil) || "No Discount"}</td>
+      <td className='text-center border-l p-3'>{form?.maxDiscountCap}%</td>
+      <td className='border-l flex flex-center p-3 space-x-3'>
         <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" className='hover:bg-blue-500 hover:text-white'><Edit /></Button>
@@ -207,7 +231,7 @@ const ProductTable = ({Product, onDelete}:{Product:product ,onDelete: (id:string
                 <div className='grid gap-3'>
                   <Label htmlFor='product-feature'>Product Feature(optional)</Label>
                   {Feat.length > 0 && Feat.map((feature,index) => (
-                    <div className='flex gap-3'>
+                    <div key={index} className='flex gap-3'>
                       <Input id='product-feature' value={feature} onChange={(e)=> modifyFeatures(index, e.target.value)} name='feature' placeholder={`Product feature ${index + 1}`}/>
                       <Button onClick={() => decreaseFeatures(index)}> <X /> </Button>
                     </div>

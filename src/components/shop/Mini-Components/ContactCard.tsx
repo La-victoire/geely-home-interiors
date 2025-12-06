@@ -5,14 +5,19 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { editProfile } from '@/lib/actions'
 import { User } from '@/lib/types'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 
 const ContactCard = () => {
    const {users,setUsers} = useUsers() as {users:User, setUsers:React.Dispatch<React.SetStateAction<User>>};
    const [info, setInfo] = useState({firstname:"", lastname:"", phone:"", email:""})
-   const authUser = sessionStorage.getItem("userId");
-   const showButton = info.phone === "" || info?.firstname === "" || info?.lastname === "" || info?.email === "" || !users?.email || !users.phone || !users ?.firstname || !user?.lastname ;
+   const [authUser, setAuthUser] = useState();
+
+   useEffect(()=> {
+       const id = sessionStorage.getItem("userId");
+        if (authUser) setAuthUser(id)        
+    },[])
+   const showButton = info.phone === "" || info?.firstname === "" || info?.lastname === "" || info?.email === "" || !users?.email || !users.phone || !users ?.firstname || !user?.lastname;
 
    const handleFormChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -23,9 +28,6 @@ const ContactCard = () => {
         const nameParts = value.split(" ");
         const firstName = nameParts.slice(0, -1).join(" ");
         const lastName = nameParts.slice(-1).join(" ");
-        if (!value.includes(" ")) {
-          toast.message("Please provide both first and last name separated by a space.")
-        }
         setInfo({...info, firstname:firstName, lastname:lastName})
     }
    const onSubmit = async () => {

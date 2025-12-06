@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpRightSquare, PlusCircle, X } from 'lucide-react'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -24,7 +27,8 @@ const Products = () => {
     const [color, setColor] = useState<string>("");
     const [search, setSearch] = useState("")
     const [Feat, setFeat] = useState<string[]>([]);
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+    const [date, setDate] = useState();
     const [product, setProduct] = useState({
       name:"",
       category:"",
@@ -33,6 +37,9 @@ const Products = () => {
       description:"",
       images:[],
       features:Feat,
+      isXmasDeal: false,
+      isDiscountDeal: false,
+      discountUntill: date,
       dimensions:{
         width:"",
         height:"",
@@ -44,6 +51,7 @@ const Products = () => {
     const {products} = useProducts() as {products:product[]}
     useEffect(()=> {
       setItems(products)
+console.log(products)
     },[])
 
     const increaseFeatures = () => {
@@ -131,6 +139,9 @@ const Products = () => {
       formData.append("description", product.description);
       formData.append("price", product.price);
       formData.append("subCategory", product.subCategory);
+      formData.append("isDiscountDeal", product.isDiscountDeal);
+      formData.append("isXmasDeal", product.isXmasDeal);
+      formData.append("discountUntill", product.discountUntill);
       Feat.forEach((feature,index) => 
         formData.append(`features`, feature)
       );
@@ -176,6 +187,9 @@ const Products = () => {
       description:"",
       images:[],
       features:[],
+      isXmasDeal: false,
+      isDiscountDeal: false,
+      discountUntill: "",
       dimensions:{
         width:"",
         height:"",
@@ -196,9 +210,6 @@ const Products = () => {
       setProduct(prev => ({...prev, subCategory:value}))    
     }
 
-    const convert = () => {
-    product.stock === "0" ? setProduct({...product, status:"Out Of Stock"}) : setProduct({...product, status:"In Stock"})
-    } 
     const handleColorChange = () => {
       if (color && !colors?.includes(color)) {
       setProduct({ ...product, colors:[color]  })
@@ -380,7 +391,64 @@ const Products = () => {
                     </div>
                   </div>
                 </div>
-                <DialogFooter>
+   
+                <div className="flex gap-10 mb-10">
+                <div className="flex gap-5 p-3 border rounded-md">
+                    <Label className="text-sm font-medium">
+                        Discount Deal
+                    </Label>        
+                    <Switch
+  id="isDiscountDeal"
+  checked={product.isDiscountDeal}
+  onCheckedChange={(value) =>
+    setProduct(prev => ({ ...prev, isDiscountDeal: value }))
+  }
+/>     
+                </div>
+
+                <div className="flex gap-5 p-3 border rounded-md">
+                    <Label className="text-sm font-medium">
+                        Christmas Deal
+                    </Label>        
+                    <Switch
+  id="isXmasDeal"
+  checked={product.isXmasDeal}
+  onCheckedChange={(value) =>
+    setProduct(prev => ({ ...prev, isXmasDeal: value }))
+  }
+/>     
+                </div>
+                </div>
+
+                 <div className="flex flex-col space-y-2">
+    <label className="text-sm font-medium">Discount Until</label>
+
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button 
+          variant="outline" 
+          data-empty={!date}
+          className="data-[empty=true] w-[280px] text-left justify-start"
+        >
+          {date ? date.toDateString() : "Pick a date"}
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent className="w-auto p-0">
+        <Calendar
+          mode="single"
+          selected={date}
+          captionLayout="dropdown"
+          onSelect={(d) => {
+    if (!d) return;
+    setDate(d.toISOString());
+  }}
+        />
+      </PopoverContent>
+    </Popover>
+  </div>
+
+                <DialogFooter className="mt-10">
                   <DialogClose asChild>
                     <Button variant="outline">Cancel</Button>
                   </DialogClose>
@@ -405,15 +473,17 @@ const Products = () => {
             No Products Available
           </p>
         ):(
-          <table className='not-md:w-[150dvw] w-full not-sm:text-sm'>
+          <table className='not-md:w-[150dvw] mt-5 w-full not-sm:text-sm'>
             <thead>
               <tr className=''>
-                <th className=' p-4 text-start border-0 border-b'>Name</th>
-                <th className=' py-2 text-start border-0 border-b'>Category</th>
-                <th className=' py-2 text-start border-0 border-b'>Price</th>
-                <th className=' py-2 text-start border-0 border-b'>Stock</th>
-                <th className=' py-2 border-0 border-b'>Status</th>
-                <th className=' py-2 border-0 border-b'>Actions</th>
+                <th className=' p-4 text-center border-0 border-b'>Name</th>
+                <th className=' p-3 text-center border-0 border-l border-b'>Category</th>
+                <th className=' p-3 text-center border-0 border-l border-b'>Price</th>
+                <th className=' p-3 text-center border-0 border-l border-b'>Sub-Category</th>
+                <th className=' p-3 text-center border-0 border-l border-b'>Discount Type</th>
+                <th className=' p-3 text-center border-0 border-l border-b'>Discount Ends</th>
+                <th className=' p-3 text-center border-0 border-l border-b'>Discount Amount</th>
+                <th className=' p-3 text-center border-0 border-l border-b'>Actions</th>
               </tr>
             </thead>
             <tbody className='overflow-y-scroll'>

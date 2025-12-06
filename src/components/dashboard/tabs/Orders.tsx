@@ -20,8 +20,8 @@ const Orders = () => {
       try {
         const data = await getData<Order[]>("/orders");
         setLoading(true);
-        if (data.length > 0) {
-        setOrder(data)
+        if (data.orders.length > 0) {
+        setOrder(data.orders)
         setLoading(false);    
     }
         setLoading(false)

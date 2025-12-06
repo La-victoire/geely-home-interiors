@@ -9,8 +9,8 @@ const UserTable = ({user, onDelete}:{user:User, onDelete: (id:string) => void}) 
   return (
     <tr className='border-0 border-b'>
       <td className='text-center p-3'>{user.firstname} {user.lastname}</td>
-      <td className='text-center'>{user.email}</td>
-      <td className='text-center'>{user?.phone || "null"}</td>
+      <td className='text-center p-3'>{user.email}</td>
+      <td className='text-center p-3'>{user?.phone || "null"}</td>
       <td className='text-center p-3'>{user?.createdAt ? date.toLocaleDateString() : "No Date Available"}</td>
       <td className='text-center'>{user.orders?.length | 0}</td>
       <td className={`md:px-5 px-2 py-3`}>
