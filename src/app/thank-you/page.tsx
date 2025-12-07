@@ -7,6 +7,9 @@ import { PremiumButton } from "@/components/order/premium-button"
 import { SuccessCheckmark } from "@/components/order/success-checkmark"
 import { Package, Truck, Calendar, MapPin, CreditCard, ArrowRight } from "lucide-react"
 import { GeelyLogo } from "@/components/order/geely-logo"
+import { useOrder } from "@/components/contexts/OrderContext"
+import { cartProduct, Order, User } from "@/lib/types"
+import { useUsers } from "@/components/contexts/UserContext"
 
 // Mock order data
 const orderData = {
@@ -47,6 +50,8 @@ function formatPrice(price: number) {
 
 export default function ThankYouPage() {
   const [showContent, setShowContent] = useState(false)
+  const {order} = useOrder() as {order: Order};
+  const {users} = useUsers as unknown as {users: User}
 
   useEffect(() => {
     const timer = setTimeout(() => setShowContent(true), 300)
@@ -100,7 +105,7 @@ export default function ThankYouPage() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="space-y-1">
                 <p className="text-xs text-muted-foreground uppercase tracking-wider">Order Confirmed</p>
-                <p className="font-mono text-lg text-foreground">{orderData.orderId}</p>
+                <p className="font-mono text-lg text-foreground">GHI-{order?.subCategory}</p>
               </div>
               <div className="flex items-center gap-2 text-gold">
                 <Package className="w-5 h-5" />
@@ -113,14 +118,14 @@ export default function ThankYouPage() {
           <div className="px-6 md:px-8 py-6 space-y-4">
             <h3 className="font-serif text-lg text-foreground">Order Items</h3>
             <div className="space-y-4">
-              {orderData.items.map((item) => (
-                <div key={item.id} className="flex gap-4 p-4 bg-secondary/30 rounded-xl">
+              {order.items?.map((item) => (
+                <div key={item.productId} className="flex gap-4 p-4 bg-secondary/30 rounded-xl">
                   <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
                     <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium text-foreground truncate">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">{item.variant}</p>
+                    <p className="text-sm text-muted-foreground">{order.subCategory}</p>
                     <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                   </div>
                   <div className="text-right">
@@ -141,7 +146,7 @@ export default function ThankYouPage() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Estimated Delivery</p>
-                  <p className="font-medium text-foreground">{orderData.deliveryEstimate}</p>
+                  <p className="font-medium text-foreground">{users?.addresses[0].state.includes("lagos") ? "2-3 Business Days" : "7-15 Business Days"}</p>
                 </div>
               </div>
 
@@ -151,17 +156,7 @@ export default function ThankYouPage() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Shipping Address</p>
-                  <p className="font-medium text-foreground">{orderData.shippingAddress}</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
-                  <CreditCard className="w-5 h-5 text-gold" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Payment Method</p>
-                  <p className="font-medium text-foreground">{orderData.paymentMethod}</p>
+                  <p className="font-medium text-foreground">{users?.addresses[0].street},  {users?.addresses[0].state},{users?.addresses[0].city}</p>
                 </div>
               </div>
             </div>
@@ -170,15 +165,15 @@ export default function ThankYouPage() {
             <div className="bg-secondary/30 rounded-xl p-5 space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="text-foreground">{formatPrice(orderData.subtotal)}</span>
+                <span className="text-foreground">{formatPrice(order.amount)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Shipping</span>
-                <span className="text-foreground">{formatPrice(orderData.shipping)}</span>
+                <span className="text-foreground">{users?.addresses[0].state.includes("lagos") ? "Free" : formatPrice(20000)}.</span>
               </div>
               <div className="pt-3 border-t border-border/50 flex justify-between">
                 <span className="font-serif text-lg text-foreground">Total</span>
-                <span className="font-serif text-xl text-gold">{formatPrice(orderData.total)}</span>
+                <span className="font-serif text-xl text-gold">{formatPrice(order.amount)}</span>
               </div>
             </div>
           </div>
@@ -186,13 +181,7 @@ export default function ThankYouPage() {
           {/* Actions */}
           <div className="px-6 md:px-8 py-6 border-t border-border/50 bg-secondary/20">
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/orders" className="flex-1">
-                <PremiumButton>
-                  <span>Track Order</span>
-                  <ArrowRight className="w-5 h-5" />
-                </PremiumButton>
-              </Link>
-              <Link href="/products" className="flex-1">
+              <Link href="/shop/products" className="flex-1">
                 <PremiumButton variant="outline">Continue Shopping</PremiumButton>
               </Link>
             </div>
@@ -221,8 +210,8 @@ export default function ThankYouPage() {
 
           <p className="text-xs text-muted-foreground">
             Questions about your order?{" "}
-            <a href="/support" className="text-gold hover:text-gold/80 underline underline-offset-2 transition-colors">
-              Contact Support
+            <a href="/contact" className="text-gold hover:text-gold/80 underline underline-offset-2 transition-colors">
+              Contact Us
             </a>
           </p>
         </div>

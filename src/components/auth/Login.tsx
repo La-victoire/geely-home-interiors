@@ -99,8 +99,9 @@ const Login = () => {
           <p className='text-xs not-md:absolute top-19 not-md:bg-background px-2 text-foreground/50'>or</p>
            <Button
             type="button"
+            disabled={true}
             onClick={auth}
-            className="lg:w-1/3 w-full bg-accent-foreground border text-background hover:text-white" >
+            className={`lg:w-1/3 w-full bg-accent-foreground border text-background hover:text-white`} >
              <FcGoogle /> Sign in with Google 
           </Button>
         </CardFooter>

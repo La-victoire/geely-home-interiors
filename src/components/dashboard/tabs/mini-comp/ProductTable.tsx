@@ -1,5 +1,4 @@
 "use client"
-//import { product } from '@/components/shop/Mini-Components/CollectionCard'
 import { Button } from '@/components/ui/button'
 import { Edit, Loader2Icon, Trash2, X } from 'lucide-react'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -23,7 +22,6 @@ const ProductTable = ({Product, onDelete}:{Product:any ,onDelete: (id:string) =>
   const [images, setImages] = useState<any>(form.images)
   const [width, setWidth] = useState<string>(form.dimensions?.width);
   const [height, setHeight] = useState<string>(form.dimensions?.height);
-console.log(Product)
   const increaseFeatures = () => {
     setFeat((prev) => [...prev, ""])
   }
@@ -118,17 +116,7 @@ console.log(Product)
     setForm({...form, images:updated});
   };
 
-  const categoryFilter = (arr:product[], categoryKey = "category") => {
-    const seen = new Set();
-    return arr.filter((obj:any) => {
-      const categoryVal = obj[categoryKey];
-      if (seen.has(categoryVal)) return false; 
-      seen.add(categoryVal);
-      return true
-    });
-  };
-
-  function formatIsoDate(isoString) {
+  function formatIsoDate(isoString: string) {
       if (!isoString) return null;
       const date = new Date(isoString);
 
@@ -155,7 +143,7 @@ console.log(Product)
       <td className='text-center border-l p-3'>{form.subCategory}</td>
       <td className='text-center border-l p-3'>{form?.isXmasDeal && "Xmas-sale" || form?.isDiscountDeal && `${form.subCategory}-sale` || "No Discount"}</td>
       <td className='text-center border-l p-3'>{formatIsoDate(form.discountUntil) || "No Discount"}</td>
-      <td className='text-center border-l p-3'>{form?.maxDiscountCap}%</td>
+      <td className='text-center border-l p-3'>{form?.computedDiscountedPrice || 0 }%</td>
       <td className='border-l flex flex-center p-3 space-x-3'>
         <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>

@@ -39,7 +39,6 @@ const Register = () => {
 
         sessionStorage.setItem("userId", data?.userData?._id as string);
         toast.success(`${data?.userData?.firstname} Registered successfully!`);
-        console.log(data);
         setIsLoading(false);
         window.location.href = `/verify-email`;
       } catch (error) {

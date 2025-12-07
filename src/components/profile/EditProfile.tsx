@@ -46,7 +46,7 @@ const EditProfile = ({setPerson, person}:{setPerson:any, person:User}) => {
 return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Edit />
+        <Edit className='ml-3 hover:text-accent' />
       </DialogTrigger>
       <DialogContent className='max-h-[70dvh] overflow-y-scroll'>
         <form onSubmit={handleFormSubmit}>

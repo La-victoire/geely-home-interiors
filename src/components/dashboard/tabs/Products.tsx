@@ -18,6 +18,7 @@ import { useProducts } from '@/components/contexts/ProductsContext'
 import { toast } from 'sonner'
 import { deleteProduct, postData } from '@/lib/actions'
 import { INTERIOR_CATEGORIES } from '@/components/constants'
+import { DateTimePicker } from '@/components/shop/Mini-Components/DatePicker'
 
 
 const Products = () => {
@@ -28,7 +29,6 @@ const Products = () => {
     const [search, setSearch] = useState("")
     const [Feat, setFeat] = useState<string[]>([]);
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState();
     const [product, setProduct] = useState({
       name:"",
       category:"",
@@ -39,7 +39,7 @@ const Products = () => {
       features:Feat,
       isXmasDeal: false,
       isDiscountDeal: false,
-      discountUntill: date,
+      discountUntil: "",
       dimensions:{
         width:"",
         height:"",
@@ -51,7 +51,6 @@ const Products = () => {
     const {products} = useProducts() as {products:product[]}
     useEffect(()=> {
       setItems(products)
-console.log(products)
     },[])
 
     const increaseFeatures = () => {
@@ -119,7 +118,7 @@ console.log(products)
     const queriedResults = useMemo(() => {
        if (items) {
       return items
-        .filter(p => search || p.name.toLowerCase().includes(search.toLowerCase())) as products;
+        .filter(p => search || p.name.toLowerCase().includes(search.toLowerCase())) as product[];
     }
     return []
     }, [items,search]);
@@ -139,9 +138,9 @@ console.log(products)
       formData.append("description", product.description);
       formData.append("price", product.price);
       formData.append("subCategory", product.subCategory);
-      formData.append("isDiscountDeal", product.isDiscountDeal);
-      formData.append("isXmasDeal", product.isXmasDeal);
-      formData.append("discountUntill", product.discountUntill);
+      formData.append("isDiscountDeal", product.isDiscountDeal as unknown as string);
+      formData.append("isXmasDeal", product.isXmasDeal as any);
+      formData.append("discountUntil", product.discountUntil);
       Feat.forEach((feature,index) => 
         formData.append(`features`, feature)
       );
@@ -152,10 +151,6 @@ console.log(products)
         formData.append("colors", color)
       })
        formData.append("dimensions", JSON.stringify({ width: product.dimensions.width, height: product.dimensions.height }));
-
-      for (let [key, value] of formData.entries()) {
-        console.log(key,":",value);
-      }
 
       // API call to create a product
       try {
@@ -189,7 +184,7 @@ console.log(products)
       features:[],
       isXmasDeal: false,
       isDiscountDeal: false,
-      discountUntill: "",
+      discountUntil: "",
       dimensions:{
         width:"",
         height:"",
@@ -398,12 +393,12 @@ console.log(products)
                         Discount Deal
                     </Label>        
                     <Switch
-  id="isDiscountDeal"
-  checked={product.isDiscountDeal}
-  onCheckedChange={(value) =>
-    setProduct(prev => ({ ...prev, isDiscountDeal: value }))
-  }
-/>     
+                      id="isDiscountDeal"
+                      checked={product.isDiscountDeal}
+                      onCheckedChange={(value) =>
+                        setProduct(prev => ({ ...prev, isDiscountDeal: value }))
+                      }
+                    />     
                 </div>
 
                 <div className="flex gap-5 p-3 border rounded-md">
@@ -411,42 +406,26 @@ console.log(products)
                         Christmas Deal
                     </Label>        
                     <Switch
-  id="isXmasDeal"
-  checked={product.isXmasDeal}
-  onCheckedChange={(value) =>
-    setProduct(prev => ({ ...prev, isXmasDeal: value }))
-  }
-/>     
+                      id="isXmasDeal"
+                      checked={product.isXmasDeal}
+                      onCheckedChange={(value) =>
+                        setProduct(prev => ({ ...prev, isXmasDeal: value }))
+                      }
+                    />     
                 </div>
                 </div>
 
-                 <div className="flex flex-col space-y-2">
-    <label className="text-sm font-medium">Discount Until</label>
+                <div className="flex flex-col space-y-2">
+                <label className="text-sm font-medium">Discount Until</label>
 
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button 
-          variant="outline" 
-          data-empty={!date}
-          className="data-[empty=true] w-[280px] text-left justify-start"
-        >
-          {date ? date.toDateString() : "Pick a date"}
-        </Button>
-      </PopoverTrigger>
-
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          captionLayout="dropdown"
-          onSelect={(d) => {
-    if (!d) return;
-    setDate(d.toISOString());
-  }}
-        />
-      </PopoverContent>
-    </Popover>
-  </div>
+                <DateTimePicker 
+                value={product.discountUntil} 
+                onChange={(iso) =>
+                          setProduct(prev => ({
+                            ...prev,
+                            discountUntil: iso
+                          }))} />
+                </div>
 
                 <DialogFooter className="mt-10">
                   <DialogClose asChild>

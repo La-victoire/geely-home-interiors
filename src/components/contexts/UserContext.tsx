@@ -8,32 +8,40 @@ const UserContext = createContext<any>(null);
 
 export function UsersProvider({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState<any>(null);
-  const [id, setId] = useState<string>("");   // never read window here
+  const [id, setId] = useState<string>("");
 
-  // Load ID from sessionStorage on the client ONLY
+  // Load ID from sessionStorage client-side
   useEffect(() => {
     const storedId = sessionStorage.getItem("userId");
     if (storedId) setId(storedId);
   }, []);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    async function fetchUser() {
       try {
-        if (!id) return; // still no id, skip
-
-        const data = await getProfile(`/users/${id}`);
-
-        if (!data) {
-          console.log("No user data returned");
+        // 1. Attempt session-based auth first
+        const me = await getProfile("/users/me");
+        if (me) {
+          setUsers(me);
           return;
         }
+      } catch (_) {
+        // ignore, continue to fallback
+      }
 
-        setUsers(data);
-      } catch (error: any) {
-        toast.error("Failed to fetch user data.");
+      try {
+        // 2. Fallback: userId stored in sessionStorage
+        if (!id) return;
+        const user = await getProfile(`/users/${id}`);
+        if (user) {
+          setUsers(user);
+          return;
+        }
+      } catch (error) {
+        toast.info("No User");
         console.error("Failed to fetch user data:", error);
       }
-    };
+    }
 
     fetchUser();
   }, [id]);
@@ -52,4 +60,3 @@ export function useUsers() {
   }
   return context;
 }
-

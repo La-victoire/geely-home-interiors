@@ -10,6 +10,8 @@ export interface Address {
 }
 
 export interface OrderItem {
+  productId?: string;
+  image?: string;
   name: string;
   quantity: number;
   price: number;
@@ -23,21 +25,25 @@ export interface Payment {
 }
 
 export interface Order {
-  _id: string;
-  _createdAt: string; // ISO string
-  status: "pending" | "shipped" | "paid" | "failed";
+  _id?: string;
+  name: string;
+  _createdAt?: string; // ISO string
+  status?: "pending" | "shipped" | "paid" | "failed";
   client: string;
   amount: number;
+  subCategory: string;
   items: OrderItem[];
+  metadata: any;
 }
 
 export interface cartProduct {
   product: {
     _id: string;
     name: string;
-    stock: number;
     images: { url: string, public_url: string }[];
   };
+  name: string;
+  images: { url: string, public_url: string }[];
   quantity: number;
   price: number;
 }
@@ -77,8 +83,8 @@ export function getDiscountBadges(product: product): DiscountBadge[] {
 
   if (product?.isDiscountDeal && product?.maxDiscountCap > 0) {
     badges.push({
-      label: `${product.subcategory} Sale`,
-      percentage: product.maxDiscountCap,
+      label: `${product.subCategory} Sale`,
+      percentage: product.computedDiscountedPrice,
       type: "subcategory",
     })
   }

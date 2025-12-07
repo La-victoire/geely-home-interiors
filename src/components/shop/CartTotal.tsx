@@ -4,26 +4,28 @@ import { Card, CardHeader } from '../ui/card'
 import { Button } from '../ui/button'
 import { cart } from '@/lib/cart'
 import { useCart } from '../contexts/CartContext'
-import { cartProduct, User } from '@/lib/types'
+import { cartProduct, Order, OrderItem, User } from '@/lib/types'
 import axios from 'axios'
 import PaystackPop from '@paystack/inline-js'
 import { useUsers } from '../contexts/UserContext'
 import { usePaystack } from './Mini-Components/usePaystack'
 import { toast } from 'sonner'
 import { createProfile, deleteProduct } from '@/lib/actions';
+import { useOrder } from '../contexts/OrderContext'
 
 const CartTotal = () => {
   const {cartProducts, setCartProducts} = useCart() as {cartProducts:cartProduct[], setCartProducts:React.Dispatch<React.SetStateAction<cartProduct[]>>};
   const [loaded, setLoaded] = useState(false)
   const {users, setUsers} = useUsers() as {users:User, setUsers:React.Dispatch<React.SetStateAction<User>>};
+  const {order, setOrder} = useOrder() as any
   const [localCart, setLocalCart] = useState([]);
-  const [orderData, setOrderData] = useState({
+  const [orderData, setOrderData] = useState<Order>({
     client: "",
     name: "",
     amount: 0,
     items: [],
     subCategory: "",
-    metadata: {}
+    metadata: {},
   });
   const sessionCart = cart.getCart() as unknown as cartProduct[];
 
@@ -35,18 +37,20 @@ const CartTotal = () => {
     if (!cartProducts.length) return;
     if (users === null) return;
 
-    const items = cartProducts.map((product:any) => ({
+    const items: OrderItem = cartProducts.map((product:cartProduct) => ({
       productId: product.product?._id || product?._id,
       name: product.product?.name || product?.name,
       quantity: product?.quantity || 1,
       price: Number(product?.price),
+      image: product?.image[0]?.url,
     }))
-
+    
     const amount = cartProducts?.map((product:any) => Math.ceil(Number(product.price) * (product.quantity || 1))).reduce((a, b) => a + b, 0);
-
+    
     setOrderData({ ...orderData, client:users?.email, amount, items, name: users?.firstname, subCategory:cartProducts[0]?.subCategory ,metadata: (users?._id || "guest")})
   },[cartProducts, users])
-
+  
+  console.log(orderData.items)
 
   useEffect(()=> {
     if (!window.PaystackPop) {
@@ -108,6 +112,7 @@ const CartTotal = () => {
         ref: reference,
         onSuccess: async (response: any) => {
           paymentOpened = false;
+          setOrder(orderData);
           if (users._id) {
           await deleteProduct('/carts/clear')}
           cart?.clearCart();
@@ -125,7 +130,7 @@ const CartTotal = () => {
     });
     
     setTimeout(() => {
-        if (paymentOpened)
+        if (!paymentOpened)
         toast.info("Payment window closed");
     }, 10000)
     } catch (error) {

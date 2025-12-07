@@ -13,26 +13,29 @@ import { ShoppingBag, Heart } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from 'sonner';
 import { MultiBadge } from './discount-badge';
+import { wishList } from '@/lib/wishList';
 
 export type product = {
     _id: string;
     name: string;
     description: string;
+    initialPrice: number;
     price: number;
     currency: string;
     category: string;
-    categoryId: string;
+    subCategory: string;
     images: [{
       url: string,
       public_url: string
     }];
-    stock:number;
-    status:string;
-    sku?: string;
+    computedDiscountedPrice: number
+    isXmasDeal: boolean;
+    isDiscountDeal: boolean;
     quantity?:number;
     rating?: number;
     dimensions:{};
-    reviewsCount?: number;
+    discountUntil: string;
+    maxDiscountCap: number;
     features: string[];
     colors?: string[];
 }
@@ -89,7 +92,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
 
   return (
 
-        <article
+    <article
       className={cn(
         "group relative flex flex-col bg-card rounded-2xl overflow-hidden transition-all duration-300",
         "hover:shadow-xl hover:shadow-black/5 hover:scale-[1.02]",
@@ -135,7 +138,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
 
         {/* Wishlist Button */}
         <button
-          onClick={() => setIsWishlisted(!isWishlisted)}
+          onClick={() => {wishList.addToWishList(product._id)}}
           className={cn(
             "absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 backdrop-blur-sm",
             "transition-all duration-200 hover:bg-white hover:scale-110",
@@ -181,7 +184,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
       >
         {/* Category */}
         <span className="text-[11px] uppercase tracking-widest text-muted-foreground font-medium">
-          {product?.subcategory}
+          {product?.subCategory}
         </span>
 
         {/* Title */}
@@ -209,30 +212,6 @@ function CollectionCard({ product, variant = "default", className }: products) {
         </div>
       </div>
     </article>
-
-    // <Card className='lg:w-[30dvw] border-r-8 hover:border-r-2 duration-200 relative gap-0 p-0 h-[70dvh]'>
-    //   <img 
-    //   src={product?.images[0]?.url}
-    //   loading='lazy'
-    //   alt='product-image'
-    //   className='w-full relative rounded-t-2xl h-full not-sm:rounded-2xl md:h-1/2 object-cover'
-    //   />
-    //   <div className='absolute not-sm:flex hidden item-col pointer-events-none justify-end py-3 rounded-2xl bg-black/40 w-full h-full'/> 
-    //   <div className='flex not-sm:text-white w-full p-5 not-sm:absolute bottom-0 text-center item-col gap-3'>
-    //     <p className='headFont text-xl'>{product.name}</p>
-    //     <p className='text-sm'>{product.description}</p>
-    //     <div className='flex justify-between'>
-    //       <p className='text-[#ed9e59] font-bold text-xl'>₦{product.price}</p>
-    //       <p className='flex gap-2 flex-center'> <span className={product.status === "In Stock" ? "text-green-400" : "text-red-400"}>{product.status}</span> ({product.stock | 0})</p>
-    //     </div>
-    //     <div className='flex w-full justify-between'>
-    //       <Link href={`products/${product._id}`}>
-    //         <Button>View Details</Button>
-    //       </Link>
-    //       <Button disabled={product.status !== "In Stock" || users?.role === "Admin" && true } onClick={()=> handleCart()} className='bg-[#ed9e59] hover:bg-amber-300 text-white'>Add to Cart</Button>
-    //     </div>
-    //   </div>
-    // </Card>
   )
 }
 
