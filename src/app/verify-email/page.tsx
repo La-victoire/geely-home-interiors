@@ -21,9 +21,10 @@ export default function VerifyEmailPage() {
   const [error, setError] = useState("")
 
    useEffect(()=>{
-      if(users?.email && users?.email !== "")
-       setEmail(users.email)
+      if(users?.email)
+       setEmail(users.email);
     },[])
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

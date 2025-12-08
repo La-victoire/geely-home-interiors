@@ -8,6 +8,7 @@ import { Order, User } from '@/lib/types'
 import { Button } from '../ui/button'
 import { getProfile } from '@/lib/actions'
 import useSWR from 'swr'
+import { createProfile } from '@/lib/actions'
 import { useUsers } from '../contexts/UserContext'
 
 const UserProfile = ({id}:{id:string}) => {
@@ -20,6 +21,11 @@ const UserProfile = ({id}:{id:string}) => {
       setUsers(profile);
     }
   }, [profile, id]);
+
+  const logOut = async () => {
+    const destroy = await createProfile("/users/logout");
+    if (destroy.message) toast.info(destroy.message);
+}
 
   if (profileLoading) return <p>Loading...</p>;
   if (profileError) return <p>Error loading profile.</p>;

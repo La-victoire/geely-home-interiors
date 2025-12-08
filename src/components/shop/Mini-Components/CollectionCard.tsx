@@ -1,100 +1,102 @@
+"use client";
+
 import { useCart } from '@/components/contexts/CartContext';
 import { useUsers } from '@/components/contexts/UserContext';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { getData, createProfile } from '@/lib/actions';
 import { cart } from '@/lib/cart';
 import { cartProduct, getDiscountBadges, User } from '@/lib/types';
-import { Star } from 'lucide-react';
+import { Star, ShoppingBag, Heart } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react'
 import Image from "next/image"
-import { ShoppingBag, Heart } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from 'sonner';
 import { MultiBadge } from './discount-badge';
 import { wishList } from '@/lib/wishList';
+import { createProfile } from '@/lib/actions';
 
 export type product = {
-    _id: string;
-    name: string;
-    description: string;
-    initialPrice: number;
-    price: number;
-    currency: string;
-    category: string;
-    subCategory: string;
-    images: [{
-      url: string,
-      public_url: string
-    }];
-    computedDiscountedPrice: number
-    isXmasDeal: boolean;
-    isDiscountDeal: boolean;
-    quantity?:number;
-    rating?: number;
-    dimensions:{};
-    discountUntil: string;
-    maxDiscountCap: number;
-    features: string[];
-    colors?: string[];
+  _id: string;
+  name: string;
+  description: string;
+  initialPrice: number;
+  price: number;
+  currency: string;
+  category: string;
+  subCategory: string;
+  images: [{
+    url: string,
+    public_url: string
+  }];
+  computedDiscountedPrice: number
+  isXmasDeal: boolean;
+  isDiscountDeal: boolean;
+  quantity?: number;
+  rating?: number;
+  dimensions: {};
+  discountUntil: string;
+  maxDiscountCap: number;
+  features: string[];
+  colors?: string[];
 }
 
-interface products { 
-  product:product;
+interface products {
+  product: product;
   variant?: "default" | "carousel";
   className?: string;
 }
 
 function CollectionCard({ product, variant = "default", className }: products) {
-  const {cartProducts, setCartCount} = useCart() as {cartProducts:cartProduct[],setCartCount:React.Dispatch<React.SetStateAction<number>>};
-  const {users} = useUsers() as {users:User};
+  const { cartProducts, setCartCount } = useCart() as { cartProducts: cartProduct[], setCartCount: React.Dispatch<React.SetStateAction<number>> };
+  const { users } = useUsers() as { users: User };
   const [isHovered, setIsHovered] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
 
   const badges = getDiscountBadges(product)
   const isCarousel = variant === "carousel"
 
-  const handleCart = () => {
+  const handleCart = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+
     if (users) {
-       const exists = cartProducts.find((p) => p.product?._id === product?._id);
-  
+      const exists = cartProducts?.find((p) => p.product?._id === product?._id);
+
       if (exists) {
-         createProfile('/carts/add', {
-           product: product._id,
-           quantity: 1,
-           price: product.price
-         });
-         toast.success("Product quantity updated in cart");
-         return;
-       }
-  
-       setCartCount((prev: number) => prev + 1);
-       createProfile('/carts/add', {
-         product: product._id,
-         quantity: 1,
-         price: product.price
-       });
-       toast.success("Product Added to cart");
-       return;
-     }
-  
-     // guest flow
-     const exists = cartProducts.find((p) => p.product?._id === product?._id);
-  
-     if (exists) {
-       cart.addToCart(product, 1);
-       setCartCount((prev: number) => prev + 1);
-     } else {
-       cart.addToCart(product, 1);
-     }
-   };
+        createProfile('/carts/add', {
+          product: product._id,
+          quantity: 1,
+          price: product.price
+        });
+        toast.success("Product quantity updated in cart");
+        return;
+      }
+
+      setCartCount((prev: number) => prev + 1);
+      createProfile('/carts/add', {
+        product: product._id,
+        quantity: 1,
+        price: product.price
+      });
+      toast.success("Product Added to cart");
+      return;
+    }
+
+    const exists = cartProducts.find((p) => p.product?._id === product?._id);
+
+    if (exists) {
+      cart.addToCart(product, 1);
+      setCartCount((prev: number) => prev + 1);
+    } else {
+      cart.addToCart(product, 1);
+    }
+    toast.success("Product Added to cart");
+  };
 
   return (
-
     <article
       className={cn(
-        "group relative flex flex-col bg-card rounded-2xl overflow-hidden transition-all duration-300",
+        "relative group flex flex-col bg-card rounded-2xl overflow-hidden transition-all duration-300",
         "hover:shadow-xl hover:shadow-black/5 hover:scale-[1.02]",
         isCarousel ? "min-w-[280px] sm:min-w-[320px] lg:min-w-[340px]" : "",
         className,
@@ -102,6 +104,13 @@ function CollectionCard({ product, variant = "default", className }: products) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+
+      {/* FULL CARD CLICKABLE */}
+      <Link
+        href={`/shop/products/${product._id}`}
+        className="absolute inset-0 z-[1]"
+      />
+
       {/* Image Container */}
       <div
         className={cn(
@@ -110,6 +119,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
           "aspect-[3/5] h-auto"
         )}
       >
+
         <Image
           src={product.images[0].url || "/placeholder.svg"}
           alt={product.name}
@@ -121,42 +131,44 @@ function CollectionCard({ product, variant = "default", className }: products) {
           )}
         />
 
-        {/* Mobile Dark Overlay */}
         <div className="absolute inset-0 bg-black/40 sm:bg-transparent"></div>
 
-        {/* Gradient Overlay for Carousel */}
         {isCarousel && (
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
         )}
 
-        {/* Discount Badges */}
         {badges.length > 0 && (
-          <div className="absolute top-3 left-3 z-10">
+          <div className="absolute top-3 left-3 z-20">
             <MultiBadge badges={badges} size={isCarousel ? "md" : "sm"} />
           </div>
         )}
 
-        {/* Wishlist Button */}
+        {/* Wishlist */}
         <button
-          onClick={() => {wishList.addToWishList(product._id)}}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            wishList.addToWishList(product);
+            setIsWishlisted(true);
+          }}
           className={cn(
-            "absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 backdrop-blur-sm",
+            "absolute top-3 right-3 z-20 p-2 rounded-full bg-white/90 backdrop-blur-sm",
             "transition-all duration-200 hover:bg-white hover:scale-110",
             "opacity-0 group-hover:opacity-100",
             isWishlisted && "opacity-100",
           )}
-          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
           <Heart
             className={cn("w-4 h-4 transition-colors", isWishlisted ? "fill-sale text-sale" : "text-foreground")}
           />
         </button>
 
-        {/* Quick Add Button - appears on hover */}
+        {/* Quick Add - ALWAYS visible on mobile */}
         <div
           className={cn(
-            "absolute bottom-20 md:bottom-9 left-4 right-4 z-10 transition-all duration-300",
-            "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0",
+            "absolute bottom-34 md:bottom-10 left-4 right-4 z-20 transition-all duration-300",
+            "opacity-100 sm:opacity-0 translate-y-2",
+            "group-hover:opacity-100 group-hover:translate-y-0",
           )}
         >
           <Button
@@ -165,7 +177,8 @@ function CollectionCard({ product, variant = "default", className }: products) {
               "rounded-xl py-4 font-medium tracking-wide",
               "text-sm sm:text-base"
             )}
-            disabled={users?.role === "Admin" && true } onClick={()=> handleCart()}
+            disabled={users?.role === "Admin"}
+            onClick={handleCart}
           >
             <ShoppingBag className="w-4 h-4 mr-2 shrink-0" />
             <span className="truncate">Add to Cart</span>
@@ -179,15 +192,13 @@ function CollectionCard({ product, variant = "default", className }: products) {
           "flex flex-col gap-2 p-4",
           "sm:relative",
           "absolute bottom-0 left-0 right-0 z-20 text-white sm:text-primary",
-          "sm:bg-secondary bg-gradent-to-t from-black/60 via-transparent to-transparent",
+          "sm:bg-secondary dark:bg-gradient-to-t from-black/60 via-transparent to-transparent",
         )}
       >
-        {/* Category */}
         <span className="text-[11px] uppercase tracking-widest text-muted-foreground font-medium">
           {product?.subCategory}
         </span>
 
-        {/* Title */}
         <h3
           className={cn(
             "font-medium leading-tight text-balance",
@@ -197,14 +208,12 @@ function CollectionCard({ product, variant = "default", className }: products) {
           {product.name}
         </h3>
 
-        {/* Rating */}
-
-        {/* Price */}
         <div className="flex items-baseline gap-2 mt-1">
           <span className={cn("font-semibold", isCarousel ? "text-xl" : "text-lg")}>
             ₦{product.price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
-          {product?.isDiscountDeal && (
+
+          {(product?.isDiscountDeal || product.isXmasDeal) && (
             <span className="text-sm text-muted-foreground line-through">
               ₦{product?.initialPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>

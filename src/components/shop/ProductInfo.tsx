@@ -18,11 +18,10 @@ const ProductInfo = ({item}) => {
             </AccordionTrigger>
             <AccordionContent className='flex gap-2 item-col p-5'>
               <li>Category: {item.category} </li>
-              <li>Stock: {item?.stock || "Out of Stock"}</li>
               <li>Colors Available: 
                 <div className='pt-2'>
-                  {item.colors.map((color:string)=>
-                  <p className='px-10'>{color},</p>
+                  {item.colors.map((color:string, index)=>
+                  <p key={index} className='px-10'>{color},</p>
                   )}
                 </div>
               </li>
@@ -34,7 +33,7 @@ const ProductInfo = ({item}) => {
              Features
             </AccordionTrigger>
             <AccordionContent className='flex gap-2 item-col p-5'>
-              {item.features.map((feature:string)=> <li>{feature}</li>)}
+              {item.features.map((feature:string, index)=> <li key={index}>{feature}</li>)}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="shipping-details">

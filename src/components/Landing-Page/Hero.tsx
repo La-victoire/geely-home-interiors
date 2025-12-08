@@ -4,8 +4,14 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap';
 import { SplitText } from 'gsap/all';
 import Link from 'next/link';
+import { useUsers } from '../contexts/UserContext';
+import { User } from '@/lib/types';
 
 const Hero = () => {
+      const {users}:{users:User} = useUsers();
+      const authUser = typeof window === "undefined" ? [] : sessionStorage.getItem("userId");
+     const isAuthenticated = users?._id || authUser;
+
     useGSAP(()=> {
      gsap.set('#video-frame', {
       clipPath: 'polygon(14% 0%, 72% 0%, 90% 90%, 0% 100%)',
@@ -56,9 +62,17 @@ const Hero = () => {
         <h2 id="text" className='headFont text-[#020618] text-2xl md:text-5xl text-center p-3 md:p-15'>
           Transform Your Space into Your Sanctuary
         </h2>
+        <div className="flex gap-7 md:gap-20">
         <Link href={`shop/products`} className="flex flex-center items-center">
-          <Button variant="outline" className="md:scale-125 border-0 shadow-2xl dark:bg-foreground bg-foreground text-accent">Explore Collections</Button>
+          <Button variant="default" className="md:scale-125">Explore Collections</Button>
         </Link>
+{ !isAuthenticated && (
+        <Link href={`auth`} className="flex flex-center items-center">
+          <Button variant="secondary" className="md:scale-125">Sign up</Button>
+        </Link>
+)
+}
+        </div>
         </div>
     </div>
     <div className="abs-center w-full flex-center flex item-col z-0 ">

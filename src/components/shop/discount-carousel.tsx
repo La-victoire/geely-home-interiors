@@ -126,16 +126,16 @@ export function DiscountCarousel({
           {/* Gradient Edges */}
           <div
             className={cn(
-              "absolute left-0 top-0 bottom-4 w-8 pointer-events-none",
-              "bg-gradient-to-r from-background to-transparent",
+              "absolute not-sm:-left-5 -left-8 top-0 bottom-4 w-8 pointer-events-none",
+              "bg-gradient-to-l from-transparent to-black",
               canScrollLeft ? "opacity-100" : "opacity-0",
               "transition-opacity duration-200",
             )}
           />
           <div
             className={cn(
-              "absolute right-0 top-0 bottom-4 w-8 pointer-events-none",
-              "bg-gradient-to-l from-background to-transparent",
+              "absolute not-sm:-right-5 -right-8 top-0 bottom-4 w-8 pointer-events-none",
+              "bg-gradient-to-r from-transparent to-black",
               canScrollRight ? "opacity-100" : "opacity-0",
               "transition-opacity duration-200",
             )}

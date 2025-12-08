@@ -18,7 +18,7 @@ import { useProducts } from '@/components/contexts/ProductsContext'
 import { toast } from 'sonner'
 import { deleteProduct, postData } from '@/lib/actions'
 import { INTERIOR_CATEGORIES } from '@/components/constants'
-import { DateTimePicker } from '@/components/shop/Mini-Components/DatePicker'
+import DateTimePicker from '@/components/shop/Mini-Components/DatePicker'
 
 
 const Products = () => {
@@ -254,7 +254,7 @@ const Products = () => {
             <DialogTrigger asChild>
               <Button variant="secondary"  className='bg-blue-300 text-black'><PlusCircle /> Add Product</Button>
             </DialogTrigger>
-            <DialogContent className='max-h-[70dvh] overflow-y-scroll'>
+            <DialogContent className='max-h-[70dvh]  overflow-y-scroll'>
               <form onSubmit={handleFormSubmit}>
                 <DialogHeader>
                   <DialogTitle className='headFont text-3xl'> Create a Product</DialogTitle>
@@ -387,8 +387,8 @@ const Products = () => {
                   </div>
                 </div>
    
-                <div className="flex gap-10 mb-10">
-                <div className="flex gap-5 p-3 border rounded-md">
+                <div className="flex gap-5 mb-10">
+                <div className="flex gap-3 p-3 border rounded-md">
                     <Label className="text-sm font-medium">
                         Discount Deal
                     </Label>        
@@ -401,7 +401,7 @@ const Products = () => {
                     />     
                 </div>
 
-                <div className="flex gap-5 p-3 border rounded-md">
+                <div className="flex gap-3 p-3 border rounded-md">
                     <Label className="text-sm font-medium">
                         Christmas Deal
                     </Label>        

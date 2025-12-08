@@ -21,8 +21,8 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
       try {
         // 1. Attempt session-based auth first
         const me = await getProfile("/users/me");
-        if (me) {
-          setUsers(me);
+        if (me.user) {
+          setUsers(me.user);
           return;
         }
       } catch (_) {
@@ -42,10 +42,8 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
         console.error("Failed to fetch user data:", error);
       }
     }
-
     fetchUser();
   }, [id]);
-
   return (
     <UserContext.Provider value={{ users, setUsers }}>
       {children}

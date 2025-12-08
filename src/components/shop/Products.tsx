@@ -14,6 +14,7 @@ import searchItems from '@/lib/searchItems';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getData } from '@/lib/actions';
 import useSWR from "swr"
+import { DiscountCarousel } from "./discount-carousel"
 import { useProducts } from '../contexts/ProductsContext';
 import ProductNotFound from './Mini-Components/ProductNotFound';
 
@@ -215,6 +216,9 @@ const Products = () => {
 
   return (
     <section className='md:p-10 px-5 py-10 w-full flex item-col'>
+
+      {/* Sale Carousel*/}
+       <DiscountCarousel products={products} />
 
       {/* Collection header section */}
       <div className='md:text-4xl text-3xl flex gap-10 justify-between headFont w-full '>

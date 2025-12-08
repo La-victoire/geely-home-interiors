@@ -63,13 +63,13 @@ const Reviews = () => {
         <h2 id="headtext" className='headFont text-3xl md:text-5xl mb-5 text-center'>Happy Clients. <br/> Beautiful Designs.</h2>
         <p id='subtext' className='text-muted-foreground text-xl px-7 text-center'>Our customers love our professional delivery and customer service and here's why.</p>
       </div>
-      <div className='h-dvh mt-15'>
+      <div className='h-dvh relative mt-15'>
         <img
         className='absolute object-cover h-full w-screen' 
         src="/images/big-parlour.jpg"
         alt="" 
         />
-        <div className='h-full w-full dark:flex hidden bg-black/40 pointer-events-none absolute z-0 ' />
+        <div className='h-full absolute w-full dark:flex hidden bg-black/40 pointer-events-none absolute z-0 ' />
         {isMobile ? (
           <Carousel
           plugins={[
@@ -98,10 +98,10 @@ const Reviews = () => {
           </CarouselContent>
           </Carousel>
         ) : (
-        <div className='grid md:grid-cols-2 grid-cols-1 absolute w-full px-80 mt-10 gap-10'>
+        <div className='grid md:grid-cols-2 grid-cols-1 absolute not-md:px-20 lg:w-1/2 lg:left-70 top-25 h-1/2 gap-10'>
           {CLIENT_REVIEWS.map(({name,location,review},index)=> (
-          <Card id='reviews' key={index} className='flex flex-center bg-white/85 px-5 py-10'>
-            <p className='text-black/40'>
+          <Card id='reviews' key={index} className='flex flex-center bg-white/85 px-5 py-5'>
+            <p className='text-sm text-black/40'>
               {review}
             </p>
             <div className='flex gap-1 item-col w-full'>
@@ -113,7 +113,7 @@ const Reviews = () => {
         </div>
         )}
       </div>
-      <div className='flex-center flex'>
+      <div className='flex-center mt-5 flex'>
         <Button asChild variant="link" className='pb-15 text-xl text-primary'>
           <Link href={'/reviews'} >
             SEE MORE REVIEWS
@@ -124,9 +124,9 @@ const Reviews = () => {
     </section>
 
     <section id='value-container' className='px-10'>
-      <div className='flex md:item-row item-col gap-13 md:gap-5 w-full'>
+      <div className='flex grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 md:gap-y-15 w-full'>
         {VALUE_PROPS.map(({title, description, icon},index) => (
-          <Card id='value-cards' key={index} className='border-[#ed9e59] lg:w-1/2 border-1 px-10 py-5 gap-2'>
+          <Card id='value-cards' key={index} className='border-[#ed9e59] lg:w-full border-1 px-2 py-5 gap-2'>
             <div className='relative w-20 h-5 flex flex-center left-1/3 -top-10 bg-background rounded-full'>
               <h2 className='text-center text-3xl'>{icon}</h2>
             </div>

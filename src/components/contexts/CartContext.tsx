@@ -48,7 +48,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setWishListCount(wishlist?.length || 0);
 
   }, [products]); // <-- FIXED
-
   return (
     <CartContext.Provider
       value={{

@@ -23,12 +23,12 @@ const WishCard = ({product,setProducts}:{product:product, setProducts: any}) => 
     };
   return (
      <Card className='flex w-full border-0 border-b rounded-none bg-transparent p-5 flex-row '>
-            <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={product?.images[0]} alt={product.id} />
+            <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={product?.images[0].url} alt={product.name} />
             <div className='flex justify-between w-full'>
               <Link href={`/shop/products/${product.id}`}>
                 <p className='font-bold'>{product?.name}</p>
-                <p>stock: {product.stock}</p>
-                <p>Price: ${product?.price}</p>
+                <p className='text-sm'>{product.subCategory}</p>
+                <p>Price:₦{product?.price}</p>
               </Link>
               <div>
                 <div className='flex items-center'>
@@ -41,7 +41,7 @@ const WishCard = ({product,setProducts}:{product:product, setProducts: any}) => 
                           </Button>
                         </div>
                         <Button variant="destructive" onClick={()=> (
-                            wishList.removeFromWishList(product.id),
+                            wishList.removeFromWishList(product._id),
                             setWishListCount((prev:number) => prev - 1),
                             setProducts((prev:[]) => prev.filter((item)=> item.id !== product.id))
                           )} 

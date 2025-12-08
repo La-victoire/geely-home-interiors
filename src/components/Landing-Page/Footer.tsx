@@ -9,6 +9,8 @@ import { FaFacebook, FaInstagram, FaTiktok, FaXTwitter } from 'react-icons/fa6';
 import { Button } from '../ui/button';
 import { useUsers } from '../contexts/UserContext';
 import { User } from '@/lib/types';
+import { toast } from 'sonner'
+import { createProfile } from '@/lib/actions'
 
 const Footer = () => {
   const {users}:{users:User} = useUsers();
@@ -16,6 +18,21 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   const authUser = typeof window === "undefined" ? [] : sessionStorage.getItem("userId");
   const isAuthenticated = users?._id || authUser;
+
+  const logOut = async () => {
+    const destroy = await createProfile("/users/logout");
+    if (destroy.message) toast.info(destroy.message);
+}
+
+  const subscribe = async () => {
+    const data = await createProfile("/users/subscribe");
+    if (data.message) toast.info(data.message);
+}
+
+  const unSubscribe = async () => {
+    const data = await createProfile("/users/unsubscribe");
+    if (data.message) toast.info(data.message);
+}
 
   return (
     <footer className='bg-accent w-screen'> 
@@ -84,14 +101,24 @@ const Footer = () => {
           )}
         </div>
         <div className='flex item-col gap-7'>
-          <label htmlFor='email' className=''>GET EXCLUSIVE TIPS & OFFERS</label>
+{ users && users?.role === "Client" || users?.role === "Subscriber" ? (
+    <Button onClick={subscribe} className='w-max -mt-3 px-10 bg-foreground text-background hover:bg-foreground/80'>
+            Unsubscribe
+          </Button>
+):
+(
+             <div className="flex item-col gap-5">
+<label htmlFor='email' className=''>GET EXCLUSIVE TIPS & OFFERS</label>
           <Input 
           className=''
           placeholder='Enter email address'
           />
-          <Button className='w-max -mt-3 px-10 bg-foreground text-background hover:bg-foreground/80'>
+          <Button onClick={unSubscribe} className='w-max -mt-1 px-10 bg-foreground text-background hover:bg-foreground/80'>
             Subscribe
           </Button>
+</div>
+)
+}
           <p>
             JOIN OUR COMMUNITY
           </p>
@@ -102,7 +129,7 @@ const Footer = () => {
               <a href="https://tiktok.com/@geelyInteriors?_r=1&_t=ZS-91cma6zQagC"><FaTiktok size={20}/></a>
           </div>
           {isAuthenticated ? 
-            <Button className='w-max px-10 bg-foreground text-background hover:bg-foreground/80'>
+            <Button onClick={logOut} className='w-max px-10 bg-foreground text-background hover:bg-foreground/80'>
              Log Out
             </Button>
           :

@@ -81,7 +81,7 @@ export function getDiscountBadges(product: product): DiscountBadge[] {
     })
   }
 
-  if (product?.isDiscountDeal && product?.maxDiscountCap > 0) {
+  if (product?.isDiscountDeal && product?.computedDiscountedPrice > 0) {
     badges.push({
       label: `${product.subCategory} Sale`,
       percentage: product.computedDiscountedPrice,

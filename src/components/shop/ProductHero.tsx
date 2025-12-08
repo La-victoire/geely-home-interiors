@@ -4,11 +4,11 @@ import { Button } from '../ui/button'
 import { ArrowLeft, Heart, ShoppingCart } from 'lucide-react'
 import { useMediaQuery } from 'react-responsive'
 import { cart } from '@/lib/cart'
-import { toast } from 'sonner'
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
 import { useCart } from '../contexts/CartContext'
 import { wishList } from '@/lib/wishList'
 import { product } from './Mini-Components/CollectionCard'
+import { toast } from 'sonner'
 import { createProfile } from '@/lib/actions'
 import { cartProduct } from '@/lib/types'
 import { useUsers } from '../contexts/UserContext'
@@ -94,9 +94,13 @@ const handleCart = () => {
                       ))}
                     </CarouselContent>
                   </Carousel>
-                    <div className='flex justify-between my-2 items-end'>
+                    <div className='flex gap-5 my-2 items-end'>
                       <p className='text-[#ed9e59] text-3xl'>₦{item.price}</p>
-                      <p><span className={item.status === "In Stock" ? "text-green-400" : "text-red-400"}>{item.status}</span> ({item.stock | 0})</p>
+                       {(item?.isDiscountDeal || item.isXmasDeal) && (
+            <span className="text-sm text-muted-foreground line-through">
+              ₦{item?.initialPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </span>
+          )}
                     </div>
                     <p className='mb-5'>{item.description}</p>
                     <div className='flex gap-5'>
@@ -145,7 +149,11 @@ const handleCart = () => {
                   </Carousel>
                     <div className='flex gap-5 items-end'>
                       <p className='text-[#ed9e59] text-3xl'>₦{item.price}</p>
-                      <p><span className={item.status === "In Stock" ? "text-green-400" : "text-red-400"}>{item.status}</span> ({item.stock | 0})</p>
+ {(item?.isDiscountDeal || item.isXmasDeal) && (
+            <span className="text-sm text-muted-foreground line-through">
+              ₦{item?.initialPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </span>
+          )}
                     </div>
                     <p className='mb-5 w-[30dvw]'>{item.description}</p>
                     <div className='flex gap-5'>
@@ -161,9 +169,9 @@ const handleCart = () => {
                   <div className='flex gap-3 mt-5 items-center'>
                     <p>Quantity:</p>
                     <div className='flex gap-2 border rounded-2xl items-center'>
-                     <Button onClick={()=> setQuantity((prev)=> Math.max(1 ,prev - 1))} variant="ghost">-</Button>
+                     <Button onClick={()=> setQuantity((prev)=>prev - 1)} variant="ghost">-</Button>
                       <p>{quantity}</p>
-                     <Button onClick={()=> setQuantity((prev)=> Math.min(item.stock ,prev + 1))} variant="ghost">+</Button>
+                     <Button onClick={()=> setQuantity((prev)=>prev + 1)} variant="ghost">+</Button>
                     </div>
                   </div>
                 </div>

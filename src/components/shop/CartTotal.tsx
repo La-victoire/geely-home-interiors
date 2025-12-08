@@ -42,7 +42,6 @@ const CartTotal = () => {
       name: product.product?.name || product?.name,
       quantity: product?.quantity || 1,
       price: Number(product?.price),
-      image: product?.image[0]?.url,
     }))
     
     const amount = cartProducts?.map((product:any) => Math.ceil(Number(product.price) * (product.quantity || 1))).reduce((a, b) => a + b, 0);
@@ -51,6 +50,7 @@ const CartTotal = () => {
   },[cartProducts, users])
   
   console.log(orderData.items)
+  console.log(cartProducts[0])
 
   useEffect(()=> {
     if (!window.PaystackPop) {
@@ -156,7 +156,7 @@ const CartTotal = () => {
       <p className='font-bold text-lg'>Sum Total</p>
       <p>₦{ 0 + (cartProducts.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0) || localCart.map((product:any) => Math.ceil(product.price * product.quantity)).reduce((a, b) => a + b, 0))}</p>
     </div>
-      <Button disabled={users?.phone === "" || users?.addresses.length < 1 ? true : false} onClick={handlePayment}>
+      <Button disabled={users?.phone === "" || users?.addresses?.length < 1 ? true : false} onClick={handlePayment}>
         Pay
       </Button>
    </Card>

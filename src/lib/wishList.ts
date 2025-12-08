@@ -1,26 +1,48 @@
+import { product } from "@/components/shop/Mini-Components/CollectionCard";
 import { toast } from "sonner";
+
+// KEY FOR SESSION STORAGE
+const WISH_KEY = "geely_list";
+
+/* ---------------------------- UTIL FUNCTIONS ---------------------------- */
+
+function loadWishList(): product[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const data = sessionStorage.getItem(WISH_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveList(WISH: any) {
+  if (typeof window === "undefined") return;
+  sessionStorage.setItem(WISH_KEY, JSON.stringify(WISH));
+}
 
   export const wishList = {
     getWishList() {
-       if (typeof window !== "undefined") {
-      const data = localStorage.getItem('wishList')
-      return JSON.parse(data) || [];
-    }
+     return loadWishList();
     },
-    addToWishList(productId:string) {
+    addToWishList(product:product) {
       const wishListData = this.getWishList();
-      const product = products?.find((p) => p.id === productId) || [];
-      if (product) {
+      const existing = wishListData?.find((p) => p._id === product._id);
+      if (existing) {
+        toast.info("Product already saved to wishlist")
+      } else {
         wishListData.push(product);
         localStorage.setItem('wishList', JSON.stringify(wishListData));
         toast.success(
           "Added To Wishlist 🎯"
         )
+        saveList(wishListData);
+        return wishListData;
       }
     },
     removeFromWishList(productId:string) {
       const wishListData = this.getWishList();
-      const updatedwishList = wishListData.filter((p) => p.id !== productId);
-      localStorage.setItem('wishList', JSON.stringify(updatedwishList));
+      const updatedwishList = wishListData.filter((p) => p._id !== productId);
+      saveList(updatedwishList);
     },
   };
