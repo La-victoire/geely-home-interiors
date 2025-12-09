@@ -62,8 +62,8 @@ export function DiscountCarousel({
               <span className="text-xs uppercase tracking-[0.2em] text-gold font-semibold">Limited Time</span>
             </div>
             <h2
-              className="text-3xl sm:text-4xl lg:text-5xl font-medium text-foreground tracking-tight"
-              style={{ fontFamily: "var(--font-playfair)" }}
+              className="text-3xl sm:text-4xl headFont lg:text-5xl font-medium text-foreground "
+              
             >
               {title}
             </h2>

@@ -51,7 +51,7 @@ export interface cartProduct {
 export interface User {
   _id: string;
   firstname: string;
-  role: "Client" | "Admin";
+  role: "Client" | "Admin" | "Subscriber";
   lastname: string;
   email: string;
   phone: string;

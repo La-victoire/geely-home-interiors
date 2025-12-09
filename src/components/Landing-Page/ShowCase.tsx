@@ -65,9 +65,9 @@ const ShowCase = () => {
       </h2>
       <div className=' md:grid-cols-3 grid xl:grid-cols-12 mb-5 md:px-0 grid-cols-1 gap-3 px-5'>
         {CATEGORIES.map(({title,image,description,slug}, index)=> (
+        <Card id="grid-cards" className={` ${index % 2 ? "md:col-span-6" : 'md:col-span-3'} ${index === 4 && "md:col-span-6"}  p-0 relative max-h-[70dvh] overflow-hidden w-auto`}>
         <Link key={index} 
                      href={`/shop/products?page=1&subCategory=${title.toString()}`}>
-        <Card id="grid-cards" className={` ${index % 2 ? "md:col-span-6" : 'md:col-span-3'} ${index === 4 && "md:col-span-6"}  p-0 relative max-h-[70dvh] overflow-hidden w-auto`}>
           <img
            ref={el => imageRef.current[index] = el}
            className='relative not-sm:p-1 h-full object-cover rounded-2xl' 
@@ -88,8 +88,8 @@ increase(index)}
               {IsReduced == index ? description : (description.slice(0, 50) + " ...See More") }
             </p>
           </div>
-        </Card>
 </Link>
+        </Card>
         ))}
       </div>
     </section>

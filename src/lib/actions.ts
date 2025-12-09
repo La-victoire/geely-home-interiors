@@ -87,7 +87,7 @@ export const getProfile = async <T>(endpoint: string) => {
   }
 }
 
-export const createProfile = async <T>(endpoint: string, data:any) => {
+export const createProfile = async <T>(endpoint: string, data?:any) => {
   try {
     const response = await profileApi.post<userApiResponse<T>>(endpoint,data);
     return response.data;

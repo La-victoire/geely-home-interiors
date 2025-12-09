@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { useMediaQuery } from 'react-responsive';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { Footer_Links } from '../constants';
@@ -14,6 +14,7 @@ import { createProfile } from '@/lib/actions'
 
 const Footer = () => {
   const {users}:{users:User} = useUsers();
+  const [email, setEmail] = useState("");
   const isMobile = useMediaQuery({maxWidth: 767 });
   const currentYear = new Date().getFullYear();
   const authUser = typeof window === "undefined" ? [] : sessionStorage.getItem("userId");
@@ -21,17 +22,17 @@ const Footer = () => {
 
   const logOut = async () => {
     const destroy = await createProfile("/users/logout");
-    if (destroy.message) toast.info(destroy.message);
+    if (destroy?.message) toast.info(destroy.message);
 }
 
   const subscribe = async () => {
-    const data = await createProfile("/users/subscribe");
-    if (data.message) toast.info(data.message);
+    const data = await createProfile("/users/subscribe", {email:email});
+    if (data?.message) toast.info(data.message);
 }
 
   const unSubscribe = async () => {
-    const data = await createProfile("/users/unsubscribe");
-    if (data.message) toast.info(data.message);
+    const data = await createProfile("/users/unsubscribe", {email:users?.email});
+    if (data?.message) toast.info(data.message);
 }
 
   return (
@@ -102,7 +103,7 @@ const Footer = () => {
         </div>
         <div className='flex item-col gap-7'>
 { users && users?.role === "Client" || users?.role === "Subscriber" ? (
-    <Button onClick={subscribe} className='w-max -mt-3 px-10 bg-foreground text-background hover:bg-foreground/80'>
+    <Button onClick={unSubscribe} className='w-max -mt-3 px-10 bg-foreground text-background hover:bg-foreground/80'>
             Unsubscribe
           </Button>
 ):
@@ -111,9 +112,11 @@ const Footer = () => {
 <label htmlFor='email' className=''>GET EXCLUSIVE TIPS & OFFERS</label>
           <Input 
           className=''
+          value={email}
+          onChange={(e)=> setEmail(e.target.value)}
           placeholder='Enter email address'
           />
-          <Button onClick={unSubscribe} className='w-max -mt-1 px-10 bg-foreground text-background hover:bg-foreground/80'>
+          <Button onClick={subscribe} className='w-max -mt-1 px-10 bg-foreground text-background hover:bg-foreground/80'>
             Subscribe
           </Button>
 </div>
