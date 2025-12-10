@@ -46,9 +46,9 @@ const Products = () => {
       },
       colors:colors,
       status:"",
-    })
-
+    });
     const {products} = useProducts() as {products:product[]}
+
     useEffect(()=> {
       setItems(products)
     },[])
@@ -388,43 +388,43 @@ const Products = () => {
                 </div>
    
                 <div className="flex gap-5 mb-10">
-                <div className="flex gap-3 p-3 border rounded-md">
-                    <Label className="text-sm font-medium">
-                        Discount Deal
-                    </Label>        
-                    <Switch
-                      id="isDiscountDeal"
-                      checked={product.isDiscountDeal}
-                      onCheckedChange={(value) =>
-                        setProduct(prev => ({ ...prev, isDiscountDeal: value }))
-                      }
-                    />     
-                </div>
+                  <div className="flex gap-3 p-3 border rounded-md">
+                      <Label className="text-sm font-medium">
+                          Discount Deal
+                      </Label>        
+                      <Switch
+                        id="isDiscountDeal"
+                        checked={product.isDiscountDeal}
+                        onCheckedChange={(value) =>
+                          setProduct(prev => ({ ...prev, isDiscountDeal: value }))
+                        }
+                      />     
+                  </div>
 
-                <div className="flex gap-3 p-3 border rounded-md">
-                    <Label className="text-sm font-medium">
-                        Christmas Deal
-                    </Label>        
-                    <Switch
-                      id="isXmasDeal"
-                      checked={product.isXmasDeal}
-                      onCheckedChange={(value) =>
-                        setProduct(prev => ({ ...prev, isXmasDeal: value }))
-                      }
-                    />     
-                </div>
+                  <div className="flex gap-3 p-3 border rounded-md">
+                      <Label className="text-sm font-medium">
+                          Christmas Deal
+                      </Label>        
+                      <Switch
+                        id="isXmasDeal"
+                        checked={product.isXmasDeal}
+                        onCheckedChange={(value) =>
+                          setProduct(prev => ({ ...prev, isXmasDeal: value }))
+                        }
+                      />     
+                  </div>
                 </div>
 
                 <div className="flex flex-col space-y-2">
-                <label className="text-sm font-medium">Discount Until</label>
+                  <label className="text-sm font-medium">Discount Until</label>
 
-                <DateTimePicker 
-                value={product.discountUntil} 
-                onChange={(iso) =>
-                          setProduct(prev => ({
-                            ...prev,
-                            discountUntil: iso
-                          }))} />
+                  <DateTimePicker 
+                  value={product.discountUntil} 
+                  onChange={(iso:string) =>
+                            setProduct(prev => ({
+                              ...prev,
+                              discountUntil: iso
+                            }))} />
                 </div>
 
                 <DialogFooter className="mt-10">

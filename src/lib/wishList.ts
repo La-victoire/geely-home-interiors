@@ -9,7 +9,7 @@ const WISH_KEY = "geely_list";
 function loadWishList(): product[] {
   if (typeof window === "undefined") return [];
   try {
-    const data = sessionStorage.getItem(WISH_KEY);
+    const data = localStorage.getItem(WISH_KEY);
     return data ? JSON.parse(data) : [];
   } catch {
     return [];
@@ -18,7 +18,7 @@ function loadWishList(): product[] {
 
 function saveList(WISH: any) {
   if (typeof window === "undefined") return;
-  sessionStorage.setItem(WISH_KEY, JSON.stringify(WISH));
+  localStorage.setItem(WISH_KEY, JSON.stringify(WISH));
 }
 
   export const wishList = {

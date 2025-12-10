@@ -4,15 +4,17 @@ import React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { wishList } from '@/lib/wishList';
 import { useProducts } from './ProductsContext'
-import { cartProduct } from '@/lib/types';
+import { cartProduct, User } from '@/lib/types';
 import { cart } from "@/lib/cart";
+import { useUsers } from "./UserContext";
 
 const CartContext = createContext({});
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const [cartProducts, setCartProducts] = useState<cartProduct[]>([]);
-  const [cartCount, setCartCount] = useState<number>(0)
+  const [cartCount, setCartCount] = useState<number>(0);
+  const { users } = useUsers() as {users: User};
   const { products } = useProducts() as any;
 
   const [wishListCount, setWishListCount] = useState<number>(0)
@@ -29,25 +31,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setCartProducts(filtered);
       setCartCount(sessionCart.length);
     }
-
+  }, [products]); // <-- FIXED
+  
+  useEffect(() => {
     // ------- Fetch Cart from Server -------
     const fetcher = async () => {
       const data = await getData("/carts");
-
+  
       if (data && !data.error) {
         setCartProducts(data || []);
         setCartCount(data?.length || 0);
       }
     };
-
-    if (sessionStorage.getItem("userId")) {
+  
+    if (users || sessionStorage.getItem("userId")) {
       fetcher();
     }
-
+  
     const wishlist = wishList.getWishList();
     setWishListCount(wishlist?.length || 0);
 
-  }, []); // <-- FIXED
+  }, [])
+
   return (
     <CartContext.Provider
       value={{

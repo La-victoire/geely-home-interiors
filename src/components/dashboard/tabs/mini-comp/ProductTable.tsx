@@ -11,11 +11,14 @@ import { Badge } from '@/components/ui/badge'
 import { editProduct } from '@/lib/actions'
 import { toast } from 'sonner'
 import { INTERIOR_CATEGORIES } from '@/components/constants'
+import { Switch } from '@/components/ui/switch'
+import DateTimePicker from '@/components/shop/Mini-Components/DatePicker'
+import { product } from '@/components/shop/Mini-Components/CollectionCard'
 
 const ProductTable = ({Product, onDelete}:{Product:any ,onDelete: (id:string) => void}) => {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
-  const [form , setForm] = useState(Product);
+  const [form , setForm] = useState<product>(Product);
   const [Feat, setFeat] = useState(form.features);
   const [colors, setColors] = useState(form.colors);
   const [color, setColor] = useState<string>("");
@@ -45,7 +48,6 @@ const ProductTable = ({Product, onDelete}:{Product:any ,onDelete: (id:string) =>
     formData.append("category", form.category);
     formData.append("description", form.description);
     formData.append("price", form.price.toString());
-    formData.append("stock", form.stock.toString());
     Feat.forEach((feature,index) => 
       formData.append(`features`, feature)
     );
@@ -56,11 +58,6 @@ const ProductTable = ({Product, onDelete}:{Product:any ,onDelete: (id:string) =>
       formData.append("colors", color)
     })
      formData.append("dimensions", JSON.stringify({ width: width, height: height }));
-    if (form.stock > 0 ) {
-      formData.append("status", "In Stock")
-    } else {
-      formData.append("status", "Out Of Stock");
-    }
     for (let [key, value] of formData.entries()) {
       console.log(key,":",value);
     }
@@ -254,6 +251,46 @@ const ProductTable = ({Product, onDelete}:{Product:any ,onDelete: (id:string) =>
                   ))}
                 </div>
               </div>
+            </div>
+
+             <div className="flex gap-5 mb-10">
+                <div className="flex gap-3 p-3 border rounded-md">
+                    <Label className="text-sm font-medium">
+                        Discount Deal
+                    </Label>        
+                    <Switch
+                      id="isDiscountDeal"
+                      checked={form.isDiscountDeal}
+                      onCheckedChange={(value) =>
+                        setForm(prev => ({ ...prev, isDiscountDeal: value }))
+                      }
+                    />     
+                </div>
+
+                <div className="flex gap-3 p-3 border rounded-md">
+                    <Label className="text-sm font-medium">
+                        Christmas Deal
+                    </Label>        
+                    <Switch
+                      id="isXmasDeal"
+                      checked={form.isXmasDeal}
+                      onCheckedChange={(value) =>
+                        setForm(prev => ({ ...prev, isXmasDeal: value }))
+                      }
+                    />     
+                </div>
+              </div>
+
+              <div className="flex flex-col space-y-2">
+                <label className="text-sm font-medium">Discount Until</label>
+
+                <DateTimePicker
+                value={form.discountUntil} 
+                onChange={(iso:string) =>
+                          setForm(prev => ({
+                            ...prev,
+                            discountUntil: iso
+                          }))} />
             </div>
             <DialogFooter>
               <DialogClose asChild>

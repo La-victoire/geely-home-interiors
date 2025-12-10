@@ -14,6 +14,7 @@ import { createProfile } from '@/lib/actions'
 
 const Footer = () => {
   const {users}:{users:User} = useUsers();
+  const [subscribed, setSubscribed] = useState(false);
   const [email, setEmail] = useState("");
   const isMobile = useMediaQuery({maxWidth: 767 });
   const currentYear = new Date().getFullYear();
@@ -27,12 +28,21 @@ const Footer = () => {
 
   const subscribe = async () => {
     const data = await createProfile("/users/subscribe", {email:email});
-    if (data?.message) toast.info(data.message);
+    if (data?.message) {
+        toast.info(data.message);
+        setEmail("");
+        setSubscribed(true);
+      }
 }
 
   const unSubscribe = async () => {
-    const data = await createProfile("/users/unsubscribe", {email:users?.email});
-    if (data?.message) toast.info(data.message);
+    const data = await createProfile("/users/unsubscribe", {email: email || users?.email});
+    if (data?.message) {
+      toast.info(data.message);
+      setSubscribed(false);
+    } else {
+      toast.info("Not subscribed")
+    }
 }
 
   return (
@@ -102,26 +112,24 @@ const Footer = () => {
           )}
         </div>
         <div className='flex item-col gap-7'>
-{ users && users?.role === "Client" || users?.role === "Subscriber" ? (
-    <Button onClick={unSubscribe} className='w-max -mt-3 px-10 bg-foreground text-background hover:bg-foreground/80'>
-            Unsubscribe
-          </Button>
-):
-(
+        { subscribed ? (
+            <Button onClick={unSubscribe} className='w-max -mt-3 px-10 bg-foreground text-background hover:bg-foreground/80'>
+                    Unsubscribe
+                  </Button>
+        ):(
              <div className="flex item-col gap-5">
-<label htmlFor='email' className=''>GET EXCLUSIVE TIPS & OFFERS</label>
-          <Input 
-          className=''
-          value={email}
-          onChange={(e)=> setEmail(e.target.value)}
-          placeholder='Enter email address'
-          />
-          <Button onClick={subscribe} className='w-max -mt-1 px-10 bg-foreground text-background hover:bg-foreground/80'>
-            Subscribe
-          </Button>
-</div>
-)
-}
+              <label htmlFor='email' className=''>GET EXCLUSIVE TIPS & OFFERS</label>
+                        <Input 
+                        className=''
+                        value={email}
+                        onChange={(e)=> setEmail(e.target.value)}
+                        placeholder='Enter email address'
+                        />
+                        <Button onClick={subscribe} className='w-max -mt-1 px-10 bg-foreground text-background hover:bg-foreground/80'>
+                          Subscribe
+                        </Button>
+            </div>
+        )}
           <p>
             JOIN OUR COMMUNITY
           </p>
