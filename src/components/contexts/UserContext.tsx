@@ -21,7 +21,7 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
       try {
         // 1. Attempt session-based auth first
         const me = await getProfile("/users/me");
-        if (me.user) {
+        if (me?.user) {
           setUsers(me.user);
           return;
         }

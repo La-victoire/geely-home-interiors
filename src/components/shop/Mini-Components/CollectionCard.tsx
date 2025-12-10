@@ -55,7 +55,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
   const badges = getDiscountBadges(product)
   const isCarousel = variant === "carousel"
 
-  const handleCart = (e: any) => {
+  const handleCart = async (e: any) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -63,7 +63,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
       const exists = cartProducts?.find((p) => p.product?._id === product?._id);
 
       if (exists) {
-        createProfile('/carts/add', {
+        await createProfile('/carts/add', {
           product: product._id,
           quantity: 1,
           price: product.price
@@ -73,7 +73,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
       }
 
       setCartCount((prev: number) => prev + 1);
-      createProfile('/carts/add', {
+      await createProfile('/carts/add', {
         product: product._id,
         quantity: 1,
         price: product.price
@@ -90,7 +90,6 @@ function CollectionCard({ product, variant = "default", className }: products) {
     } else {
       cart.addToCart(product, 1);
     }
-    toast.success("Product Added to cart");
   };
 
   return (

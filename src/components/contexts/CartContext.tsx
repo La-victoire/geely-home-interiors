@@ -47,7 +47,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const wishlist = wishList.getWishList();
     setWishListCount(wishlist?.length || 0);
 
-  }, [products]); // <-- FIXED
+  }, []); // <-- FIXED
   return (
     <CartContext.Provider
       value={{

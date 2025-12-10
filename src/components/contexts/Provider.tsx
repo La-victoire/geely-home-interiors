@@ -1,27 +1,39 @@
-"use client"
-import React from 'react'
-import { UsersProvider } from './UserContext'
-import { ProductsProvider } from './ProductsContext'
-import { CartProvider } from './CartContext'
-import LayoutWrapper from '../LayoutWrapper'
-import { Toaster } from 'sonner'
-import { OrderProvider } from './OrderContext'
+"use client";
+
+import React from "react";
+import dynamic from "next/dynamic";
+import { UsersProvider } from "./UserContext";
+import { CartProvider } from "./CartContext";
+import { OrderProvider } from "./OrderContext";
+import LayoutWrapper from "../LayoutWrapper";
+import { Toaster } from "sonner";
+
+// Dynamically import ProductsProvider to guarantee it's client-only
+const ProductsProvider = dynamic(
+  () => import("./ProductsContext").then((mod) => mod.ProductsProvider),
+  { ssr: false }
+);
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   return (
-      <UsersProvider>
-          <ProductsProvider>
-          <CartProvider>
+    <UsersProvider>
+      <ProductsProvider>
+        <CartProvider>
           <OrderProvider>
-          <LayoutWrapper>
+            <LayoutWrapper>
               {children}
-            <Toaster position='top-right' richColors theme='system' closeButton />
-          </LayoutWrapper>
+              <Toaster
+                position="top-right"
+                richColors
+                theme="system"
+                closeButton
+              />
+            </LayoutWrapper>
           </OrderProvider>
-          </CartProvider>
-          </ProductsProvider>
-        </UsersProvider>
-  )
-}
+        </CartProvider>
+      </ProductsProvider>
+    </UsersProvider>
+  );
+};
 
-export default Provider
+export default Provider;
