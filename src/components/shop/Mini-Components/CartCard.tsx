@@ -79,12 +79,12 @@ const CartCard = ({ item, index, onChildData, onChildQuantity, onChildRemoval, o
 
 
   const addToWishList = () => {
-    const exists = wishList.getWishList().find((p: any) => p.id === item.product._id)
+    const exists = wishList.getWishList().find((p: product) => p._id === item.product._id)
     if (exists) {
       toast.message("Product already in watchlist")
     } else {
       setWishListCount((prev) => prev + 1)
-      wishList.addToWishList(item.product._id)
+      wishList.addToWishList(item)
     }
   }
 
@@ -96,7 +96,7 @@ const CartCard = ({ item, index, onChildData, onChildQuantity, onChildRemoval, o
 
   return (
     <Card key={index} className='flex w-full border-0 border-b rounded-none bg-transparent p-5 flex-row '>
-    <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={image[0]?.url || item.images[0]?.url} alt={item.product?.name || item.name} /> 
+    <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={image[0]?.url || item?.images[0]?.url || "/images/sketch.jpg"} alt={item.product?.name || item.name} /> 
       <div className='flex justify-between w-full'>
         <Link href={`/shop/products/${item.product?._id || item._id}`}>
           <p className='font-bold'>{item.product?.name || item.name}</p>

@@ -3,8 +3,7 @@ import React, { useState, useRef } from 'react';
 import CartCard from './Mini-Components/CartCard';
 import { useCart } from '../contexts/CartContext';
 import { cartProduct } from '@/lib/types';
-import { editProfile } from '@/lib/actions';
-import { debounce } from '@/lib/debounce';
+import { deleteProfile, editProfile } from '@/lib/actions';
 import { Button } from '../ui/button';
 import { cart } from '@/lib/cart'
 import { useUsers } from '../contexts/UserContext'
@@ -47,8 +46,16 @@ const CartProducts = () => {
     });
   };
 
-  const handleCartRemoval = (id: string) => {
+  const handleCartRemoval = async (id: string) => {
     cart.removeFromCart(id);
+    if (users) {
+      try {
+        const remove = await deleteProfile(`/carts/${id}`)
+        console.log("Product deleted:", remove)
+      } catch {
+        console.error("Failed to remove product from cart");
+      }
+    }
     setCartProducts((prev) => prev.filter((item) =>
         item._id !== id && item.product?._id !== id
     ));
