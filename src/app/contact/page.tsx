@@ -62,9 +62,9 @@ export default function ContactPage() {
                 <Mail className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-xl font-semibold headFont text-foreground">Email</h3>
-              <p className="text-muted-foreground">geelyhomeinteriors@gmail.com</p>
+              <p className="text-muted-foreground">geelyinteriors@gmail.com</p>
               <Link
-                href="mailto:hello@geelyhome.com"
+                href="mailto:geelyinteriors@gmail.com"
                 className="text-primary hover:text-accent transition-colors inline-block"
               >
                 Send an email
@@ -77,8 +77,8 @@ export default function ContactPage() {
                 <Phone className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-xl font-semibold headFont text-foreground">Phone</h3>
-              <p className="text-muted-foreground">+234-704-953-9860 </p>
-              <Link href="tel:+2347049539860" className="text-primary hover:text-accent transition-colors inline-block">
+              <p className="text-muted-foreground">+234-906-682-4344 </p>
+              <Link href="tel:+2349066824344" className="text-primary hover:text-accent transition-colors inline-block">
                 Call us now
               </Link>
             </div>
@@ -87,7 +87,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-16 md:py-24 bg-muted/30">
+      {/* <section className="py-16 md:py-24 bg-muted/30">
         <div className="max-w-3xl mx-auto px-4 md:px-8">
           <div className="space-y-8">
             <div>
@@ -192,7 +192,7 @@ export default function ContactPage() {
             </form>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* FAQ Section */}
       <section className="py-16 md:py-24 bg-background">
@@ -240,7 +240,7 @@ export default function ContactPage() {
             Our customer service team is here to help with any inquiries about our products and services.
           </p>
           <Button asChild className="bg-primary hover:bg-foreground text-primary-foreground font-medium px-8 py-3">
-            <Link href="mailto:geelyhomeinteriors@gmail.com">Contact Us Today</Link>
+            <Link href="mailto:geelyinteriors@gmail.com">Contact Us Today</Link>
           </Button>
         </div>
       </section>

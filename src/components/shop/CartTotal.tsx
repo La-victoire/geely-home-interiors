@@ -17,7 +17,7 @@ const CartTotal = () => {
   const {cartProducts, setCartProducts} = useCart() as {cartProducts:cartProduct[], setCartProducts:React.Dispatch<React.SetStateAction<cartProduct[]>>};
   const [loaded, setLoaded] = useState(false)
   const {users, setUsers} = useUsers() as {users:User, setUsers:React.Dispatch<React.SetStateAction<User>>};
-  const {order, setOrder} = useOrder() as any
+  const {setOrder} = useOrder() as any
   const [localCart, setLocalCart] = useState([]);
   const [orderData, setOrderData] = useState<Order>({
     client: "",
@@ -46,12 +46,21 @@ const CartTotal = () => {
     
     const amount = cartProducts?.map((product:any) => Math.ceil(Number(product.price) * (product.quantity || 1))).reduce((a, b) => a + b, 0);
     
-    setOrderData({ ...orderData, client:users?.email, amount, items, name: users?.firstname, subCategory:cartProducts[0]?.subCategory ,metadata: (users?._id || "guest")})
+    setOrderData({ 
+      ...orderData,
+      client:users?.email, 
+      amount, 
+      items, 
+      name: users?.firstname, 
+      subCategory:cartProducts[0]?.subCategory,
+      metadata: {
+        id: users?._id || "guest",
+        phone: users.phone,
+        address: [users.addresses[0]]
+      }
+    })
   },[cartProducts, users])
   
-  console.log(orderData.items)
-  console.log(cartProducts[0])
-
   useEffect(()=> {
     if (!window.PaystackPop) {
         const script = document.createElement('script');
@@ -111,16 +120,20 @@ const CartTotal = () => {
         currency: 'NGN',
         ref: reference,
         onSuccess: async (response: any) => {
-          paymentOpened = false;
-          setOrder(orderData);
-          if (users._id) {
-          await deleteProduct('/carts/clear')}
-          cart?.clearCart();
-          toast.success(`Payment ${response.status}!`);
-          console.log("Payment Response:", response);
-          sessionCart.length > 0 && cart.clearCart();
-          setCartProducts([]);
-          window.location.href = "/thank-you";
+          try {
+              paymentOpened = false;
+              setOrder(orderData);
+              if (users?._id) {
+              await deleteProduct('/carts/clear')}
+              toast.success(`Payment ${response.status}!`);
+              console.log("Payment Response:", response);
+              sessionCart.length > 0 && cart.clearCart();
+              setCartProducts([]);
+              window.location.href = "/thank-you";
+            } catch (error) {
+                console.error(error)
+            }
+
         },
         onCancel: () => {
         if (onCancel) onCancel();

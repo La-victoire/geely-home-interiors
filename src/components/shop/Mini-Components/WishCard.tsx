@@ -23,7 +23,7 @@ const WishCard = ({product,setProducts}:{product:product, setProducts: any}) => 
     };
   return (
      <Card className='flex w-full border-0 border-b rounded-none bg-transparent p-5 flex-row '>
-            <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={product?.images[0].url} alt={product.name} />
+            <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={product?.images[0]?.url || "/images/sketch.jpg"} alt={product.name} />
             <div className='flex justify-between w-full'>
               <Link href={`/shop/products/${product._id}`}>
                 <p className='font-bold'>{product?.name}</p>

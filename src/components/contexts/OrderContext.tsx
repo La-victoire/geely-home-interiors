@@ -3,11 +3,11 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 const OrderContext = createContext({});
 
 export const OrderProvider = ({children}:{children: React.ReactNode}) => {
-    const [order, SetOrder] = useState({});
+    const [order, setOrder] = useState({});
 
     return (
         <OrderContext.Provider value={{
-            order, SetOrder
+            order, setOrder
         }}>
             {children}
         </OrderContext.Provider>

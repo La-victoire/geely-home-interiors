@@ -209,12 +209,12 @@ function CollectionCard({ product, variant = "default", className }: products) {
 
         <div className="flex items-baseline gap-2 mt-1">
           <span className={cn("font-semibold", isCarousel ? "text-xl" : "text-lg")}>
-            ₦{product.price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ₦{product?.price?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
 
-          {(product?.isDiscountDeal || product.isXmasDeal) && (
+          {(product?.isDiscountDeal || product?.isXmasDeal) && (
             <span className="text-sm text-muted-foreground line-through">
-              ₦{product?.initialPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              ₦{product?.initialPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           )}
         </div>

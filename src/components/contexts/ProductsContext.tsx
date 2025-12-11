@@ -62,7 +62,7 @@ export function ProductsProvider({ children }: { children: React.ReactNode }) {
   return (
     <ProductsContext.Provider
       value={{
-        products: data?.products || [],
+        products: data?.products || data || [],
         page: data?.page || 1,
         limit: data?.limit || Number(limit),
         totalPages: data?.totalPages || 1,

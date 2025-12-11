@@ -35,15 +35,15 @@ const Footer = () => {
       }
 }
 
-  const unSubscribe = async () => {
-    const data = await createProfile("/users/unsubscribe", {email: email || users?.email});
-    if (data?.message) {
-      toast.info(data.message);
-      setSubscribed(false);
-    } else {
-      toast.info("Not subscribed")
-    }
-}
+//   const unSubscribe = async () => {
+//     const data = await createProfile("/users/unsubscribe", {email: email || users?.email});
+//     if (data?.message) {
+//       toast.info(data.message);
+//       setSubscribed(false);
+//     } else {
+//       toast.info("Not subscribed")
+//     }
+// }
 
   return (
     <footer className='bg-accent w-screen'> 
@@ -113,9 +113,9 @@ const Footer = () => {
         </div>
         <div className='flex item-col gap-7'>
         { subscribed ? (
-            <Button onClick={unSubscribe} className='w-max -mt-3 px-10 bg-foreground text-background hover:bg-foreground/80'>
-                    Unsubscribe
-                  </Button>
+            <div>
+              <p className='text-accent-foreground text-sm'>Thanks for Subscribing</p>
+            </div>
         ):(
              <div className="flex item-col gap-5">
               <label htmlFor='email' className=''>GET EXCLUSIVE TIPS & OFFERS</label>

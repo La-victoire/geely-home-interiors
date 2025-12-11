@@ -28,7 +28,7 @@ export default function AboutPage() {
               <h2 className="text-3xl md:text-4xl headFont font-light text-foreground mb-6">Our Story</h2>
               <p className="text-muted-foreground mb-4 leading-relaxed">
                 Founded in 2015, Geely Home Interiors began with a simple vision: to transform homes into sanctuaries of
-                elegance and comfort. Our founders, with over 30 years of combined experience in luxury design, saw an
+                elegance and comfort. Our founders, with over * years of combined experience in luxury design, saw an
                 opportunity to make high-end interior design accessible without compromising on quality.
               </p>
               <p className="text-muted-foreground leading-relaxed">
@@ -38,7 +38,7 @@ export default function AboutPage() {
             </div>
             <div className="bg-muted rounded-lg h-80 flex items-center justify-center">
               <img
-                src="/luxury-home-interior-design-showroom.jpg"
+                src="/images/small-parlour.jpg"
                 alt="Geely Home Interiors showroom"
                 className="w-full h-full object-cover rounded-lg"
               />
@@ -69,14 +69,14 @@ export default function AboutPage() {
           <h2 className="text-3xl md:text-4xl font-light headFont text-foreground mb-12 text-center">Meet Our Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: "Nsisong Brendan Gillian", role: "Founder & Lead Market strategist", img: "luxury interior designer woman" },
-              { name: "Oghuvbu Victory", role: "Software Engineer & Social Media Manager", img: "luxury interior design developer" },
-              { name: "Elena Rodriguez", role: "Project Manager", img: "luxury interior design manager" },
+              { name: "Nsisong Brendan Gillian", role: "Founder & Lead Market strategist", img: "/images/gillian.jpeg" },
+              { name: "Oghuvbu Victory", role: "Software Engineer & Social Media Manager", img: "/images/victory.jpeg" },
+              { name: "El Kaptures", role: "Content Director", img: "/images/joel.jpg" },
             ].map((member, idx) => (
               <div key={idx} className="text-center">
                 <div className="bg-muted rounded-lg h-60 mb-6 flex items-center justify-center">
                   <img
-                    src={`/.jpg?height=300&width=300&query=${member.img}`}
+                    src={`${member.img}`}
                     alt={member.name}
                     className="w-full h-full object-cover rounded-lg"
                   />

@@ -96,7 +96,7 @@ const addToWishList = () => {
                     <Carousel className=''>
                     <CarouselContent className=''>
                       {item?.images?.map((image,index:number)=> (
-                      <CarouselItem key={index} className='basis-2/4'>
+                      <CarouselItem key={index} className='basis-1.5/4'>
                         <img onClick={()=> setIsVisible(image?.url)} src={image.url} alt={`mini-image-${index}`} className='w-[110px] bg-black/20 h-[100px] rounded-2xl' />
                       </CarouselItem>
                       ))}
@@ -104,9 +104,9 @@ const addToWishList = () => {
                   </Carousel>
                     <div className='flex my-4 flex-col-reverse items-start'>
                       <p className='text-[#ed9e59] text-3xl'>₦{item.price}</p>
-                       {(item?.isDiscountDeal || item.isXmasDeal) && (
+                       {(item?.isDiscountDeal || item?.isXmasDeal) && (
                         <span className="text-sm text-muted-foreground line-through">
-                          ₦{item?.initialPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          ₦{item?.initialPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
                       )}
                     </div>
@@ -167,9 +167,9 @@ const addToWishList = () => {
                   </Carousel>
                     <div className='flex flex-col-reverse items-start'>
                       <p className='text-[#ed9e59] text-3xl'>₦{item.price}</p>
-                      {(item?.isDiscountDeal || item.isXmasDeal) && (
+                      {(item?.isDiscountDeal || item?.isXmasDeal) && (
                         <span className="text-sm text-muted-foreground line-through">
-                          ₦{item?.initialPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          ₦{item?.initialPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
                       )}
                     </div>
