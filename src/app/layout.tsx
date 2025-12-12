@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   icons: {
     icon: '/logo.png'
   },
+  verification: {
+    google: "ACIwf9htfrUZsDDdln2sq3jiQ2wNxJ5Hh2asb5Tifuc"
+  },
   keywords: SITE_META.keywords,
   authors: [{
     name: "Geely Home Interiors",

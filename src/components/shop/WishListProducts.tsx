@@ -1,12 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { Card } from '../ui/card'
-import Link from 'next/link'
-import { Button } from '../ui/button'
-import { ShoppingCart, X } from 'lucide-react'
 import { wishList } from '@/lib/wishList'
 import { product } from './Mini-Components/CollectionCard'
-import { cart } from '@/lib/cart'
 import WishCard from './Mini-Components/WishCard'
 
 const WishListProducts = () => {

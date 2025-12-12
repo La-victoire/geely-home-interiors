@@ -47,7 +47,7 @@ interface products {
 }
 
 function CollectionCard({ product, variant = "default", className }: products) {
-  const { cartProducts, setCartCount } = useCart() as { cartProducts: cartProduct[], setCartCount: React.Dispatch<React.SetStateAction<number>> };
+  const { cartProducts, setCartCount, setWishListCount } = useCart() as { cartProducts: cartProduct[], setCartCount: React.Dispatch<React.SetStateAction<number>>, setWishListCount: React.Dispatch<React.SetStateAction<number>> };
   const { users } = useUsers() as { users: User };
   const [isHovered, setIsHovered] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
@@ -147,7 +147,15 @@ function CollectionCard({ product, variant = "default", className }: products) {
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            wishList.addToWishList(product);
+             const data = wishList.getWishList().find((p) => p._id === product._id)
+                if (data) {
+                  toast.message(
+                    "Product already in watchlist"
+                  )
+                } else {
+                  setWishListCount((prev) => prev + 1)
+                  wishList.addToWishList(product) 
+                }
             setIsWishlisted(true);
           }}
           className={cn(
