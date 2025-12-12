@@ -1,5 +1,6 @@
 // app/sitemap.ts
 import { product } from '@/components/shop/Mini-Components/CollectionCard';
+import axios from "axios";
 import { getData, productsApiResponse } from '@/lib/actions';
 import { MetadataRoute } from 'next';
 
@@ -7,7 +8,10 @@ import { MetadataRoute } from 'next';
 async function getProducts(): Promise<productsApiResponse<unknown>| undefined>{
   // Replace this with your actual data fetching logic (e.g., fetching from a CMS, database, or API)
   try {
-  const apiRes = await getData("/products");
+  const apiRes = await axios.get(`${process.env.SERVER_URL}/products`,{
+  headers: {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    Accept: "application/json",}});
   return apiRes?.products || [];
 } catch (err) {
   console.error("Sitemap product fetch failed:", err);
