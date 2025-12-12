@@ -23,7 +23,7 @@ export async function GET() {
     `${baseUrl}`,
     `${baseUrl}/contact`,
     `${baseUrl}/shop/products`,
-    ...products.filter(p => p._id).map(p => `${baseUrl}/shop/products/${p._id}`)
+    ...products.filter((p) => p._id).map((p) => `${baseUrl}/shop/products/${p._id}`),
   ];
 
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -31,18 +31,20 @@ export async function GET() {
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-${urls.map(url => `
+${urls
+  .map(
+    (url) => `
   <url>
     <loc>${url}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>`).join('')}
+  </url>`
+  )
+  .join("")}
 </urlset>`;
 
   return new NextResponse(sitemapXml, {
-    headers: {
-      "Content-Type": "application/xml",
-    },
+    headers: { "Content-Type": "application/xml" },
   });
 }
