@@ -1,15 +1,14 @@
 // app/robots.ts
-import { MetadataRoute } from "next";
+import { NextResponse } from "next/server";
 
-export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: [
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: "/dashboard",
-      },
-    ],
-    sitemap: `https://geely-home-interiors.vercel.app/sitemap.xml`,
-  };
+export async function GET() {
+  const robotsTxt = `User-agent: *
+Allow: /
+Disallow: /dashboard
+
+Sitemap: ${process.env.NEXT_PUBLIC_APP_URL}/sitemap.xml`;
+
+  return new NextResponse(robotsTxt, {
+    headers: { "Content-Type": "text/plain" },
+  });
 }
