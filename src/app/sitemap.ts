@@ -1,59 +1,48 @@
 // app/sitemap.ts
+import { NextResponse } from "next/server";
 import axios from "axios";
-import { MetadataRoute } from "next";
 
-async function getProducts() {
+export async function GET() {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  let products: any[] = [];
   try {
-    const apiRes = await axios.get(`${process.env.SERVER_URL}/products`, {
+    const res = await axios.get(`${process.env.SERVER_URL}/products`, {
       headers: {
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         Accept: "application/json",
       },
     });
-
-    // Extract only the products array
-    const products = apiRes.data?.products || [];
-    // Filter out invalid products
-    return products.filter((p: any) => p._id);
+    products = res.data.products || [];
   } catch (err) {
     console.error("Sitemap product fetch failed:", err);
-    return [];
   }
-}
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-
-  const products = await getProducts();
-
-  const productEntries: MetadataRoute.Sitemap = products.map((product: any) => ({
-    url: `${baseUrl}/shop/products/${product._id}`,
-    lastModified: product.updatedAt ? new Date(product.updatedAt) : new Date(),
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
-
-  const staticEntries: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/shop/products`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
+  const urls = [
+    `${baseUrl}`,
+    `${baseUrl}/contact`,
+    `${baseUrl}/shop/products`,
+    ...products.filter(p => p._id).map(p => `${baseUrl}/shop/products/${p._id}`)
   ];
 
-  return [...staticEntries, ...productEntries];
+  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+${urls.map(url => `
+  <url>
+    <loc>${url}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('')}
+</urlset>`;
+
+  return new NextResponse(sitemapXml, {
+    headers: {
+      "Content-Type": "application/xml",
+    },
+  });
 }
