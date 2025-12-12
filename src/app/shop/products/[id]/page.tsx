@@ -9,12 +9,14 @@ export async function generateMetadata(
   { params }: { params: { id: string } }
 ): Promise<Metadata> {
   const { id } = await params;
-  console.log(id)
 
   let product;
 
   try {
-    const response = await axios.get(`${process.env.SERVER_URL}/products/${id}`);
+    const response = await axios.get(`${process.env.SERVER_URL}/products/${id}`,{
+  headers: {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    Accept: "application/json",}});
     product = response.data;
   } catch (err: any) {
     console.error("Error fetching product in generateMetadata:", err.response?.status, err.response?.data);
@@ -66,11 +68,14 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+  const { id } = await params;
   let product;
 
   try {
-    const response = await axios.get(`${process.env.SERVER_URL}/products/${id}`);
+    const response = await axios.get(`${process.env.SERVER_URL}/products/${id}`,{
+  headers: {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    Accept: "application/json",}});
     product = response.data;
   } catch (err: any) {
     console.error("Error fetching product in Page:", err.response?.status, err.response?.data);
