@@ -29,7 +29,7 @@ type userApiResponse<T> = {
   error?: string;
 };
 
-type productsApiResponse<T> = {
+export type productsApiResponse<T> = {
   products: product[];
   message?: string;
   error?: string;

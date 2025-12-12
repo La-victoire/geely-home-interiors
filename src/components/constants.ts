@@ -251,7 +251,7 @@ export const users: User[] = [
 
 export const SITE_META = {
   name: "Geely Home Interiors and Accessories",
-  domain: "https://geely-home-interiors.vercel.app/",
+  domain: process.env.NEXT_PUBLIC_APP_URL,
   email: "geelyinteriors@gmail.com",
   phoneNumbers: ["+234-9066824344", "+234-7049539860"],
   whatsapp: "+234-7049539860",
@@ -265,7 +265,7 @@ export const SITE_META = {
   socials: {
     instagram: "https://instagram.com/geelyinterior",
     facebook: "https://facebook.com/geelyinterior",
-    twitter: "https://twitter.com/geelyinterior",
+    twitter: "https://x.com/geelyInterior",
   },
   keywords: [
     "Luxury Interiors",
