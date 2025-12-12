@@ -6,8 +6,13 @@ import { MetadataRoute } from 'next';
 
 async function getProducts(): Promise<productsApiResponse<unknown>| undefined>{
   // Replace this with your actual data fetching logic (e.g., fetching from a CMS, database, or API)
-  const res = await getData("/products");
-  return res;
+  try {
+  const apiRes = await getData("/products");
+  return apiRes?.products || [];
+} catch (err) {
+  console.error("Sitemap product fetch failed:", err);
+  return [];
+}
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -15,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const products = await getProducts();
 
-  const productEntries: MetadataRoute.Sitemap = products?.products.map((product) => ({
+  const productEntries: MetadataRoute.Sitemap = products?.map((product) => ({
     url: `${baseUrl}/shop/products/${product._id}`,
     lastModified: new Date(),
     changeFrequency: 'weekly', // How often this page changes
