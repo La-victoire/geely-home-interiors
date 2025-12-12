@@ -8,7 +8,8 @@ import type { Metadata } from "next";
 export async function generateMetadata(
   { params }: { params: { id: string } }
 ): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
+  console.log(id)
 
   let product;
 
