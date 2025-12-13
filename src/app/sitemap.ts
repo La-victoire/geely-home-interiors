@@ -1,75 +1,59 @@
-// app/sitemap.ts (Optimized)
-import { NextResponse } from "next/server";
+// app/sitemap.ts
 import axios from "axios";
+import { MetadataRoute } from "next";
 
-// Define a type interface for clarity
-interface Product {
-  _id: string;
-  // ... other product fields you might use
-}
-
-export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://yourdefaultdomain.com'; // Add a fallback
-
-  let products: Product[] = [];
+async function getProducts() {
   try {
-    // Use the Fetch API built into Next.js/Node.js, if possible, instead of axios
-    const serverUrl = process.env.SERVER_URL;
-    if (serverUrl) {
-        const res = await fetch(`${serverUrl}/products`, {
-            // Next.js handles user-agent headers implicitly, simpler to omit
-            headers: {
-                Accept: "application/json",
-            },
-            // Optional: configure caching for the fetch request
-            next: { revalidate: 3600 }, // Revalidate data every hour
-        });
-        
-        if (!res.ok) {
-            throw new Error(`API fetch failed with status: ${res.status}`);
-        }
+    const apiRes = await axios.get(`${process.env.SERVER_URL}/products`, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        Accept: "application/json",
+      },
+    });
 
-        const data = await res.json();
-        products = data.products || [];
-
-    } else {
-        console.error("SERVER_URL environment variable is not set.");
-    }
-
+    // Extract only the products array
+    const products = apiRes.data?.products || [];
+    // Filter out invalid products
+    return products.filter((p: any) => p._id);
   } catch (err) {
     console.error("Sitemap product fetch failed:", err);
-    // Continue building sitemap even if products fail to load
+    return [];
   }
+}
 
-  const urls = [
-    `${baseUrl}`,
-    `${baseUrl}/contact`,
-    `${baseUrl}/shop/products`,
-    ...products
-      .filter((p) => p._id)
-      .map((p) => `${baseUrl}/shop/products/${p._id}`),
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  const products = await getProducts();
+
+  const productEntries: MetadataRoute.Sitemap = products.map((product: any) => ({
+    url: `${baseUrl}/shop/products/${product._id}`,
+    lastModified: product.updatedAt ? new Date(product.updatedAt) : new Date(),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  const staticEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 1,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/shop/products`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
   ];
 
-  // The XML generation logic remains the same
-  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-${urls
-  .map(
-    (url) => `
-  <url>
-    <loc>${url}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`
-  )
-  .join("")}
-</urlset>`;
-
-  return new NextResponse(sitemapXml, {
-    headers: { "Content-Type": "application/xml" },
-  });
+  return [...staticEntries, ...productEntries];
 }
