@@ -45,11 +45,12 @@ const CartTotal = () => {
     metadata: {},
   });
 
-  const sessionCart = cart.getCart() as cartProduct[];
+  const sessionCart = cart.getCart() as unknown as cartProduct[];
   const activeCart = cartProducts.length ? cartProducts : localCart;
 
   const subtotal = calculateSubtotal(activeCart);
-  const shippingFee = calculateShipping(users);
+  const shippingFee = 0
+  // calculateShipping(users);
   const totalAmount = subtotal + shippingFee;
 
   useEffect(() => {
@@ -95,6 +96,14 @@ const CartTotal = () => {
     }
   }, []);
 
+  const isLagos = React.useMemo(() => {
+  const state = users?.addresses?.[0]?.state;
+  if (!state) return false;
+  return state.trim().toLowerCase().includes("lagos");
+}, [users?.addresses]);
+
+console.log(users);
+
   const handlePayment = async () => {
     if (!loaded) return toast.error("Payment gateway not loaded");
     if (!activeCart.length) return toast.error("Your cart is empty");
@@ -108,6 +117,12 @@ const CartTotal = () => {
     ) {
       return toast.error("Please complete your profile before paying");
     }
+
+   if (!isLagos) {
+  return toast.info(
+    "Sorry, orders outside Lagos must be completed via WhatsApp or Instagram"
+  );
+}
 
     try {
       const res = await createProfile("/orders/initiate", orderData);

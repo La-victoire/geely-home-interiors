@@ -20,18 +20,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [wishListCount, setWishListCount] = useState<number>(0)
 
   useEffect(() => {
-    if (!products || products.length === 0) return;
+  if (users) return; // 🔴 IMPORTANT: logged-in users must NOT use session cart
+  if (!products || products.length === 0) return;
 
-    // ------- Load Session Cart Products -------
-    const sessionCart = cart.getCart() as unknown as cartProduct[];
-    const ids = new Set(sessionCart.map(i => i.productId as any));
-    const filtered = products?.filter((prod: any) => ids.has(prod._id));
+  const sessionCart = cart.getCart();
 
-    if (sessionCart.length > 0) {
-      setCartProducts(filtered);
-      setCartCount(sessionCart.length);
-    }
-  }, [products]); // <-- FIXED
+  const merged = sessionCart
+    .map(item => {
+      const product = products.find(p => p._id === item.productId);
+      if (!product) return null;
+
+      return {
+        product,
+        quantity: item.quantity,
+        price: item.price
+      };
+    })
+    .filter(Boolean);
+
+  setCartProducts(merged);
+  setCartCount(merged.length);
+}, [products, users]);
+
   
   useEffect(() => {
     // ------- Fetch Cart from Server -------

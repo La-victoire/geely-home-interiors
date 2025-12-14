@@ -37,7 +37,7 @@ const CartCard = ({ item, index, onChildData, onChildQuantity, onChildRemoval, o
       setQuantity(match.quantity)
     }
   }, [])
-
+    console.log(item)
   // ❗ FIX 3 — move parent communication into an effect, NOT useMemo
   useEffect(() => {
     onChildQuantity(quantity)
@@ -96,7 +96,7 @@ const CartCard = ({ item, index, onChildData, onChildQuantity, onChildRemoval, o
 
   return (
     <Card key={index} className='flex w-full border-0 border-b rounded-none bg-transparent p-5 flex-row '>
-    <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={image[0]?.url || item?.images[0]?.url || "/images/sketch.jpg"} alt={item.product?.name || item.name} /> 
+    <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={image[0]?.url || "/images/sketch.jpg"} alt={item.product?.name || item.name} /> 
       <div className='flex justify-between w-full'>
         <Link href={`/shop/products/${item.product?._id || item._id}`}>
           <p className='font-bold'>{item.product?.name || item.name}</p>

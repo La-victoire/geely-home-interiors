@@ -60,29 +60,38 @@ function CollectionCard({ product, variant = "default", className }: products) {
     e.preventDefault();
 
     if (users) {
-      const exists = cartProducts?.find((p) => p.product?._id === product?._id);
+      const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
+      const exists = safeCart.find(p => p.product?._id === item._id);
 
       if (exists) {
-        await createProfile('/carts/add', {
+        const updatedCart = await createProfile('/carts/add', {
           product: product._id,
           quantity: 1,
           price: product.price
         });
+  setCartProducts(updatedCart.cart);
+  console.log(updatedCart.cart);
+
         toast.success("Product quantity updated in cart");
         return;
       }
 
       setCartCount((prev: number) => prev + 1);
-      await createProfile('/carts/add', {
-        product: product._id,
-        quantity: 1,
-        price: product.price
-      });
+      const updatedCart = await createProfile('/carts/add', {
+          product: product._id,
+          quantity: 1,
+          price: product.price
+        });
+
+  setCartProducts(updatedCart.cart);
+  console.log(updatedCart.cart);
+
       toast.success("Product Added to cart");
       return;
     }
 
-    const exists = cartProducts.find((p) => p.product?._id === product?._id);
+    const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
+    const exists = safeCart.find(p => p.product?._id === item._id);
 
     if (exists) {
       cart.addToCart(product, 1);

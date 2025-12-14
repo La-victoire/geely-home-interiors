@@ -11,20 +11,7 @@ const LayoutWrapper = (
   children: React.ReactNode
 }, 
 ) => {
-  const [isSpecialPage, setIsSpecialPage] = useState(false);
-
-  useEffect(() => {
-    const hasMarkers = document.querySelector('[data-not-found]') || document.querySelector('[data-loading]') || document.querySelector('[data-error]') || document.querySelector('[data-authentication]');
-
-    setIsSpecialPage(!!hasMarkers)
-  }, [children])
-
   
-  if (isSpecialPage) {
-    return <>
-    {children}
-    </>
-  } else {
   return (
     <>
     <Navbar/>
@@ -33,7 +20,7 @@ const LayoutWrapper = (
     </>
   )
 }
-}
+
 
 
 export default LayoutWrapper

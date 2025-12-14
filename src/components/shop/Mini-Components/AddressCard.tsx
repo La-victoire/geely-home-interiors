@@ -46,7 +46,7 @@ const AddressCard = () => {
     const updated = [...users?.addresses];
     updated[index] = { ...updated[index], [key]: value };
 
-    setUsers({ ...users, addresses: updated });
+    setUsers(prev => ({ ...prev, addresses: updated }));
   };
 
   const handleProfile = async () => {

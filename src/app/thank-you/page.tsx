@@ -81,7 +81,7 @@ export default function ThankYouPage() {
           </div>
 
           <div className="space-y-3">
-            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground text-balance">
+            <h1 className="headFont text-3xl md:text-4xl lg:text-5xl text-foreground text-balance">
               Thank You for Your Patronage
             </h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-md mx-auto">
@@ -105,7 +105,9 @@ export default function ThankYouPage() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="space-y-1">
                 <p className="text-xs text-muted-foreground uppercase tracking-wider">Order Confirmed</p>
-                <p className="font-mono text-lg text-foreground">GHI-{order?.subCategory}</p>
+              {/*
+  <p className="font-mono text-lg text-foreground">GHI-{order?.subCategory}</p>
+*/}
               </div>
               <div className="flex items-center gap-2 text-gold">
                 <Package className="w-5 h-5" />
@@ -115,7 +117,8 @@ export default function ThankYouPage() {
           </div>
 
           {/* Order Items */}
-          <div className="px-6 md:px-8 py-6 space-y-4">
+          {/*
+<div className="px-6 md:px-8 py-6 space-y-4">
             <h3 className="font-serif text-lg text-foreground">Order Items</h3>
             <div className="space-y-4">
               {order.items?.map((item) => (
@@ -134,6 +137,7 @@ export default function ThankYouPage() {
                 </div>
               ))}
             </div>
+*/}
           </div>
 
           {/* Order Details Grid */}
@@ -161,7 +165,7 @@ export default function ThankYouPage() {
               </div>
             </div>
 
-            {/* Price Summary */}
+            {/* Price Summary 
             <div className="bg-secondary/30 rounded-xl p-5 space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
@@ -177,6 +181,7 @@ export default function ThankYouPage() {
               </div>
             </div>
           </div>
+*/}
 
           {/* Actions */}
           <div className="px-6 md:px-8 py-6 border-t border-border/50 bg-secondary/20">

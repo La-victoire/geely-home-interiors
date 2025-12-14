@@ -37,7 +37,7 @@ export interface Order {
 }
 
 export interface cartProduct {
-  product: {
+  product?: {
     _id: string;
     name: string;
     images: { url: string, public_url: string }[];
@@ -46,7 +46,9 @@ export interface cartProduct {
   images: { url: string, public_url: string }[];
   quantity: number;
   price: number;
+  productId: string;
 }
+
 
 export interface User {
   _id: string;

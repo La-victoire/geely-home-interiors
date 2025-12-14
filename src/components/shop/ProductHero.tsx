@@ -18,36 +18,42 @@ const ProductHero = ({item}:{item:product}) => {
   const [quantity, setQuantity] = useState(1)
   const [isVisble, setIsVisible] = useState(item.images[0]?.url)
   const {users} = useUsers() as {users:User};
-  const {cartProducts, setCartCount, setWishListCount} = useCart() as {cartProducts:cartProduct[], setCartCount:React.Dispatch<React.SetStateAction<number>>, setWishListCount:React.Dispatch<React.SetStateAction<number>>};
+  const {cartProducts, setCartProducts,setCartCount, setWishListCount} = useCart() as {cartProducts:cartProduct[], setCartProducts: any, setCartCount:React.Dispatch<React.SetStateAction<number>>, setWishListCount:React.Dispatch<React.SetStateAction<number>>};
   const isMobile = useMediaQuery({maxWidth: 767 });
 
 const handleCart = async () => {
   if (users) {
-    const exists = cartProducts?.find((p) => p.product._id === item._id);
+    const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
+    const exists = safeCart.find(p => p.product?._id === item._id);
     if (exists) {
-      await createProfile('/carts/add', {
-        product: item._id,
-        quantity,
-        price: item.price
-      });
+      const updatedCart = await createProfile('/carts/add', {
+          product: item._id,
+          quantity,
+          price: item.price
+        });
+      setCartProducts(updatedCart.cart);
+      console.log(updatedCart.cart);
       toast.success("Product quantity updated in cart");
       setQuantity(1);
       return;
     };
 
     setCartCount((prev: number) => prev + 1);
-     await createProfile('/carts/add', {
-      product: item._id,
-      quantity,
-      price: item.price
-    });
+     const updatedCart = await createProfile('/carts/add', {
+          product: item._id,
+          quantity,
+          price: item.price
+        });
+    setCartProducts(updatedCart.cart);
+    console.log(updatedCart.cart);
     toast.success("Product Added to cart");
     setQuantity(1);
     return;
   }
 
   // guest flow
-  const exists = cartProducts?.find((p) => p.product._id === item._id);
+  const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
+  const exists = safeCart.find(p => p.product?._id === item._id);
 
   if (exists) {
     cart.addToCart(item, quantity);
