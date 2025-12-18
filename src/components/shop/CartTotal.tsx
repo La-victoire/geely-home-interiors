@@ -102,8 +102,6 @@ const CartTotal = () => {
   return state.trim().toLowerCase().includes("lagos");
 }, [users?.addresses]);
 
-console.log(users);
-
   const handlePayment = async () => {
     if (!loaded) return toast.error("Payment gateway not loaded");
     if (!activeCart.length) return toast.error("Your cart is empty");

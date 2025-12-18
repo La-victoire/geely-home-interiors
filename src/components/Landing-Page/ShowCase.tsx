@@ -6,9 +6,24 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import Link from 'next/link';
 import { SplitText } from 'gsap/all'
+import { useSearchParams, useRouter } from "next/navigation";
 
 const ShowCase = () => {
-  const [IsReduced, setIsReduced] = useState<number>()
+  const [IsReduced, setIsReduced] = useState<number>();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const imageRef = useRef<(HTMLSpanElement | null)[]>([]);
+
+  const updateParams = (params: Record<string, string | number | null>) => {
+  const newParams = new URLSearchParams(searchParams.toString());
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (!value || value === "" || value === "all") newParams.delete(key);
+    else newParams.set(key, String(value));
+  });
+
+  router.push(`/shop/products/?${newParams.toString()}`);
+ };
 
   useGSAP(()=> {
     const splitText = SplitText.create('#showcase h2', {
@@ -41,23 +56,22 @@ const ShowCase = () => {
   const increase = (index:number) => {
     setIsReduced(index)
   }
-  const imageRef = useRef<(HTMLSpanElement | null)[]>([]);
 
-    const handleEnter = (index:number) => {
-      gsap.to(imageRef.current[index], {
-        scale: 1.2,
-        duration: 0.4,
-        ease: "expo.inOut"
-      })
-    }
+  const handleEnter = (index:number) => {
+    gsap.to(imageRef.current[index], {
+      scale: 1.2,
+      duration: 0.4,
+      ease: "expo.inOut"
+    })
+  }
 
-    const handleExit = (index:number) => {
-      gsap.to(imageRef.current[index], {
-        scale: 1,
-        duration: 0.4,
-        ease: "expo.out"
-      })
-    }
+  const handleExit = (index:number) => {
+    gsap.to(imageRef.current[index], {
+      scale: 1,
+      duration: 0.4,
+      ease: "expo.out"
+    })
+  }
   return (
     <section id='showcase' className='mt-45 md:px-7'>
       <h2 className='text-3xl text-center px-5 mb-25 -mt-33 headFont md:text-5xl'>
@@ -65,9 +79,7 @@ const ShowCase = () => {
       </h2>
       <div className=' md:grid-cols-3 grid xl:grid-cols-12 mb-5 md:px-0 grid-cols-1 gap-3 px-5'>
         {CATEGORIES.map(({title,image,description,slug}, index)=> (
-        <Card id="grid-cards" className={` ${index % 2 ? "md:col-span-6" : 'md:col-span-3'} ${index === 4 && "md:col-span-6"}  p-0 relative max-h-[70dvh] overflow-hidden w-auto`}>
-        <Link key={index} 
-                     href={`/shop/products?page=1&subCategory=${title.toString()}`}>
+        <Card id="grid-cards" onClick={() => updateParams({ subcategory: title, page: 1 })} key={index} className={` ${index % 2 ? "md:col-span-6" : 'md:col-span-3'} ${index === 4 && "md:col-span-6"}  p-0 relative max-h-[70dvh] overflow-hidden w-auto`}>
           <img
            ref={el => imageRef.current[index] = el}
            className='relative not-sm:p-1 h-full object-cover rounded-2xl' 
@@ -80,15 +92,14 @@ const ShowCase = () => {
             <p 
              className='text-white cursor-pointer text-base'
              onClick={(e) => {
-e.stopPropagation();
-e.preventDefault();
-increase(index)}
-}
+              e.stopPropagation();
+              e.preventDefault();
+              increase(index)}
+              }
             >
               {IsReduced == index ? description : (description.slice(0, 50) + " ...See More") }
             </p>
           </div>
-</Link>
         </Card>
         ))}
       </div>

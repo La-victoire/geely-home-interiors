@@ -47,7 +47,7 @@ interface products {
 }
 
 function CollectionCard({ product, variant = "default", className }: products) {
-  const { cartProducts, setCartCount, setWishListCount } = useCart() as { cartProducts: cartProduct[], setCartCount: React.Dispatch<React.SetStateAction<number>>, setWishListCount: React.Dispatch<React.SetStateAction<number>> };
+  const { cartProducts, setCartCount, setCartProducts,setWishListCount } = useCart() as { cartProducts: cartProduct[], setCartCount: React.Dispatch<React.SetStateAction<number>>, setCartProducts:any,setWishListCount: React.Dispatch<React.SetStateAction<number>> };
   const { users } = useUsers() as { users: User };
   const [isHovered, setIsHovered] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
@@ -61,7 +61,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
 
     if (users) {
       const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
-      const exists = safeCart.find(p => p.product?._id === item._id);
+      const exists = safeCart.find(p => p.product?._id === product._id);
 
       if (exists) {
         const updatedCart = await createProfile('/carts/add', {
@@ -69,8 +69,9 @@ function CollectionCard({ product, variant = "default", className }: products) {
           quantity: 1,
           price: product.price
         });
-  setCartProducts(updatedCart.cart);
-  console.log(updatedCart.cart);
+      setCartProducts((prev) => prev.map(item => 
+   ({ ...item, quantity: item.quantity + 1 })
+  ));
 
         toast.success("Product quantity updated in cart");
         return;
@@ -83,21 +84,23 @@ function CollectionCard({ product, variant = "default", className }: products) {
           price: product.price
         });
 
-  setCartProducts(updatedCart.cart);
-  console.log(updatedCart.cart);
-
+      setCartProducts((prev) => [...prev, {price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}]);
       toast.success("Product Added to cart");
       return;
     }
 
     const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
-    const exists = safeCart.find(p => p.product?._id === item._id);
+    const exists = safeCart.find(p => p.product?._id === product._id);
 
     if (exists) {
       cart.addToCart(product, 1);
       setCartCount((prev: number) => prev + 1);
+      setCartProducts((prev) => prev.map(item => 
+   ({ ...item, quantity: item.quantity + 1 })
+  ));
     } else {
       cart.addToCart(product, 1);
+      setCartProducts((prev) => prev ? [...prev, {price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}] : [{price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}]);
     }
   };
 

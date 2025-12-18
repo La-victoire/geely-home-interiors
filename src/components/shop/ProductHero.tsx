@@ -31,8 +31,9 @@ const handleCart = async () => {
           quantity,
           price: item.price
         });
-      setCartProducts(updatedCart.cart);
-      console.log(updatedCart.cart);
+      setCartProducts((prev) => prev.map(p => 
+   ({ ...p, quantity: p.quantity + quantity })
+  ));
       toast.success("Product quantity updated in cart");
       setQuantity(1);
       return;
@@ -44,8 +45,7 @@ const handleCart = async () => {
           quantity,
           price: item.price
         });
-    setCartProducts(updatedCart.cart);
-    console.log(updatedCart.cart);
+    setCartProducts((prev) => [...prev, {price: item.price, product: {name: item.name, _id: item._id}, quantity}]);
     toast.success("Product Added to cart");
     setQuantity(1);
     return;
@@ -57,8 +57,12 @@ const handleCart = async () => {
 
   if (exists) {
     cart.addToCart(item, quantity);
-    setCartCount((prev: number) => prev + 1);
+    setCartProducts((prev) => prev.map(p => 
+   ({ ...p, quantity: p.quantity + quantity })
+  ));
   } else {
+    setCartCount((prev: number) => prev + 1);
+    setCartProducts((prev) => [...prev, {price: item.price, product: {name: item.name, _id: item._id}, quantity}]);
     cart.addToCart(item, quantity);
   }
   setQuantity(1);
