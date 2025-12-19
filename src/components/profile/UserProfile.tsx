@@ -10,6 +10,7 @@ import { getProfile } from '@/lib/actions'
 import useSWR from 'swr'
 import { createProfile } from '@/lib/actions'
 import { useUsers } from '../contexts/UserContext'
+import { toast } from 'sonner'
 
 const UserProfile = ({id}:{id:string}) => {
   const fetcher = async (url: string) => await getProfile<any>(url);
@@ -24,7 +25,9 @@ const UserProfile = ({id}:{id:string}) => {
 
   const logOut = async () => {
     const destroy = await createProfile("/users/logout");
-    if (destroy.message) toast.info(destroy.message);
+    if (destroy?.message) 
+        toast.info(destroy.message);
+        sessionStorage.removeItem('userId');
 }
 
   if (profileLoading) return <p>Loading...</p>;
@@ -69,7 +72,7 @@ const UserProfile = ({id}:{id:string}) => {
           </div>
       </div>
        <div className="py-10 w-full flex justify-center item-center">
-        <Button className="hover:cursor-pointer"> Log Out</Button>
+        <Button onClick={logOut} className="hover:cursor-pointer"> Log Out</Button>
     </div>
     </div>
     )

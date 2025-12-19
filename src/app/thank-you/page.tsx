@@ -12,33 +12,33 @@ import { cartProduct, Order, User } from "@/lib/types"
 import { useUsers } from "@/components/contexts/UserContext"
 
 // Mock order data
-const orderData = {
-  orderId: "GHI-2024-78392",
-  items: [
-    {
-      id: 1,
-      name: "Modern Navy Velvet Sofa",
-      variant: "3-Seater / Navy Blue",
-      price: 2450000,
-      quantity: 1,
-      image: "/modern-navy-blue-velvet-sofa.jpg",
-    },
-    {
-      id: 2,
-      name: "Ceramic Table Lamp",
-      variant: "White & Gold / Medium",
-      price: 185000,
-      quantity: 2,
-      image: "/white-gold-ceramic-table-lamp.jpg",
-    },
-  ],
-  subtotal: 2820000,
-  shipping: 25000,
-  total: 2845000,
-  deliveryEstimate: "Dec 15 - Dec 20, 2024",
-  shippingAddress: "15 Admiralty Way, Lekki Phase 1, Lagos",
-  paymentMethod: "Visa •••• 4242",
-}
+// const orderData = {
+//   orderId: "GHI-2024-78392",
+//   items: [
+//     {
+//       id: 1,
+//       name: "Modern Navy Velvet Sofa",
+//       variant: "3-Seater / Navy Blue",
+//       price: 2450000,
+//       quantity: 1,
+//       image: "/modern-navy-blue-velvet-sofa.jpg",
+//     },
+//     {
+//       id: 2,
+//       name: "Ceramic Table Lamp",
+//       variant: "White & Gold / Medium",
+//       price: 185000,
+//       quantity: 2,
+//       image: "/white-gold-ceramic-table-lamp.jpg",
+//     },
+//   ],
+//   subtotal: 2820000,
+//   shipping: 25000,
+//   total: 2845000,
+//   deliveryEstimate: "Dec 15 - Dec 20, 2024",
+//   shippingAddress: "15 Admiralty Way, Lekki Phase 1, Lagos",
+//   paymentMethod: "Visa •••• 4242",
+// }
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat("en-NG", {
@@ -51,7 +51,7 @@ function formatPrice(price: number) {
 export default function ThankYouPage() {
   const [showContent, setShowContent] = useState(false)
   const {order} = useOrder() as {order: Order};
-  const {users} = useUsers as unknown as {users: User}
+  const {users} = useUsers() as unknown as {users: User}
 
   useEffect(() => {
     const timer = setTimeout(() => setShowContent(true), 300)
@@ -150,7 +150,7 @@ export default function ThankYouPage() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Estimated Delivery</p>
-                  <p className="font-medium text-foreground">{users?.addresses[0].state.includes("lagos") ? "2-3 Business Days" : "7-15 Business Days"}</p>
+                  <p className="font-medium text-foreground">{!users?.addresses[0].state.includes("lagos") ? "2-3 Business Days" : "7-15 Business Days"}</p>
                 </div>
               </div>
 

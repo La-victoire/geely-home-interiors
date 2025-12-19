@@ -46,6 +46,14 @@ interface products {
   className?: string;
 }
 
+export function formatPrice(price: number) {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  }).format(price)
+}
+
 function CollectionCard({ product, variant = "default", className }: products) {
   const { cartProducts, setCartCount, setCartProducts,setWishListCount } = useCart() as { cartProducts: cartProduct[], setCartCount: React.Dispatch<React.SetStateAction<number>>, setCartProducts:any,setWishListCount: React.Dispatch<React.SetStateAction<number>> };
   const { users } = useUsers() as { users: User };
@@ -69,7 +77,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
           quantity: 1,
           price: product.price
         });
-      setCartProducts((prev) => prev.map(item => 
+      setCartProducts((prev:any) => prev.map((item:any) => 
    ({ ...item, quantity: item.quantity + 1 })
   ));
 
@@ -84,7 +92,7 @@ function CollectionCard({ product, variant = "default", className }: products) {
           price: product.price
         });
 
-      setCartProducts((prev) => [...prev, {price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}]);
+      setCartProducts((prev:any) => [...prev, {price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}]);
       toast.success("Product Added to cart");
       return;
     }
@@ -95,12 +103,12 @@ function CollectionCard({ product, variant = "default", className }: products) {
     if (exists) {
       cart.addToCart(product, 1);
       setCartCount((prev: number) => prev + 1);
-      setCartProducts((prev) => prev.map(item => 
+      setCartProducts((prev:any) => prev.map((item:any) => 
    ({ ...item, quantity: item.quantity + 1 })
   ));
     } else {
       cart.addToCart(product, 1);
-      setCartProducts((prev) => prev ? [...prev, {price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}] : [{price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}]);
+      setCartProducts((prev:any) => prev ? [...prev, {price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}] : [{price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}]);
     }
   };
 
@@ -229,12 +237,12 @@ function CollectionCard({ product, variant = "default", className }: products) {
 
         <div className="flex items-baseline gap-2 mt-1">
           <span className={cn("font-semibold", isCarousel ? "text-xl" : "text-lg")}>
-            ₦{product?.price?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatPrice(product?.price)}
           </span>
 
           {(product?.isDiscountDeal || product?.isXmasDeal) && (
             <span className="text-sm text-muted-foreground line-through">
-              ₦{product?.initialPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {formatPrice(product?.initialPrice)}
             </span>
           )}
         </div>

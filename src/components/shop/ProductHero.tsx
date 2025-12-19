@@ -7,7 +7,7 @@ import { cart } from '@/lib/cart'
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
 import { useCart } from '../contexts/CartContext'
 import { wishList } from '@/lib/wishList'
-import { product } from './Mini-Components/CollectionCard'
+import { formatPrice, product } from './Mini-Components/CollectionCard'
 import { toast } from 'sonner'
 import { createProfile } from '@/lib/actions'
 import { cartProduct, getDiscountBadges, User } from '@/lib/types'
@@ -31,7 +31,7 @@ const handleCart = async () => {
           quantity,
           price: item.price
         });
-      setCartProducts((prev) => prev.map(p => 
+      setCartProducts((prev:any) => prev.map(p => 
    ({ ...p, quantity: p.quantity + quantity })
   ));
       toast.success("Product quantity updated in cart");
@@ -45,7 +45,7 @@ const handleCart = async () => {
           quantity,
           price: item.price
         });
-    setCartProducts((prev) => [...prev, {price: item.price, product: {name: item.name, _id: item._id}, quantity}]);
+    setCartProducts((prev:any) => [...prev, {price: item.price, product: {name: item.name, _id: item._id}, quantity}]);
     toast.success("Product Added to cart");
     setQuantity(1);
     return;
@@ -62,7 +62,7 @@ const handleCart = async () => {
   ));
   } else {
     setCartCount((prev: number) => prev + 1);
-    setCartProducts((prev) => [...prev, {price: item.price, product: {name: item.name, _id: item._id}, quantity}]);
+    setCartProducts((prev:any) => [...prev, {price: item.price, product: {name: item.name, _id: item._id}, quantity}]);
     cart.addToCart(item, quantity);
   }
   setQuantity(1);
@@ -113,10 +113,10 @@ const addToWishList = () => {
                     </CarouselContent>
                   </Carousel>
                     <div className='flex my-4 flex-col-reverse items-start'>
-                      <p className='text-[#ed9e59] text-3xl'>₦{item.price}</p>
+                      <p className='text-[#ed9e59] text-3xl'>{formatPrice(item.price)}</p>
                        {(item?.isDiscountDeal || item?.isXmasDeal) && (
                         <span className="text-sm text-muted-foreground line-through">
-                          ₦{item?.initialPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          {formatPrice(item?.initialPrice)}
                         </span>
                       )}
                     </div>
@@ -176,10 +176,10 @@ const addToWishList = () => {
                     </CarouselContent>
                   </Carousel>
                     <div className='flex flex-col-reverse items-start'>
-                      <p className='text-[#ed9e59] text-3xl'>₦{item.price}</p>
+                      <p className='text-[#ed9e59] text-3xl'>{formatPrice(item.price)}</p>
                       {(item?.isDiscountDeal || item?.isXmasDeal) && (
                         <span className="text-sm text-muted-foreground line-through">
-                          ₦{item?.initialPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          {formatPrice(item?.initialPrice)}
                         </span>
                       )}
                     </div>

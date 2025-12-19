@@ -23,7 +23,9 @@ const Footer = () => {
 
   const logOut = async () => {
     const destroy = await createProfile("/users/logout");
-    if (destroy?.message) toast.info(destroy.message);
+    if (destroy?.message) 
+        toast.info(destroy.message);
+        sessionStorage.removeItem('userId');
 }
 
   const subscribe = async () => {
