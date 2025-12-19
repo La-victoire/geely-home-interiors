@@ -51,7 +51,6 @@ const CartProducts = () => {
     if (users) {
       try {
         const remove = await deleteProfile(`/carts/${id}`)
-        console.log("Product deleted:", remove)
       } catch {
         console.error("Failed to remove product from cart");
       }

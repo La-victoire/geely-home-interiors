@@ -22,51 +22,81 @@ const ProductHero = ({item}:{item:product}) => {
   const isMobile = useMediaQuery({maxWidth: 767 });
 
 const handleCart = async () => {
-  if (users) {
-    const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
-    const exists = safeCart.find(p => p.product?._id === item._id);
-    if (exists) {
-      const updatedCart = await createProfile('/carts/add', {
-          product: item._id,
-          quantity,
-          price: item.price
-        });
-      setCartProducts((prev:any) => prev.map(p => 
-   ({ ...p, quantity: p.quantity + quantity })
-  ));
-      toast.success("Product quantity updated in cart");
-      setQuantity(1);
-      return;
-    };
+  if (quantity < 1) return;
 
-    setCartCount((prev: number) => prev + 1);
-     const updatedCart = await createProfile('/carts/add', {
-          product: item._id,
-          quantity,
-          price: item.price
-        });
-    setCartProducts((prev:any) => [...prev, {price: item.price, product: {name: item.name, _id: item._id}, quantity}]);
-    toast.success("Product Added to cart");
-    setQuantity(1);
-    return;
-  }
-
-  // guest flow
   const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
   const exists = safeCart.find(p => p.product?._id === item._id);
 
+  // =========================
+  // AUTHENTICATED USER
+  // =========================
+  if (users) {
+    try {
+      if (exists) {
+        // 🔹 update ONLY the matching product
+        setCartProducts((prev: any[]) =>
+          prev.map(p =>
+            p.product._id === item._id
+              ? { ...p, quantity: p.quantity + quantity }
+              : p
+          )
+        );
+      } else {
+        setCartProducts((prev: any[]) => [
+          ...prev,
+          {
+            price: item.price,
+            product: { name: item.name, _id: item._id },
+            quantity,
+          },
+        ]);
+        setCartCount(prev => prev + 1);
+      }
+
+      await createProfile('/carts/add', {
+        product: item._id,
+        quantity,
+        price: item.price,
+      });
+
+      toast.success("Cart updated");
+      setQuantity(1);
+      return;
+
+    } catch (err) {
+      console.error("❌ Cart update failed", err);
+      return;
+    }
+  }
+
+  // =========================
+  // GUEST USER
+  // =========================
   if (exists) {
     cart.addToCart(item, quantity);
-    setCartProducts((prev) => prev.map(p => 
-   ({ ...p, quantity: p.quantity + quantity })
-  ));
+    setCartProducts((prev: any[]) =>
+      prev.map(p =>
+        p.product._id === item._id
+          ? { ...p, quantity: p.quantity + quantity }
+          : p
+      )
+    );
   } else {
-    setCartCount((prev: number) => prev + 1);
-    setCartProducts((prev:any) => [...prev, {price: item.price, product: {name: item.name, _id: item._id}, quantity}]);
     cart.addToCart(item, quantity);
+    setCartProducts((prev: any[]) => [
+      ...prev,
+      {
+        price: item.price,
+        product: { name: item.name, _id: item._id },
+        quantity,
+      },
+    ]);
+    setCartCount(prev => prev + 1);
   }
+
   setQuantity(1);
 };
+
 
 const badges = getDiscountBadges(item)
 
@@ -197,7 +227,7 @@ const addToWishList = () => {
                   <div className='flex gap-3 mt-5 items-center'>
                     <p>Quantity:</p>
                     <div className='flex gap-2 border rounded-2xl items-center'>
-                     <Button onClick={()=> setQuantity((prev)=>prev - 1)} variant="ghost">-</Button>
+                     <Button   onClick={() => setQuantity(prev => Math.max(1, prev - 1))} variant="ghost">-</Button>
                       <p>{quantity}</p>
                      <Button onClick={()=> setQuantity((prev)=>prev + 1)} variant="ghost">+</Button>
                     </div>

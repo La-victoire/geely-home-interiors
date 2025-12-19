@@ -37,7 +37,6 @@ const CartCard = ({ item, index, onChildData, onChildQuantity, onChildRemoval, o
       setQuantity(match.quantity)
     }
   }, [])
-    console.log(item)
   // ❗ FIX 3 — move parent communication into an effect, NOT useMemo
   useEffect(() => {
     onChildQuantity(quantity)

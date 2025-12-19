@@ -7,7 +7,7 @@ import { cart } from '@/lib/cart';
 import { cartProduct, getDiscountBadges, User } from '@/lib/types';
 import { Star, ShoppingBag, Heart } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { toast } from 'sonner';
@@ -63,54 +63,91 @@ function CollectionCard({ product, variant = "default", className }: products) {
   const badges = getDiscountBadges(product)
   const isCarousel = variant === "carousel"
 
-  const handleCart = async (e: any) => {
-    e.stopPropagation();
-    e.preventDefault();
+   const debounceRef = useRef<any>(null);
+  
+    const debounceCartUpdate = (fn:()=> void, delay = 600) => {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(fn, delay);
+    };
 
-    if (users) {
-      const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
-      const exists = safeCart.find(p => p.product?._id === product._id);
+const handleCart = async (e: any) => {
+  e.stopPropagation();
+  e.preventDefault();
 
+  const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
+  const exists = safeCart.find(p => p.product?._id === product._id);
+
+  // =========================
+  // AUTHENTICATED USER
+  // =========================
+  if (users) {
+    try {
+      // 🔹 Optimistic UI update (NO debounce)
       if (exists) {
-        const updatedCart = await createProfile('/carts/add', {
-          product: product._id,
-          quantity: 1,
-          price: product.price
-        });
-      setCartProducts((prev:any) => prev.map((item:any) => 
-   ({ ...item, quantity: item.quantity + 1 })
-  ));
-
-        toast.success("Product quantity updated in cart");
-        return;
+        setCartProducts((prev: any[]) =>
+          prev.map(item =>
+            item.product._id === product._id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        );
+      } else {
+        setCartProducts((prev: any[]) => [
+          ...prev,
+          {
+            price: product.price,
+            product: { name: product.name, _id: product._id },
+            quantity: 1,
+          },
+        ]);
+        setCartCount(prev => prev + 1);
       }
 
-      setCartCount((prev: number) => prev + 1);
-      const updatedCart = await createProfile('/carts/add', {
+      toast.success("Cart updated");
+
+      // 🔹 Debounced API sync ONLY
+      debounceCartUpdate(async () => {
+        await createProfile('/carts/add', {
           product: product._id,
           quantity: 1,
-          price: product.price
+          price: product.price,
         });
+        console.log("✅ Server cart synced");
+      });
 
-      setCartProducts((prev:any) => [...prev, {price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}]);
-      toast.success("Product Added to cart");
-      return;
+    } catch (err) {
+      console.error("❌ Failed to update cart", err);
     }
 
-    const safeCart = Array.isArray(cartProducts) ? cartProducts : [];
-    const exists = safeCart.find(p => p.product?._id === product._id);
+    return; // ⛔ STOP guest logic from running
+  }
 
-    if (exists) {
-      cart.addToCart(product, 1);
-      setCartCount((prev: number) => prev + 1);
-      setCartProducts((prev:any) => prev.map((item:any) => 
-   ({ ...item, quantity: item.quantity + 1 })
-  ));
-    } else {
-      cart.addToCart(product, 1);
-      setCartProducts((prev:any) => prev ? [...prev, {price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}] : [{price: product.price, product: {name: product.name, _id: product._id}, quantity: 1}]);
-    }
-  };
+  // =========================
+  // GUEST USER
+  // =========================
+  if (exists) {
+    cart.addToCart(product, 1);
+    setCartProducts((prev: any[]) =>
+      prev.map(item =>
+        item.product._id === product._id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  } else {
+    cart.addToCart(product, 1);
+    setCartProducts((prev: any[]) => [
+      ...prev,
+      {
+        price: product.price,
+        product: { name: product.name, _id: product._id },
+        quantity: 1,
+      },
+    ]);
+    setCartCount(prev => prev + 1);
+  }
+};
+
 
   return (
     <article
