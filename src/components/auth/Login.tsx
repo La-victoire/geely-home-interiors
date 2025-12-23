@@ -13,7 +13,7 @@ import { User } from '@/lib/types'
 import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [user, setUser] = useState({
     email: "",
@@ -41,7 +41,7 @@ const Login = () => {
       try {
         const data = await createProfile("users/login", user)
         if (data?.error || !data) {
-          toast.error(data?.error);
+          toast.error(data?.message);
           setIsLoading(false);
           return;
         } 
@@ -54,7 +54,7 @@ const Login = () => {
         }
         window.location.href = `/profile/${data?.userData?._id}`;
       } catch (error) {
-        toast.error("An error occurred. Please try again later.");
+        toast.error(error?.message || "Something went wrong, Please try again later!");
         console.error("Login error:", error);
         setIsLoading(false);
       }

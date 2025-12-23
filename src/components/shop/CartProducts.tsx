@@ -62,7 +62,7 @@ const CartProducts = () => {
   };
 
   return (
-    <section className="border rounded flex item-col flex-2/3 gap-5 p-5">
+    <section className="border rounded flex item-col flex-2/3 gap-2 py-5 px-2">
       {cartProducts?.length > 0 ? (
         cartProducts.map((item: cartProduct, index: number) => (
           <div key={index}>
@@ -83,7 +83,7 @@ const CartProducts = () => {
       )}
 
       {cartProducts?.length > 0 && (
-        <Link href={"/shop/checkout"} className='flex justify-center items-center' >
+        <Link href={"/shop/checkout"} className='flex justify-center items-center mt-2' >
           <Button variant="secondary">
             Proceed to checkout
           </Button>

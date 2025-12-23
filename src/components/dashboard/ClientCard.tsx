@@ -15,9 +15,9 @@ const ClientCard = () => {
   return (
     <Card className='w-full'>
       <CardHeader className='flex justify-between'>
-        <CardTitle>Active Users</CardTitle>  <UsersIcon className="text-muted-foreground"/> </CardHeader>
-      <CardContent>{data?.users?.filter((p) => p.status === "Active").length}</CardContent>
-      <CardFooter className='text-muted-foreground text-sm'>{data?.users?.length} in total</CardFooter>
+        <CardTitle>Admin Users</CardTitle>  <UsersIcon className="text-muted-foreground"/> </CardHeader>
+      <CardContent>{data?.users?.filter((p) => p.role === "Admin").length}</CardContent>
+      <CardFooter className='text-muted-foreground text-sm'>{data?.users?.length} users in total</CardFooter>
     </Card>
   )
 }

@@ -94,20 +94,20 @@ const CartCard = ({ item, index, onChildData, onChildQuantity, onChildRemoval, o
      }, [quantity])
 
   return (
-    <Card key={index} className='flex w-full border-0 border-b rounded-none bg-transparent p-5 flex-row '>
-    <img className='md:w-[120px] h-[100px] w-[87px] not-sm:object-cover rounded-xl' src={image[0]?.url || "/images/sketch.jpg"} alt={item.product?.name || item.name} /> 
+    <Card key={index} className='flex w-full border-0 border-b rounded-none bg-transparent py-5 px-2 gap-4 flex-row '>
+    <img className='md:w-[120px] h-[90px] w-[87px] not-sm:object-cover rounded-xl' src={image[0]?.url || "/images/sketch.jpg"} alt={item.product?.name || item.name} /> 
       <div className='flex justify-between w-full'>
         <Link href={`/shop/products/${item.product?._id || item._id}`}>
-          <p className='font-bold'>{item.product?.name || item.name}</p>
+          <p className='font-bold not-sm:max-w-[90px] truncate'>{item.product?.name || item.name}</p>
           <p>Quantity: {quantity}</p>
           <p>Price: ₦{formatPrice(item?.price)}</p>
 
         </Link>
 
         <div>
-          <p><span className='font-bold'>Total:</span> {formatPrice(Math.ceil(item.price * quantity))} NGN</p>
+          <p className='flex gap-1 item-col md:item-row'><span className='font-bold'>Total:</span> NGN {formatPrice(Math.ceil(item.price * quantity))}</p>
 
-          <div className='flex gap-5 item-col md:item-row mt-2 items-center'>
+          <div className='flex gap-3 item-col md:item-row mt-2 items-center'>
             <div className='flex gap-2 border rounded-2xl items-center'>
               <Button onClick={quantityReduce} variant="ghost">-</Button>
               <p>{quantity}</p>

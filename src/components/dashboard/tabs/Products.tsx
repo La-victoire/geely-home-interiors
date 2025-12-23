@@ -19,9 +19,11 @@ import { toast } from 'sonner'
 import { deleteProduct, postData } from '@/lib/actions'
 import { INTERIOR_CATEGORIES } from '@/components/constants'
 import DateTimePicker from '@/components/shop/Mini-Components/DatePicker'
-
+import { useMediaQuery } from 'react-responsive'
+import LoadMore from './mini-comp/LoadMore'
 
 const Products = () => {
+    const isMobile = useMediaQuery({maxWidth: 450 });
     const [isLoading, setIsLoading] = useState(false);
     const [items, setItems] = useState<product[]>([]);
     const [colors, setColors] = useState<string[]>([]);
@@ -45,7 +47,6 @@ const Products = () => {
         height:"",
       },
       colors:colors,
-      status:"",
     });
     const {products} = useProducts() as {products:product[]}
 
@@ -68,15 +69,6 @@ const Products = () => {
       setFeat(updated);
       setProduct({...product, features : updated})
     } 
-
-    const formDataToObject = (fd:FormData) => {
-      const obj: Record<string,any> = {}
-      for (let key of fd.keys()) {
-        const values = fd.getAll(key)
-        obj[key] = values.length > 1 ? values : values[0]
-      }
-      return obj
-    }
 
     const groupSubCategories = (data:any) => {
         const grouped: Record<string, string[]> = {};
@@ -114,14 +106,6 @@ const Products = () => {
       toast.error("An error occurred. Please try again.")
     }
     }
-
-    const queriedResults = useMemo(() => {
-       if (items) {
-      return items
-        .filter(p => search || p.name.toLowerCase().includes(search.toLowerCase())) as product[];
-    }
-    return []
-    }, [items,search]);
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
       const { name , value } = e.target;
@@ -168,12 +152,8 @@ const Products = () => {
         toast.error("Failed to create product. Please try again.")
         setIsLoading(false)
       }
-      setIsLoading(false)
       // Update local state with the new product
-      const data = formDataToObject(formData)
-      console.log("All data:", data);
-      console.log("All data part 2:", product);
-      setItems((prev) => [...prev, product])
+      setItems((prev:any) => [...prev, product])
       setProduct({
       name:"",
       category:"",
@@ -190,7 +170,6 @@ const Products = () => {
         height:"",
       },
       colors:[],
-      status:"",
       })
       setColors([])
       setFeat([])
@@ -243,16 +222,16 @@ const Products = () => {
     
   return (
     <Card className='max-h-[60dvh]'>
-      <CardHeader className='flex justify-between'>
+      <CardHeader className='flex gap-5 justify-between'>
         <div>
-          <CardTitle className='headFont mb-3'>Product Inventory</CardTitle>
-          <p>Manage your product catalog and inventory</p>
+          <CardTitle className='headFont not-sm:text-lg mb-3'>Product Inventory</CardTitle>
+          <p className="not-sm:text-sm">Manage your product catalog and inventory</p>
         </div>
-        <div className='flex not-sm:flex-col gap-3'>
-          <Button onClick={clearProducts} variant="outline"> <ArrowUpRightSquare /> Reset Products</Button>
+        <div className='flex gap-3 not-sm:mt-5'>
+          <Button onClick={clearProducts} variant="outline"> <ArrowUpRightSquare /> {!isMobile && "Reset Products"}</Button>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button variant="secondary"  className='bg-blue-300 text-black'><PlusCircle /> Add Product</Button>
+              <Button variant="secondary"  className='bg-blue-300 text-black'><PlusCircle /> {!isMobile && "Add Product"} </Button>
             </DialogTrigger>
             <DialogContent className='max-h-[70dvh]  overflow-y-scroll'>
               <form onSubmit={handleFormSubmit}>
@@ -290,7 +269,7 @@ const Products = () => {
                       <Label htmlFor='product-category'>Product subcategory*</Label>
                       <Select name='sub-category' onValueChange={handleSubCategory}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a subcategory"/>
+                          <SelectValue placeholder="Select subcat..."/>
                         </SelectTrigger>
                         <SelectContent>
                             {Object.entries(grouped).map(([category, subs])=> (
@@ -341,7 +320,7 @@ const Products = () => {
                       </div>
                       </div>
                   </div>
-                  <div className='grid grid-cols-2 gap-5'>
+                  <div className='grid grid-cols-1 gap-5'>
                     <div className='grid gap-3'>
                       <Label htmlFor='product-feature'>Product Feature(optional)</Label>
                       {Feat.length > 0 && Feat.map((feature,index) => (
@@ -354,7 +333,7 @@ const Products = () => {
                     </div>
                     
                   </div>
-                  <div className='grid grid-cols-3 gap-5'>
+                  <div className='grid grid-cols-2 gap-5'>
                     <div className='grid gap-3'>  
                       <Label htmlFor='product-width'>Width</Label>
                       <Input id='product-width' value={product.dimensions.width} onChange={
@@ -439,14 +418,23 @@ const Products = () => {
         </div>
       </CardHeader>
       <CardContent className='overflow-x-scroll'>
-        <div className='md:w-1/4 w-1/2'>
+        {/* <div className='md:w-1/4 w-1/2'>
           <Input
            type='search'
            placeholder='Search...' 
            value={search}
            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           />
-        </div>
+          <Button
+           onClick={()=> {
+
+           }}
+           variant={'outline'}
+           size={"default"}
+           >
+            Search
+          </Button>
+        </div> */}
         {items.length < 1 ? (
           <p className='text-center headFont text-3xl'>
             No Products Available
@@ -455,7 +443,7 @@ const Products = () => {
           <table className='not-md:w-[150dvw] mt-5 w-full not-sm:text-sm'>
             <thead>
               <tr className=''>
-                <th className=' p-4 text-center border-0 border-b'>Name</th>
+                <th className=' not-md:w-full p-4 text-center border-0 border-b'>Name</th>
                 <th className=' p-3 text-center border-0 border-l border-b'>Category</th>
                 <th className=' p-3 text-center border-0 border-l border-b'>Price</th>
                 <th className=' p-3 text-center border-0 border-l border-b'>Sub-Category</th>
@@ -465,16 +453,10 @@ const Products = () => {
                 <th className=' p-3 text-center border-0 border-l border-b'>Actions</th>
               </tr>
             </thead>
-            <tbody className='overflow-y-scroll'>
-              {queriedResults.length > 0 && (
-                queriedResults.map((data:product,index:number)=> (
-                  <ProductTable Product={data} onDelete={handleDelete} key={index}/>
-                ))
-              )}
-            </tbody>
+            <LoadMore items={items} setItems={setItems} handleDelete={handleDelete}/>
           </table>
         )}
-        {queriedResults.length < 1 && items.length > 0 && (
+        {items.length < 1 && items.length > 0 && (
           <div className='text-center mt-5 headFont text-3xl'>
             Product Not Found
           </div>

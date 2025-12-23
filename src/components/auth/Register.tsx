@@ -18,7 +18,7 @@ const Register = () => {
     email: "",
     password: ""
   })
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(true)
   
   const changeEye = () => {
     setIsPasswordVisible((prev)=> !prev)

@@ -9,12 +9,13 @@ import useSWR from 'swr'
 const TotalCard = () => {
   const productsFetcher = (url:string) => getData<any>(url);
   const {data, error, isLoading}:product[] = useSWR('/products', productsFetcher);
+console.log(data);
   return (
     <Card className='w-full'>
       <CardHeader className='flex justify-between'>
         <CardTitle>Total Products</CardTitle>  <Box className="text-muted-foreground"/> </CardHeader>
       <CardContent>{data?.products?.length || "0"}</CardContent>
-      <CardFooter className='text-muted-foreground text-sm'>{data?.products?.filter((p) => p?.isDiscount).length || 0} Discount Products</CardFooter>
+      <CardFooter className='text-muted-foreground text-sm'>{data?.products?.filter((p) => (p?.isXmasDeal || p?.isDiscountDeal))?.length || 0} Discount Products</CardFooter>
     </Card>
   )
 }

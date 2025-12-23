@@ -134,13 +134,13 @@ const ProductTable = ({Product, onDelete}:{Product:any ,onDelete: (id:string) =>
 
   return (
     <tr className='border-0 border-b'>
-      <td className='text-center pl-3'>{form.name}</td>
+      <td className='text-center not-md:w-full px-3'>{form.name}</td>
       <td className='text-center border-l p-3'>{form.category}</td>
       <td className='text-center border-l p-3'>₦{form.price}</td>
       <td className='text-center border-l p-3'>{form.subCategory}</td>
       <td className='text-center border-l p-3'>{form?.isXmasDeal && "Xmas-sale" || form?.isDiscountDeal && `${form.subCategory}-sale` || "No Discount"}</td>
       <td className='text-center border-l p-3'>{formatIsoDate(form.discountUntil) || "No Discount"}</td>
-      <td className='text-center border-l p-3'>{form?.computedDiscountedPrice || 0 }%</td>
+      <td className='text-center border-l p-3'>{(form?.isXmasDeal || form?.isDiscountDeal) ?form?.computedDiscountedPrice : 0 }%</td>
       <td className='border-l flex flex-center p-3 space-x-3'>
         <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>

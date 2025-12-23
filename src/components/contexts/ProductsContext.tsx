@@ -67,7 +67,7 @@ export function ProductsProvider({ children }: { children: React.ReactNode }) {
         limit: data?.limit || Number(limit),
         totalPages: data?.totalPages || 1,
         hasNextPage: data?.hasNextPage || false,
-        hasPrevPage: data?.hasPrevPage || false,
+        hasPrevPage: data?.hasPrevPages || false,
         loading: isLoading,
         error,
       }}

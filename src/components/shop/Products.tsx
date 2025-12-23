@@ -151,7 +151,7 @@ const Products = () => {
   // -------------------------
 
   return (
-    <section className="md:p-10 px-5 py-10 w-full flex item-col">
+    <section className="md:p-6 px-3 py-10 w-full flex item-col">
       <DiscountCarousel products={xmasProducts} />
 
       <div className="md:text-4xl text-3xl flex gap-10 justify-between headFont w-full">
@@ -206,7 +206,7 @@ const Products = () => {
       </div>
 
       <section className="w-full">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 lg:gap-6">
           {products.map((p, i) => (
             <CollectionCard key={p._id ?? i} product={p} />
           ))}

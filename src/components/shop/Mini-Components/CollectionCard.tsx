@@ -251,7 +251,8 @@ const handleCart = async (e: any) => {
       </div>
 
       {/* Content */}
-      <div
+      <Link
+        href={`/shop/products/${product._id}`}
         className={cn(
           "flex flex-col gap-2 p-4",
           "sm:relative",
@@ -265,7 +266,7 @@ const handleCart = async (e: any) => {
 
         <h3
           className={cn(
-            "font-medium leading-tight text-balance",
+            "font-medium leading-tight text-balance truncate",
             isCarousel ? "text-base" : "text-sm",
           )}
         >
@@ -278,12 +279,12 @@ const handleCart = async (e: any) => {
           </span>
 
           {(product?.isDiscountDeal || product?.isXmasDeal) && (
-            <span className="text-sm text-muted-foreground line-through">
+            <span className="text-sm text-muted-foreground line-through truncate">
               {formatPrice(product?.initialPrice)}
             </span>
           )}
         </div>
-      </div>
+      </Link>
     </article>
   )
 }
