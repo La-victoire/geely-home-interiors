@@ -35,8 +35,8 @@ function LoadMore({items, handleDelete, setItems}:{items:any,handleDelete:any,se
         <section className="flex w-full justify-center items-center py-5">
             <div className="flex w-full justify-center items-center" ref={ref}>
                 <Icon 
-                icon={icon.icons['6-dots-scale']}
-                className='md:text-4xl text-2xl text-primary'
+                icon={icon.icons['bars-scale-fade']}
+                className='md:text-3xl text-xl text-primary'
                 />
             </div>
         </section>

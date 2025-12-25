@@ -9,7 +9,6 @@ import useSWR from 'swr'
 const TotalCard = () => {
   const productsFetcher = (url:string) => getData<any>(url);
   const {data, error, isLoading}:product[] = useSWR('/products', productsFetcher);
-console.log(data);
   return (
     <Card className='w-full'>
       <CardHeader className='flex justify-between'>

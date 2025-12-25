@@ -21,6 +21,7 @@ import { INTERIOR_CATEGORIES } from '@/components/constants'
 import DateTimePicker from '@/components/shop/Mini-Components/DatePicker'
 import { useMediaQuery } from 'react-responsive'
 import LoadMore from './mini-comp/LoadMore'
+import ResetProducts from './mini-comp/ResetProducts'
 
 const Products = () => {
     const isMobile = useMediaQuery({maxWidth: 450 });
@@ -206,17 +207,17 @@ const Products = () => {
 
     const clearProducts = async () => {
       setItems([])
-      try {
-      const response = await deleteProduct(`/products`);
-      if (response) {
-        toast.success(response)
-      } else {
+       try {
+       const response = await deleteProduct(`/products`);
+       if (response) {
+         toast.success(response)
+       } else {
         toast.error("Failed to Clear products. Please try again.")
-      }
-    } catch (error) {
-      console.error("Error deleting products:", error);
-      toast.error("An error occurred. Please try again.")
-    }
+       }
+     } catch (error) {
+       console.error("Error deleting products:", error);
+       toast.error("An error occurred. Please try again.")
+     }
 
     }
     
@@ -228,7 +229,7 @@ const Products = () => {
           <p className="not-sm:text-sm">Manage your product catalog and inventory</p>
         </div>
         <div className='flex gap-3 not-sm:mt-5'>
-          <Button onClick={clearProducts} variant="outline"> <ArrowUpRightSquare /> {!isMobile && "Reset Products"}</Button>
+          <ResetProducts clearProducts={clearProducts}/>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button variant="secondary"  className='bg-blue-300 text-black'><PlusCircle /> {!isMobile && "Add Product"} </Button>
