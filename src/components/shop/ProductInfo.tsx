@@ -1,9 +1,8 @@
-import React from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
-import { product } from './Mini-Components/CollectionCard'
 import { SHIPPING_POLICY } from '../constants'
+import { product } from './Mini-Components/CollectionCard'
 
-const ProductInfo = ({item}) => {
+const ProductInfo = ({item}:{item:product}) => {
   return (
     <>
     <section className='my-10'>
@@ -20,7 +19,7 @@ const ProductInfo = ({item}) => {
               <li>Category: {item.category} </li>
               <li>Colors Available: 
                 <div className='pt-2'>
-                  {item.colors.map((color:string, index)=>
+                  {item?.colors?.map((color:string, index)=>
                   <p key={index} className='px-10'>{color},</p>
                   )}
                 </div>

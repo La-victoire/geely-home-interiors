@@ -33,7 +33,10 @@ export type product = {
   isDiscountDeal: boolean;
   quantity?: number;
   rating?: number;
-  dimensions: {};
+  dimensions: {
+    width:string,
+    height:string,
+  };
   discountUntil: string;
   maxDiscountCap: number;
   features: string[];

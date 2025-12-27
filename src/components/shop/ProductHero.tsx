@@ -13,6 +13,7 @@ import { createProfile } from '@/lib/actions'
 import { cartProduct, getDiscountBadges, User } from '@/lib/types'
 import { useUsers } from '../contexts/UserContext'
 import { DiscountBadge, MultiBadge } from './Mini-Components/discount-badge'
+import { FaWhatsapp } from 'react-icons/fa6'
 
 const ProductHero = ({item}:{item:product}) => {
   const [quantity, setQuantity] = useState(1)
@@ -97,7 +98,6 @@ const handleCart = async () => {
   setQuantity(1);
 };
 
-
 const badges = getDiscountBadges(item)
 
 const addToWishList = () => {
@@ -111,6 +111,26 @@ const addToWishList = () => {
       wishList.addToWishList(item) 
     }
   }
+
+const askOnWhatsapp = () => {
+  const question = `
+  Hi, I'm interested in the ${item.name} i saw on your website.
+
+  Here's the link: https://geely-home-interiors.vercel.app/shop/products/${item._id} .
+
+  Please help me confirm: 
+  - Availability
+  - Current Price
+  - Delivery cost to ${users?.addresses[0]?.state || "my location"}
+
+  Thank you.
+  `
+  const encodedMessage = encodeURIComponent(question);
+  const whatsappURL = `https://wa.me/09066824344?text=${encodedMessage}`
+
+  window.open(whatsappURL, "_blank")
+  
+}
 
   return (
     <div>
@@ -151,7 +171,8 @@ const addToWishList = () => {
                       )}
                     </div>
                     <p className='mb-5'>{item.description}</p>
-                    <div className='flex gap-5'>
+                    <div className='flex gap-5 item-col w-2/3'>
+                        <div className='flex gap-5'>
                       <Button onClick={()=> handleCart()} className='bg-[#ed9e59] text-white'>
                         <ShoppingCart />
                         Add to Cart
@@ -159,6 +180,12 @@ const addToWishList = () => {
                       <Button onClick={()=> addToWishList()}>
                         <Heart />
                         Add to Wishlist
+                      </Button>
+
+                        </div>
+                      <Button onClick={askOnWhatsapp} className='bg-green-500'>
+                        <FaWhatsapp />
+                        Ask About this Product
                       </Button>
                     </div>
                   <div className='flex gap-3 mt-5 items-center'>
@@ -222,6 +249,10 @@ const addToWishList = () => {
                       <Button onClick={()=> addToWishList()}>
                         <Heart />
                         Add to Wishlist
+                      </Button>
+                      <Button onClick={askOnWhatsapp} className='bg-green-500'>
+                        <FaWhatsapp />
+                        Ask About this Product
                       </Button>
                     </div>
                   <div className='flex gap-3 mt-5 items-center'>
