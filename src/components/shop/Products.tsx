@@ -29,9 +29,12 @@ import ErrorState from "./Mini-Components/ErrorState";
 import SearchForm from "./Mini-Components/SearchForm";
 import { useSearchParams, useRouter } from "next/navigation";
 import { INTERIOR_CATEGORIES } from "../constants"
+import { Carousel } from "./Carousel";
 import { DiscountCarousel } from "./discount-carousel";
 import { useProducts } from "../contexts/ProductsContext";
 import ProductNotFound from "./Mini-Components/ProductNotFound";
+import { SubcategoryCarouselGroup } from "./subcategory-carousel-group";
+import { decorStyles } from "@/lib/decor-styles";
 
 const Products = () => {
   const {
@@ -52,7 +55,7 @@ const Products = () => {
   const category = searchParams.get("category") || "";
   const query = searchParams.get("search") || "";
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
-
+console.log(products, page, totalPages, hasNextPage)
   const updateParams = (params: Record<string, string | number | null>) => {
     const newParams = new URLSearchParams(searchParams.toString());
 
@@ -116,20 +119,27 @@ const Products = () => {
 
   if (loading) {
     return (
-      <section className="md:p-10 px-5 py-10 w-full flex item-col">
-        <div className="md:text-4xl text-3xl flex gap-10 justify-between headFont w-full mb-6">
+      <section className=" pb-10 w-full flex item-col">
+         <Carousel data={decorStyles} title="Decor Styles We Offer" subtitle="Discover How Our Curated Products Fits Your Space."/>
+<div className="md:px-10 px-5">
+        <div className="md:text-4xl text-3xl flex gap-10 justify-between headFont w-full">
           <h1>Collections</h1>
           <div>
             <Button>{!isMobile ? "Filter" : <Filter />}</Button>
           </div>
         </div>
+      <p className="text-primary">
+        Discover our curated collection of luxury home furnishings
+      </p>
 
         <SearchForm setQuery={setQuery} query={query} updateParams={updateParams} />
+</div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-5 mt-10">
+        <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2.5 lg:gap-6 mt-10">
           {Array.from({ length: 9 }).map((_, i) => (
             <div key={i} className="w-full p-4">
-              <Skeleton className="h-48 w-full rounded mb-3" />
+              <Skeleton className="h-60 w-full rounded mb-3" />
+              <Skeleton className="h-4 w-1/2 rounded mb-2" />
               <Skeleton className="h-6 w-3/4 rounded mb-2" />
               <Skeleton className="h-4 w-1/2 rounded" />
             </div>
@@ -144,112 +154,131 @@ const Products = () => {
   // -------------------------
 
   if (error) return <ErrorState message="Unable to load products." />;
-  if (!products || products.length === 0) return <ProductNotFound />;
+  if (!products || products.length === 0) return (
+<section className=" pb-10 w-full flex flex-col">
+        <Carousel data={decorStyles} title="Decor Styles We Offer" subtitle="Discover How Our Curated Products Fits Your Space."/>
+<div className="md:px-10 px-5">
+        <div className="md:text-4xl text-3xl flex gap-10 justify-between headFont w-full">
+          <h1>Collections</h1>
+          <div>
+            <Button>{!isMobile ? "Filter" : <Filter />}</Button>
+          </div>
+        </div>
+      <p className="text-primary">
+        Discover our curated collection of luxury home furnishings
+      </p>
+
+        <SearchForm setQuery={setQuery} query={query} updateParams={updateParams} />
+        <ProductNotFound />;
+</div>
+      </section>
+)
 
   // -------------------------
   // MAIN RENDER
   // -------------------------
 
   return (
-    <section className="md:p-6 px-3 py-10 w-full flex item-col">
-      <DiscountCarousel products={xmasProducts} />
+    <section className=" pb-10 w-full flex item-col">
+          <Carousel data={decorStyles} title="Decor Styles We Offer" subtitle="Discover How Our Curated Products Fits Your Space."/>
+      <div className="md:px-10 px-5">
+        <div className="md:text-4xl text-3xl flex gap-10 justify-between headFont w-full">
+          <h1>Collections</h1>
 
-      <div className="md:text-4xl text-3xl flex gap-10 justify-between headFont w-full">
-        <h1>Collections</h1>
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button>{!isMobile ? "Filter" : <Filter />}</Button>
+            </DrawerTrigger>
 
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button>{!isMobile ? "Filter" : <Filter />}</Button>
-          </DrawerTrigger>
+            <DrawerContent>
+              <div className="mx-auto w-full max-w-sm">
+                <DrawerHeader>
+                  <DrawerTitle className="headFont">Categories</DrawerTitle>
+                  <DrawerDescription>Select your desired item</DrawerDescription>
+                </DrawerHeader>
 
-          <DrawerContent>
-            <div className="mx-auto w-full max-w-sm">
-              <DrawerHeader>
-                <DrawerTitle className="headFont">Categories</DrawerTitle>
-                <DrawerDescription>Select your desired item</DrawerDescription>
-              </DrawerHeader>
-
-              <div className="px-3 py-4 space-y-3">
-                <DrawerClose asChild>
-                  <Button onClick={() => handleCategorySelect("all")}>
-                    All <ArrowUpRight />
-                  </Button>
-                </DrawerClose>
-
-                {(INTERIOR_CATEGORIES || []).map((data, i: number) => (
-                  <DrawerClose asChild key={i}>
-                    <Button className="m-3" onClick={() => handleCategorySelect(data.category)}>
-                      {data.category} <ArrowUpRight />
+                <div className="px-3 py-4 space-y-3">
+                  <DrawerClose asChild>
+                    <Button onClick={() => handleCategorySelect("all")}>
+                      All <ArrowUpRight />
                     </Button>
                   </DrawerClose>
-                ))}
+
+                  {(INTERIOR_CATEGORIES || []).map((data, i: number) => (
+                    <DrawerClose asChild key={i}>
+                      <Button className="m-3" onClick={() => handleCategorySelect(data.category)}>
+                        {data.category} <ArrowUpRight />
+                      </Button>
+                    </DrawerClose>
+                  ))}
+                </div>
               </div>
-            </div>
-          </DrawerContent>
-        </Drawer>
-      </div>
-
-      <p className="text-primary">
-        Discover our curated collection of luxury home furnishings
-      </p>
-
-      <SearchForm setQuery={setQuery} query={query} updateParams={updateParams} />
-
-      <div className="text-3xl text-center my-10 font-bold">
-        {!query ? (
-          <h2>All {category || "Products"}</h2>
-        ) : (
-          <h2>
-            Results for "<span className="text-blue-500">{query}</span>"
-          </h2>
-        )}
-      </div>
-
-      <section className="w-full">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 lg:gap-6">
-          {products.map((p, i) => (
-            <CollectionCard key={p._id ?? i} product={p} />
-          ))}
+            </DrawerContent>
+          </Drawer>
         </div>
-      </section>
 
-      <Pagination className="pt-10">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={goPrev}
-              className={!hasPrevPage ? "opacity-50 pointer-events-none" : ""}
-              href="#"
-            />
-          </PaginationItem>
+        <p className="text-primary">
+          Discover our curated collection of luxury home furnishings
+        </p>
 
-          {pageNumbers.map((num, i) =>
-            num.toString().includes("ellipsis") ? (
-              <PaginationItem key={`e-${i}`}>
-                <PaginationEllipsis />
-              </PaginationItem>
-            ) : (
-              <PaginationItem key={num}>
-                <PaginationLink
-                  href="#"
-                  isActive={num === currentPage}
-                  onClick={() => updateParams({ page: num })}
-                >
-                  {num}
-                </PaginationLink>
-              </PaginationItem>
-            )
+        <SearchForm setQuery={setQuery} query={query} updateParams={updateParams} />
+
+        <div className="text-3xl text-center my-10 font-bold">
+          {!query ? (
+            <h2>All {category || "Products"}</h2>
+          ) : (
+            <h2>
+              Results for "<span className="text-blue-500">{query}</span>"
+            </h2>
           )}
+        </div>
 
-          <PaginationItem>
-            <PaginationNext
-              onClick={goNext}
-              className={!hasNextPage ? "opacity-50 pointer-events-none" : ""}
-              href="#"
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+        <section className="w-full">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 lg:gap-6">
+            {products.map((p, i) => (
+              <CollectionCard key={p._id ?? i} product={p} />
+            ))}
+          </div>
+        </section>
+
+        <Pagination className="pt-10">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={goPrev}
+                className={!hasPrevPage ? "opacity-50 pointer-events-none" : ""}
+                href="#"
+              />
+            </PaginationItem>
+
+            {pageNumbers.map((num, i) =>
+              num.toString().includes("ellipsis") ? (
+                <PaginationItem key={`e-${i}`}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={num}>
+                  <PaginationLink
+                    href="#"
+                    isActive={num === currentPage}
+                    onClick={() => updateParams({ page: num })}
+                  >
+                    {num}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            )}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={goNext}
+                className={!hasNextPage ? "opacity-50 pointer-events-none" : ""}
+                href="#"
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </section>
   );
 };

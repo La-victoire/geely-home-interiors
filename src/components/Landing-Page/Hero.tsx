@@ -54,7 +54,7 @@ const Hero = () => {
         autoPlay
         
         className="h-full relative w-full object-cover"
-        src="/videos/Bright-parlor.mp4" 
+        src="https://res.cloudinary.com/dxurciajs/video/upload/q_auto,f_auto/Bright-parlor_rohiwv.mp4" 
         />
 
         <div className="abs-center w-full flex-center gap-10 flex item-col z-20 ">

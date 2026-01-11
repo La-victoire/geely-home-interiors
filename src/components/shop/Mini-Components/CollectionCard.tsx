@@ -180,7 +180,7 @@ const handleCart = async (e: any) => {
       >
 
         <Image
-          src={product.images[0].url || "/placeholder.svg"}
+          src={product?.images[0]?.url || "/placeholder.svg"}
           alt={product.name}
           fill
           className={cn(

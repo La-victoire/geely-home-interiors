@@ -14,7 +14,7 @@ const SearchForm = ({query, setQuery, updateParams}:any) => {
     <div className='search-form'>
       <input 
       name='query'
-      value={searchInput}
+      value={searchInput || query}
       className='search-input text-black/50'
       placeholder='Search Products'
       onChange={(e) => setSearchInput(e.target.value)}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react"
+import { ChevronLeft, ChevronRight, Sparkles, House } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import CollectionCard, { product } from "./Mini-Components/CollectionCard"
