@@ -116,7 +116,7 @@ const askOnWhatsapp = () => {
   const question = `
   Hi, I'm interested in the ${item.name} i saw on your website.
 
-  Here's the link: https://geely-home-interiors.vercel.app/shop/products/${item._id} .
+  Here's the link: https://geelyhomeinteriors.com/shop/products/${item._id} .
 
   Please help me confirm: 
   - Availability
